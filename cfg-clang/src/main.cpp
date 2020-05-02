@@ -11,12 +11,19 @@ class MyASTVisitor : public RecursiveASTVisitor<MyASTVisitor> {
 		}
 
 		bool VisitFunctionDecl(FunctionDecl *f) {
+			if (TheContext.getSourceManager().isInSystemHeader(f->getSourceRange().getBegin())
+			||  TheContext.getSourceManager().isInSystemHeader(f->getSourceRange().getEnd())
+			|| (f->isTemplateInstantiation()
+			&&  TheContext.getSourceManager().isInSystemHeader(f->getPointOfInstantiation())) )
+				return true;
 			// Only function definitions (with bodies), not declarations.
 			if (f->hasBody()) {
 				Stmt *funcBody = f->getBody();
 				//CFG
 				std::unique_ptr<CFG> sourceCFG = CFG::buildCFG(f, funcBody, &TheContext, CFG::BuildOptions());
 				sourceCFG->print(llvm::errs(), LangOptions(), true);
+				// Export dot files, works with clang built in debug mode only
+				// sourceCFG->viewCFG(LangOptions());
 
 			}
 
