@@ -16,11 +16,10 @@ RUN apt update && \
     apt install -y --no-install-recommends \
         build-essential \
         cmake \
-        llvm-${LLVM_VERSION} \
         llvm-${LLVM_VERSION}-dev \
         libclang-${LLVM_VERSION}-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY cfg-clang .
+COPY cfg-clang cfg-clang
 
 RUN make -C cfg-clang
