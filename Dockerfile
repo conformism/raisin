@@ -21,6 +21,6 @@ RUN apt update && \
         libclang-${LLVM_VERSION}-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./cfg-clang $BUILD_DIR/
+COPY ./cfg-clang $BUILD_DIR/cfg-clang
 
-RUN make
+RUN make -C cfg-clang

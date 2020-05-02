@@ -24,7 +24,6 @@ class MyASTVisitor : public RecursiveASTVisitor<MyASTVisitor> {
 				sourceCFG->print(llvm::errs(), LangOptions(), true);
 				// Export dot files, works with clang built in debug mode only
 				// sourceCFG->viewCFG(LangOptions());
-
 			}
 
 			return true;
