@@ -8,12 +8,13 @@ from [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-clang)
 
 
 ## Dev
-```
+
+```sh
 docker build . -t cfg:10
 ```
 
 And run it:
-```
-docker run -it cfg:10
+```sh
+docker run -v $PWD:/disks/ramfs -it cfg:10
 ```
 
