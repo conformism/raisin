@@ -19,6 +19,22 @@ using namespace clang::tooling;
 
 static llvm::cl::OptionCategory ToolingSampleCategory("Tooling Sample");
 
+// Already exists here but inaccessible
+// http://clang.llvm.org/doxygen/StmtPrinter_8cpp_source.html#l01101
+static bool printExprAsWritten(raw_ostream &OS, Expr *E, const ASTContext *Context) {
+	if (!Context)
+		return false;
+	bool Invalid = false;
+	StringRef Source = Lexer::getSourceText(
+		CharSourceRange::getTokenRange(E->getSourceRange()),
+		Context->getSourceManager(), Context->getLangOpts(), &Invalid);
+	if (!Invalid) {
+		OS << Source;
+		return true;
+	}
+	return false;
+}
+
 // By implementing RecursiveASTVisitor, we can specify which AST nodes
 // we're interested in by overriding relevant methods.
 class MyASTVisitor : public RecursiveASTVisitor<MyASTVisitor> {
@@ -26,6 +42,26 @@ public:
 	MyASTVisitor(ASTContext &C, Rewriter &R) : TheContext(C), TheRewriter(R) {}
 
 	bool VisitStmt(Stmt *s) {
+
+		return true;
+	}
+
+	bool VisitForStmt(ForStmt *f) {
+		llvm::errs() << "cond : ";
+		printExprAsWritten(llvm::errs(), f->getCond(), &TheContext);
+		llvm::errs() << "\n";
+		llvm::errs() << "inc : ";
+		printExprAsWritten(llvm::errs(), f->getInc(), &TheContext);
+		llvm::errs() << "\n";
+
+		llvm::errs() << "parenthesis : ";
+		bool Invalid = false;
+		StringRef Source = Lexer::getSourceText(
+			CharSourceRange::getTokenRange(SourceRange(f->getLParenLoc(), f->getRParenLoc())),
+			TheContext.getSourceManager(), TheContext.getLangOpts(), &Invalid);
+		if (!Invalid)
+			llvm::errs() << Source;
+		llvm::errs() << "\n";
 
 		return true;
 	}
