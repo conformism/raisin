@@ -40,13 +40,13 @@ public:
 		if (f->hasBody()) {
 			Stmt *funcBody = f->getBody();
 			//CFG
-			std::unique_ptr<CFG> sourceCFG = CFG::buildCFG(f, funcBody, &TheContext, CFG::BuildOptions());
+			CFG::BuildOptions bo;
+			bo.AddScopes=true;
+			std::unique_ptr<CFG> sourceCFG = CFG::buildCFG(f, funcBody, &TheContext, bo);
 			sourceCFG->print(llvm::errs(), LangOptions(), true);
 			// Export dot files, works with clang built in debug mode only
 			// sourceCFG->viewCFG(LangOptions());
-
 		}
-
 		return true;
 	}
 
