@@ -35,3 +35,8 @@ build
 .*.swp
 .*.swa
 .*.sw
+
+:wq
+:w
+:q
+
