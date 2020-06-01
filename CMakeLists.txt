@@ -82,7 +82,7 @@ target_link_libraries( ${PROJECT_NAME}
 	)
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES
-	OUTPUT_NAME "poireau"
+	OUTPUT_NAME "raisin"
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out"
 	)
 
