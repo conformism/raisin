@@ -2,7 +2,7 @@
 
 <img src="./grape.svg" width="15%" title="Grape">
 
-Code properties ~~grape~~ graph.
+Control flow ~~grape~~ graph.
 
 from [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-clang)
 
