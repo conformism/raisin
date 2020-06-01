@@ -22,7 +22,7 @@ And run it :
 ```sh
 docker run -v $PWD:/disks/ramfs -it raisin:0.1 bash
 
-	out/poireau ../test/02.noinclude.cpp --
+	out/raisin ../test/02.noinclude.cpp --
 ```
 
 ## Credits
