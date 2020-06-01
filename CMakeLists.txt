@@ -2,7 +2,7 @@
 
 cmake_minimum_required( VERSION 3.11 )
 
-project( Poireau
+project( Raisin
 	LANGUAGES CXX
 	VERSION 0.0.0
 	DESCRIPTION "Produce CFG from a C++ source code"
