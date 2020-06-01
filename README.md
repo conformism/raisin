@@ -1,8 +1,8 @@
 # Raisin
 
-![grape](./grape.svg)
+<img src="./grape.svg" width="15%" title="Grape">
 
-Control flow graph
+Code properties ~~grape~~ graph.
 
 from [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-clang)
 
