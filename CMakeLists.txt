@@ -21,6 +21,10 @@ message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
 set( POIREAU_SOURCES
 	"${CMAKE_SOURCE_DIR}/src/main.cpp"
+	"${CMAKE_SOURCE_DIR}/src/ast_processor.cpp"
+	"${CMAKE_SOURCE_DIR}/src/cfg_element.cpp"
+	"${CMAKE_SOURCE_DIR}/src/cfg_block.cpp"
+	"${CMAKE_SOURCE_DIR}/src/cfg.cpp"
 	)
 
 add_executable( ${PROJECT_NAME} ${POIREAU_SOURCES} )
