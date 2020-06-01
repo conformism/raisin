@@ -10,6 +10,18 @@ int main(void) {
 		c--;
 		}
 
+	b+=2;
+	{
+		int j=0;
+		j=b+c;
+	}
+
+	{
+		b=1;
+	}
+
+	b=1;
+
 	while(b>c) {
 		c++;
 		}
