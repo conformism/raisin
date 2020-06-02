@@ -1,14 +1,17 @@
 ///*****************************************************************************
-/// @file
-/// @copyright
-/// @author
-/// @author
+/// @file      main.cpp
+/// @copyright GPL-3.0-or-later
+/// @author    Thomas Lepoix <thomas.lepoix@protonmail.ch>
+/// @author    Dauliac
 ///*****************************************************************************
 
+#include "disable_warnings.hpp"
+DISABLE_WARNINGS
 #include <clang/Tooling/Tooling.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 
 #include "ast_processor.hpp"
+REENABLE_WARNINGS
 
 using namespace clang::tooling;
 

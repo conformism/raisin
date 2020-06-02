@@ -4,7 +4,10 @@
 #include <memory>
 #include <string>
 
+#include "disable_warnings.hpp"
+DISABLE_WARNINGS
 #include <clang/Analysis/CFG.h>
+REENABLE_WARNINGS
 
 //******************************************************************************
 class CfgElement {

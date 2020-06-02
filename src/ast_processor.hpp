@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "disable_warnings.hpp"
+DISABLE_WARNINGS
 #include <clang/AST/AST.h>
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
@@ -10,6 +12,7 @@
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/FrontendActions.h>
 #include <clang/Rewrite/Core/Rewriter.h>
+REENABLE_WARNINGS
 
 // By implementing RecursiveASTVisitor, we can specify which AST nodes
 // we're interested in by overriding relevant methods.

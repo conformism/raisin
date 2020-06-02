@@ -1,6 +1,9 @@
 #include <vector>
 
+#include "disable_warnings.hpp"
+DISABLE_WARNINGS
 #include <clang/AST/Stmt.h>
+REENABLE_WARNINGS
 
 #include "element.hpp"
 

@@ -1,4 +1,7 @@
+#include "disable_warnings.hpp"
+DISABLE_WARNINGS
 #include <clang/Lex/Lexer.h>
+REENABLE_WARNINGS
 
 #include "cfg.hpp"
 
