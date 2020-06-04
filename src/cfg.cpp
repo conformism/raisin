@@ -7,6 +7,7 @@ REENABLE_WARNINGS
 
 using namespace std;
 using namespace clang;
+using namespace cfg;
 
 //******************************************************************************
 Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
@@ -18,7 +19,7 @@ Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
 		bool newblock = false;
 //		blocks.push_back(shared_ptr<CfgBlock>(new CfgBlock(*block_clang, context)));
 //		shared_ptr<CfgBlock>& block = blocks.back();
-		shared_ptr<CfgBlock> block;
+		shared_ptr<Block> block;
 
 		for (CFGElement element_clang : block_clang->Elements) {
 
@@ -48,11 +49,11 @@ Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
 					continue;
 
 				if (!newblock) {
-					blocks.push_back(shared_ptr<CfgBlock>(new CfgBlock(*block_clang, context)));
+					blocks.push_back(shared_ptr<Block>(new Block(*block_clang, context)));
 					block = blocks.back();
 					newblock = true;
 				}
-				block->append_element(element_clang, CfgElement::Kind::STATEMENT);
+				block->append_element(element_clang, Element::Kind::STATEMENT);
 				break;
 			}
 		}
@@ -61,9 +62,9 @@ Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
 
 	}
 
-	for (shared_ptr<CfgBlock> block : blocks) {
+	for (shared_ptr<Block> block : blocks) {
 		llvm::errs() << "block\n";
-		for (shared_ptr<CfgElement> element : block->elements) {
+		for (shared_ptr<Element> element : block->elements) {
 			llvm::errs() << "\telement\n";
 			llvm::errs() << "\t" << element->get_text() << "\n";
 		}

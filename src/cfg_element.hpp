@@ -10,7 +10,8 @@ DISABLE_WARNINGS
 REENABLE_WARNINGS
 
 //******************************************************************************
-class CfgElement {
+namespace cfg {
+class Element {
 private:
 	clang::ASTContext& context;
 
@@ -24,8 +25,9 @@ public:
 
 	std::shared_ptr<clang::CFGElement> element_clang;
 
-	CfgElement(clang::CFGElement& _element_clang, Kind _kind, clang::ASTContext& _context);
+	Element(clang::CFGElement& _element_clang, Kind _kind, clang::ASTContext& _context);
 	std::string get_text(void);
 };
+} // namesapce cfg
 
 #endif // CFG_ELEMENT_HPP

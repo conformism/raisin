@@ -13,6 +13,7 @@ REENABLE_WARNINGS
 #include "ast_processor.hpp"
 
 using namespace clang;
+using namespace cfg;
 
 //******************************************************************************
 ast_visitor::ast_visitor(ASTContext& c, Rewriter& r)
@@ -90,7 +91,7 @@ bool ast_visitor::VisitFunctionDecl(FunctionDecl* f) {
 		// Export dot files, works with clang built in debug mode only
 		// cfg_clang->viewCFG(LangOptions());
 
-		Cfg cfg(cfg_clang, context); 
+		Cfg cfg(cfg_clang, context);
 
 	}
 	return true;

@@ -12,17 +12,32 @@ REENABLE_WARNINGS
 #include "cfg_element.hpp"
 
 //******************************************************************************
-class CfgBlock {
+namespace cfg {
+class Block {
 private:
 	clang::ASTContext& context;
 
 public:
 	std::shared_ptr<clang::CFGBlock> block_clang;
-	std::vector<std::shared_ptr<CfgElement>> elements;
+	std::vector<std::shared_ptr<Block>> precedent;
+	std::vector<std::shared_ptr<Block>> successors;
+	std::vector<std::shared_ptr<Element>> elements;
 
-	CfgBlock(clang::CFGBlock& _block_clang, clang::ASTContext& _context);
+	enum Kind {
+		STATEMENT,
+		LOOP,
+		CONDITION,
+		SWITCH
+	} kind;
+	bool is_entry;
+	bool is_exit;
 
-	void append_element(clang::CFGElement element_clang, CfgElement::Kind kind);
+	Block(clang::CFGBlock& _block_clang, clang::ASTContext& _context);
+
+	void append_successor(std::shared_ptr<Block>);
+	void append_precedent(std::shared_ptr<Block>);
+	void append_element(clang::CFGElement element_clang, Element::Kind kind);
+
 };
-
+} //namespace cfg
 #endif // CFG_BLOCK_HPP

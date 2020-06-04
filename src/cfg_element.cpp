@@ -7,16 +7,17 @@ REENABLE_WARNINGS
 
 using namespace std;
 using namespace clang;
+using namespace cfg;
 
 //******************************************************************************
-CfgElement::CfgElement(CFGElement& _element_clang, Kind _kind, ASTContext& _context)
+Element::Element(CFGElement& _element_clang, Kind _kind, ASTContext& _context)
 : element_clang(make_shared<CFGElement>(_element_clang))
 , kind(_kind)
 , context(_context)
 {}
 
 //******************************************************************************
-string CfgElement::get_text(void) {
+string Element::get_text(void) {
 	switch (kind) {
 	case STATEMENT: {
 		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();
