@@ -21,6 +21,11 @@ RUN apt update && \
         clang-${LLVM_VERSION} \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt update && \
+    apt install -y \
+        texlive-xetex \
+        pdf2svg
+
 CMD cmake \
         -DCMAKE_BUILD_TYPE=Debug \
         -DClang_DIR="/usr/lib/llvm-${LLVM_VERSION}/lib/cmake/clang" \

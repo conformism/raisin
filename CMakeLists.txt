@@ -8,6 +8,10 @@ project( Raisin
 	DESCRIPTION "Produce CFG from a C++ source code"
 	)
 
+list(APPEND CMAKE_MODULE_PATH
+	"${CMAKE_SOURCE_DIR}/cmake"
+	)
+
 if( NOT CMAKE_BUILD_TYPE )
 	set( CMAKE_BUILD_TYPE "Release" )
 endif()
@@ -85,4 +89,6 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "raisin"
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out"
 	)
+
+add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
 

@@ -1,6 +1,6 @@
-# Raisin
+<img src="./icon/raisin.svg" align="right" width="15%" title="Raisin">
 
-<img src="./grape.svg" width="15%" title="Grape">
+# Raisin
 
 Control flow ~~grape~~ graph.
 
@@ -24,6 +24,3 @@ docker run -v $PWD:/disks/ramfs -it raisin:0.1 bash
 
 	out/raisin ../test/02.noinclude.cpp --
 ```
-
-## Credits
-icon: <div>Icons made by <a href="https://www.flaticon.com/authors/flat-icons" title="Flat Icons">Flat Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
