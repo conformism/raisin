@@ -20,10 +20,9 @@ REENABLE_WARNINGS
 class ast_visitor : public clang::RecursiveASTVisitor<ast_visitor> {
 private:
 	clang::ASTContext& context;
-	clang::Rewriter& rewriter;
 
 public:
-	ast_visitor(clang::ASTContext& c, clang::Rewriter& r);
+	ast_visitor(clang::ASTContext& c);
 
 	bool VisitStmt(clang::Stmt* s);
 	bool VisitForStmt(clang::ForStmt* f);
@@ -38,7 +37,7 @@ private:
 	ast_visitor visitor;
 
 public:
-	ast_consumer(clang::ASTContext& c, clang::Rewriter& r);
+	ast_consumer(clang::ASTContext& c);
 
 	// Override the method that gets called for each parsed top-level
 	// declaration.
@@ -48,9 +47,6 @@ public:
 // For each source file provided to the tool, a new FrontendAction is created.
 //******************************************************************************
 class ast_processor : public clang::ASTFrontendAction {
-private:
-	clang::Rewriter rewriter;
-
 public:
 	ast_processor() = default;
 

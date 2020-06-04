@@ -16,9 +16,8 @@ using namespace clang;
 using namespace cfg;
 
 //******************************************************************************
-ast_visitor::ast_visitor(ASTContext& c, Rewriter& r)
+ast_visitor::ast_visitor(ASTContext& c)
 : context(c)
-, rewriter(r)
 {}
 
 //******************************************************************************
@@ -98,8 +97,8 @@ bool ast_visitor::VisitFunctionDecl(FunctionDecl* f) {
 }
 
 //******************************************************************************
-ast_consumer::ast_consumer(ASTContext& c, Rewriter& r)
-: visitor(c, r)
+ast_consumer::ast_consumer(ASTContext& c)
+: visitor(c)
 {}
 
 //******************************************************************************
@@ -114,6 +113,5 @@ bool ast_consumer::HandleTopLevelDecl(DeclGroupRef dr) {
 
 //******************************************************************************
 std::unique_ptr<ASTConsumer> ast_processor::CreateASTConsumer(CompilerInstance& ci, StringRef file) {
-	rewriter.setSourceMgr(ci.getSourceManager(), ci.getLangOpts());
-	return std::make_unique<ast_consumer>(ci.getASTContext(), rewriter);
+	return std::make_unique<ast_consumer>(ci.getASTContext());
 }
