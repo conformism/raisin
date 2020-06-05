@@ -9,8 +9,9 @@ DISABLE_WARNINGS
 #include <clang/Analysis/CFG.h>
 REENABLE_WARNINGS
 
-//******************************************************************************
 namespace cfg {
+
+//******************************************************************************
 class Element {
 private:
 	clang::ASTContext& context;
@@ -28,6 +29,7 @@ public:
 	Element(clang::CFGElement& _element_clang, Kind _kind, clang::ASTContext& _context);
 	std::string get_text(void);
 };
+
 } // namesapce cfg
 
 #endif // CFG_ELEMENT_HPP

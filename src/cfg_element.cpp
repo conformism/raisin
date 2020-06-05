@@ -7,7 +7,8 @@ REENABLE_WARNINGS
 
 using namespace std;
 using namespace clang;
-using namespace cfg;
+
+namespace cfg {
 
 //******************************************************************************
 Element::Element(CFGElement& _element_clang, Kind _kind, ASTContext& _context)
@@ -71,3 +72,5 @@ string Element::get_text(void) {
 		break;
 	}
 }
+
+} // namespace cfg

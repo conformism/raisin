@@ -7,7 +7,8 @@ REENABLE_WARNINGS
 
 using namespace std;
 using namespace clang;
-using namespace cfg;
+
+namespace cfg {
 
 //******************************************************************************
 Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
@@ -70,3 +71,5 @@ Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
 		}
 	}
 }
+
+} // namespace cfg

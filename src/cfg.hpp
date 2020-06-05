@@ -11,8 +11,9 @@ REENABLE_WARNINGS
 
 #include "cfg_block.hpp"
 
-//******************************************************************************
 namespace cfg {
+
+//******************************************************************************
 class Cfg {
 private:
 	clang::ASTContext& context;
@@ -23,6 +24,7 @@ public:
 
 	Cfg(std::unique_ptr<clang::CFG>& _cfg_clang, clang::ASTContext& _context);
 };
+
 } // namespace cfg
 
 #endif // CFG_HPP

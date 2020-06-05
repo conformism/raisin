@@ -8,7 +8,7 @@ project( Raisin
 	DESCRIPTION "Produce CFG from a C++ source code"
 	)
 
-list(APPEND CMAKE_MODULE_PATH
+list( APPEND CMAKE_MODULE_PATH
 	"${CMAKE_SOURCE_DIR}/cmake"
 	)
 
@@ -58,30 +58,30 @@ target_include_directories( ${PROJECT_NAME}
 	)
 
 target_link_libraries( ${PROJECT_NAME}
-	-ldl
-	-ltinfo
-	-lpthread
-	clang
-	clangAST
-	clangAnalysis
-	clangBasic
-	clangDriver
-	clangEdit
-	clangIndex
-	clangFrontend
-	clangFrontendTool
-	clangLex
-	clangParse
-	clangSema
-	clangEdit
-	clangASTMatchers
-	clangRewrite
-	clangRewriteFrontend
-	clangStaticAnalyzerFrontend
-	clangStaticAnalyzerCheckers
-	clangStaticAnalyzerCore
-	clangSerialization
-	clangToolingCore
+#	-ldl
+#	-ltinfo
+#	-lpthread
+#	clang
+#	clangAST
+#	clangAnalysis
+#	clangBasic
+#	clangDriver
+#	clangEdit
+#	clangIndex
+#	clangFrontend
+#	clangFrontendTool
+#	clangLex
+#	clangParse
+#	clangSema
+#	clangEdit
+#	clangASTMatchers
+#	clangRewrite
+#	clangRewriteFrontend
+#	clangStaticAnalyzerFrontend
+#	clangStaticAnalyzerCheckers
+#	clangStaticAnalyzerCore
+#	clangSerialization
+#	clangToolingCore
 	clangTooling
 	)
 
@@ -91,4 +91,3 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 	)
 
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
-

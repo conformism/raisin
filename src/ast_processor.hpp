@@ -11,7 +11,6 @@ DISABLE_WARNINGS
 #include <clang/Frontend/ASTConsumers.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/FrontendActions.h>
-#include <clang/Rewrite/Core/Rewriter.h>
 REENABLE_WARNINGS
 
 // By implementing RecursiveASTVisitor, we can specify which AST nodes
