@@ -6,12 +6,15 @@
 
 #include "disable_warnings.hpp"
 DISABLE_WARNINGS
-#include <clang/Analysis/CFG.h>
+#include <clang/AST/AST.h>
 REENABLE_WARNINGS
 
 #include "cfg_element.hpp"
+#include "cfg_scope.hpp"
 
 namespace cfg {
+
+class Scope;
 
 //******************************************************************************
 class Block {
@@ -19,10 +22,10 @@ private:
 	clang::ASTContext& context;
 
 public:
-	std::shared_ptr<clang::CFGBlock> block_clang;
-	std::vector<std::shared_ptr<Block>> precedents;
-	std::vector<std::shared_ptr<Block>> successors;
-	std::vector<std::shared_ptr<Element>> elements;
+	Scope* scope;
+	std::vector<Block*> precedents;
+	std::vector<Block*> successors;
+	std::vector<std::unique_ptr<Element>> elements;
 
 	enum Kind {
 		STATEMENT,
@@ -33,11 +36,11 @@ public:
 	bool is_entry;
 	bool is_exit;
 
-	Block(clang::CFGBlock& _block_clang, clang::ASTContext& _context);
+	Block(clang::ASTContext& _context);
 
-	void append_successor(std::shared_ptr<Block> block);
-	void append_precedent(std::shared_ptr<Block> block);
-	void append_element(clang::CFGElement element_clang, Element::Kind kind);
+	void append_successor(Block* block);
+	void append_precedent(Block* block);
+	void append_element(clang::Stmt const* stmt);
 };
 
 } // namespace cfg

@@ -28,7 +28,9 @@ set( POIREAU_SOURCES
 	"${CMAKE_SOURCE_DIR}/src/ast_processor.cpp"
 	"${CMAKE_SOURCE_DIR}/src/cfg_element.cpp"
 	"${CMAKE_SOURCE_DIR}/src/cfg_block.cpp"
+	"${CMAKE_SOURCE_DIR}/src/cfg_scope.cpp"
 	"${CMAKE_SOURCE_DIR}/src/cfg.cpp"
+	"${CMAKE_SOURCE_DIR}/src/cfg_builder.cpp"
 	)
 
 add_executable( ${PROJECT_NAME} ${POIREAU_SOURCES} )

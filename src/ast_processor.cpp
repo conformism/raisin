@@ -9,11 +9,11 @@ DISABLE_WARNINGS
 #include <llvm/Support/raw_ostream.h>
 REENABLE_WARNINGS
 
-#include "cfg.hpp"
+#include "cfg_builder.hpp"
 #include "ast_processor.hpp"
 
 using namespace clang;
-using namespace cfg;
+//using namespace cfg;
 
 //******************************************************************************
 ast_visitor::ast_visitor(ASTContext& c)
@@ -21,12 +21,7 @@ ast_visitor::ast_visitor(ASTContext& c)
 {}
 
 //******************************************************************************
-bool ast_visitor::VisitStmt(Stmt* s) {
-	return true;
-}
-
-//******************************************************************************
-bool ast_visitor::VisitForStmt(ForStmt* f) {
+/*bool ast_visitor::VisitForStmt(ForStmt* f) {
 /*	if (context.getSourceManager().isInSystemHeader(f->getLParenLoc())
 	||  context.getSourceManager().isInSystemHeader(f->getRParenLoc()))
 		return true;
@@ -46,9 +41,9 @@ bool ast_visitor::VisitForStmt(ForStmt* f) {
 	if (!Invalid)
 		llvm::errs() << Source;
 	llvm::errs() << "\n";
-*/
+*\/
 	return true;
-}
+}*/
 
 //******************************************************************************
 bool ast_visitor::VisitFunctionDecl(FunctionDecl* f) {
@@ -90,7 +85,8 @@ bool ast_visitor::VisitFunctionDecl(FunctionDecl* f) {
 		// Export dot files, works with clang built in debug mode only
 		// cfg_clang->viewCFG(LangOptions());
 
-		Cfg cfg(cfg_clang, context);
+//		Cfg cfg(cfg_clang, context);
+		std::unique_ptr<cfg::Cfg> cfg = cfg::build_cfg(funcBody);
 
 	}
 	return true;

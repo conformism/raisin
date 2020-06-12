@@ -6,7 +6,7 @@
 
 #include "disable_warnings.hpp"
 DISABLE_WARNINGS
-#include <clang/Analysis/CFG.h>
+#include <clang/AST/AST.h>
 REENABLE_WARNINGS
 
 namespace cfg {
@@ -15,18 +15,11 @@ namespace cfg {
 class Element {
 private:
 	clang::ASTContext& context;
+	clang::Stmt const* stmt;
 
 public:
-	enum Kind {
-		STATEMENT,
-		LOOP,
-		CONDITION,
-		SWITCH
-	} kind;
 
-	std::shared_ptr<clang::CFGElement> element_clang;
-
-	Element(clang::CFGElement& _element_clang, Kind _kind, clang::ASTContext& _context);
+	Element(clang::ASTContext& _context, clang::Stmt const* _stmt);
 	std::string get_text(void);
 };
 

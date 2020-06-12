@@ -23,8 +23,7 @@ private:
 public:
 	ast_visitor(clang::ASTContext& c);
 
-	bool VisitStmt(clang::Stmt* s);
-	bool VisitForStmt(clang::ForStmt* f);
+//	bool VisitForStmt(clang::ForStmt* f);
 	bool VisitFunctionDecl(clang::FunctionDecl* f);
 };
 

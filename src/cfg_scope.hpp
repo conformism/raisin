@@ -6,12 +6,14 @@
 
 #include "disable_warnings.hpp"
 DISABLE_WARNINGS
-#include <clang/Analysis/CFG.h>
+#include <clang/AST/AST.h>
 REENABLE_WARNINGS
 
 #include "cfg_block.hpp"
 
 namespace cfg {
+
+class Block;
 
 //******************************************************************************
 class Scope {
@@ -19,9 +21,9 @@ private:
 	clang::ASTContext& context;
 
 public:
-	std::vector<std::shared_ptr<CfgBlock>> blocks;
-	std::vector<std::shared_ptr<CfgScope>> childs;
-	shared_ptr<CfgScope> parent;
+	std::vector<Block*> blocks;
+	std::vector<Scope*> childs;
+	Scope* parent;
 
 	Scope(clang::ASTContext& _context);
 };

@@ -11,17 +11,16 @@ using namespace clang;
 namespace cfg {
 
 //******************************************************************************
-Element::Element(CFGElement& _element_clang, Kind _kind, ASTContext& _context)
-: element_clang(make_shared<CFGElement>(_element_clang))
-, kind(_kind)
-, context(_context)
+Element::Element(ASTContext& _context, Stmt const* _stmt)
+: context(_context)
+, stmt(_stmt)
 {}
 
 //******************************************************************************
 string Element::get_text(void) {
-	switch (kind) {
-	case STATEMENT: {
-		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();
+//	switch (kind) {
+//	case STATEMENT: {
+//		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();
 		if (stmt == nullptr)
 			return "";
 
@@ -33,12 +32,12 @@ string Element::get_text(void) {
 			return "";
 
 		return string(src);
-		break;
-	}
-	case LOOP: {
-		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();
-		if (stmt == nullptr)
-			return "";
+//		break;
+//	}
+//	case LOOP: {
+//		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();
+//		if (stmt == nullptr)
+//			return "";
 
 		if (stmt->getStmtClass() == Stmt::WhileStmtClass) {
 			return "WHILE";
@@ -56,21 +55,21 @@ string Element::get_text(void) {
 
 			return string(src);
 		}
-		break;
-	}
-	case CONDITION: {
-		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();
-		if (stmt == nullptr)
-			return "";
+//		break;
+//	}
+//	case CONDITION: {
+//		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();
+//		if (stmt == nullptr)
+//			return "";
 
 		if (stmt->getStmtClass() == Stmt::IfStmtClass) {
 			return "IF";
 		}
-		break;
-	}
-	case SWITCH:
-		break;
-	}
+//		break;
+//	}
+//	case SWITCH:
+//		break;
+//	}
 }
 
 } // namespace cfg

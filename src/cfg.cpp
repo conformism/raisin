@@ -10,6 +10,7 @@ using namespace clang;
 
 namespace cfg {
 
+/*
 //******************************************************************************
 Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
 : cfg_clang(_cfg_clang)
@@ -37,7 +38,7 @@ Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
 //				             << block_clang->getTerminatorCondition(false)
 				             << "\n";
 			}
-*/
+*\/
 			// Store only relevant elements
 			switch (element_clang.getKind()) {
 			case CFGElement::Kind::Statement:
@@ -71,5 +72,12 @@ Cfg::Cfg(unique_ptr<CFG>& _cfg_clang, ASTContext& _context)
 		}
 	}
 }
+*/
+
+//******************************************************************************
+Cfg::Cfg(ASTContext& _context, Stmt const* _stmt)
+: context(_context)
+, stmt(_stmt)
+{}
 
 } // namespace cfg
