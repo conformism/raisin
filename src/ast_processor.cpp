@@ -86,7 +86,7 @@ bool ast_visitor::VisitFunctionDecl(FunctionDecl* f) {
 		// cfg_clang->viewCFG(LangOptions());
 
 //		Cfg cfg(cfg_clang, context);
-		std::unique_ptr<cfg::Cfg> cfg = cfg::build_cfg(funcBody);
+		std::unique_ptr<cfg::Cfg> cfg = cfg::build_cfg(context, funcBody);
 
 	}
 	return true;

@@ -24,7 +24,7 @@ void Block::append_precedent(Block* block) {
 
 //******************************************************************************
 void Block::append_element(clang::Stmt const* stmt) {
-	elements.push_back(make_unique<Element>(Element(context, stmt)));
+	elements.push_back(make_unique<Element>(context, stmt));
 	llvm::errs() << elements.back()->get_text() << "\n";
 }
 
