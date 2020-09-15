@@ -2,9 +2,11 @@
 
 # Raisin
 
-Control flow ~~grape~~ graph.
+Raisin aims to produce aesthetic source level [control flow ~~grapes~~ graphs (CFG)](https://en.wikipedia.org/wiki/Control-flow_graph) from C++ code, just like some proprietary tools such as [SciTools Understand](https://scitools.com/feature/control-flow-graphs/) do.
 
-from [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-clang)
+Early stage project.
+
+Forked from the [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-clang) example.
 
 ## Dev
 
