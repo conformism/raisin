@@ -1,5 +1,4 @@
-#ifndef CFG_ELEMENT_HPP
-#define CFG_ELEMENT_HPP
+#pragma once
 
 #include <memory>
 #include <string>
@@ -13,16 +12,12 @@ namespace cfg {
 
 //******************************************************************************
 class Element {
-private:
+protected:
 	clang::ASTContext& context;
 	clang::Stmt const* stmt;
 
 public:
-
 	Element(clang::ASTContext& _context, clang::Stmt const* _stmt);
-	std::string get_text(void);
 };
 
 } // namesapce cfg
-
-#endif // CFG_ELEMENT_HPP

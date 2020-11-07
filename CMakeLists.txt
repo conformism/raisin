@@ -23,17 +23,22 @@ message( STATUS "LLVM version: ${LLVM_PACKAGE_VERSION}" )
 message( STATUS "Using ClangConfig.cmake in: ${Clang_DIR}" )
 message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
-set( POIREAU_SOURCES
+set( SOURCES
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_element.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_block.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_scope.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_cfg.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/lang/cpp/ast_processor.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/lang/cpp/cfg_builder.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/services/freeze.cpp"
 	"${CMAKE_SOURCE_DIR}/src/main.cpp"
-	"${CMAKE_SOURCE_DIR}/src/ast_processor.cpp"
-	"${CMAKE_SOURCE_DIR}/src/cfg_element.cpp"
-	"${CMAKE_SOURCE_DIR}/src/cfg_block.cpp"
-	"${CMAKE_SOURCE_DIR}/src/cfg_scope.cpp"
-	"${CMAKE_SOURCE_DIR}/src/cfg.cpp"
-	"${CMAKE_SOURCE_DIR}/src/cfg_builder.cpp"
 	)
 
-add_executable( ${PROJECT_NAME} ${POIREAU_SOURCES} )
+add_executable( ${PROJECT_NAME} ${SOURCES} )
 
 target_compile_definitions( ${PROJECT_NAME}
 	PRIVATE

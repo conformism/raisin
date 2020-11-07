@@ -1,5 +1,4 @@
-#ifndef CFG_SCOPE_HPP
-#define CFG_SCOPE_HPP
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -9,7 +8,7 @@ DISABLE_WARNINGS
 #include <clang/AST/AST.h>
 REENABLE_WARNINGS
 
-#include "cfg_block.hpp"
+#include "domain/cfg/block.hpp"
 
 namespace cfg {
 
@@ -17,7 +16,7 @@ class Block;
 
 //******************************************************************************
 class Scope {
-private:
+protected:
 	clang::ASTContext& context;
 
 public:
@@ -29,5 +28,3 @@ public:
 };
 
 } // namespace cfg
-
-#endif // CFG_SCOPE_HPP

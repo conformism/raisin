@@ -3,7 +3,7 @@ DISABLE_WARNINGS
 #include <clang/Lex/Lexer.h>
 REENABLE_WARNINGS
 
-#include "cfg_element.hpp"
+#include "domain/factories/cfg/wip_element.hpp"
 
 using namespace std;
 using namespace clang;
@@ -11,13 +11,12 @@ using namespace clang;
 namespace cfg {
 
 //******************************************************************************
-Element::Element(ASTContext& _context, Stmt const* _stmt)
-: context(_context)
-, stmt(_stmt)
+WipElement::WipElement(ASTContext& _context, Stmt const* _stmt)
+: Element(_context, _stmt)
 {}
 
 //******************************************************************************
-string Element::get_text(void) {
+string WipElement::get_text(void) {
 //	switch (kind) {
 //	case STATEMENT: {
 //		Stmt const* stmt = element_clang->getAs<CFGStmt>()->getStmt();

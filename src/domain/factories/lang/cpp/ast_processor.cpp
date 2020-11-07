@@ -9,8 +9,8 @@ DISABLE_WARNINGS
 #include <llvm/Support/raw_ostream.h>
 REENABLE_WARNINGS
 
-#include "cfg_builder.hpp"
-#include "ast_processor.hpp"
+#include "domain/factories/lang/cpp/cfg_builder.hpp"
+#include "domain/factories/lang/cpp/ast_processor.hpp"
 
 using namespace clang;
 //using namespace cfg;

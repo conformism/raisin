@@ -1,5 +1,4 @@
-#ifndef AST_PROCESSOR_HPP
-#define AST_PROCESSOR_HPP
+#pragma once
 
 #include <memory>
 
@@ -50,5 +49,3 @@ public:
 
 	std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(clang::CompilerInstance& ci, clang::StringRef file) override;
 };
-
-#endif // AST_PROCESSOR_HPP

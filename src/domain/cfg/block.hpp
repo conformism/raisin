@@ -1,5 +1,4 @@
-#ifndef CFG_BLOCK_HPP
-#define CFG_BLOCK_HPP
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -9,8 +8,8 @@ DISABLE_WARNINGS
 #include <clang/AST/AST.h>
 REENABLE_WARNINGS
 
-#include "cfg_element.hpp"
-#include "cfg_scope.hpp"
+#include "domain/cfg/element.hpp"
+#include "domain/cfg/scope.hpp"
 
 namespace cfg {
 
@@ -18,7 +17,7 @@ class Scope;
 
 //******************************************************************************
 class Block {
-private:
+protected:
 	clang::ASTContext& context;
 
 public:
@@ -37,12 +36,6 @@ public:
 	bool is_exit;
 
 	Block(clang::ASTContext& _context);
-
-	void append_successor(Block* block);
-	void append_precedent(Block* block);
-	void append_element(clang::Stmt const* stmt);
 };
 
 } // namespace cfg
-
-#endif // CFG_BLOCK_HPP

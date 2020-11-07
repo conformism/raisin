@@ -1,4 +1,4 @@
-#include "cfg_scope.hpp"
+#include "domain/cfg/scope.hpp"
 
 namespace cfg {
 

@@ -1,5 +1,4 @@
-#ifndef CFG_BUILDER_HPP
-#define CFG_BUILDER_HPP
+#pragma once
 
 #include <memory>
 
@@ -8,7 +7,7 @@ DISABLE_WARNINGS
 #include <clang/AST/AST.h>
 REENABLE_WARNINGS
 
-#include "cfg.hpp"
+#include "domain/factories/cfg/wip_cfg.hpp"
 
 namespace cfg {
 
@@ -36,5 +35,3 @@ private:
 };
 
 } // namespace cfg
-
-#endif // CFG_BUILDER_HPP
