@@ -3,8 +3,6 @@
 namespace cfg {
 
 //******************************************************************************
-Scope::Scope(clang::ASTContext& _context)
-: context(_context)
-{}
+//Scope::Scope() {}
 
 } // namespace cfg

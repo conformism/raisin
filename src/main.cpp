@@ -11,7 +11,7 @@ DISABLE_WARNINGS
 #include <clang/Tooling/CommonOptionsParser.h>
 REENABLE_WARNINGS
 
-#include "domain/factories/lang/cpp/ast_processor.hpp"
+#include "domain/factories/cpp/ast_processor.hpp"
 
 using namespace clang::tooling;
 

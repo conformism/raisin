@@ -9,8 +9,8 @@ DISABLE_WARNINGS
 #include <llvm/Support/raw_ostream.h>
 REENABLE_WARNINGS
 
-#include "domain/factories/lang/cpp/cfg_builder.hpp"
-#include "domain/factories/lang/cpp/ast_processor.hpp"
+#include "domain/factories/cpp/cfg_builder.hpp"
+#include "domain/factories/cpp/ast_processor.hpp"
 
 using namespace clang;
 //using namespace cfg;
@@ -19,31 +19,6 @@ using namespace clang;
 ast_visitor::ast_visitor(ASTContext& c)
 : context(c)
 {}
-
-//******************************************************************************
-/*bool ast_visitor::VisitForStmt(ForStmt* f) {
-/*	if (context.getSourceManager().isInSystemHeader(f->getLParenLoc())
-	||  context.getSourceManager().isInSystemHeader(f->getRParenLoc()))
-		return true;
-
-	llvm::errs() << "cond : ";
-	printExprAsWritten(llvm::errs(), f->getCond(), &context);
-	llvm::errs() << "\n";
-	llvm::errs() << "inc : ";
-	printExprAsWritten(llvm::errs(), f->getInc(), &context);
-	llvm::errs() << "\n";
-
-	llvm::errs() << "parenthesis : ";
-	bool Invalid = false;
-	StringRef Source = Lexer::getSourceText(
-		CharSourceRange::getTokenRange(SourceRange(f->getLParenLoc(), f->getRParenLoc())),
-		context.getSourceManager(), context.getLangOpts(), &Invalid);
-	if (!Invalid)
-		llvm::errs() << Source;
-	llvm::errs() << "\n";
-*\/
-	return true;
-}*/
 
 //******************************************************************************
 bool ast_visitor::VisitFunctionDecl(FunctionDecl* f) {
@@ -86,7 +61,7 @@ bool ast_visitor::VisitFunctionDecl(FunctionDecl* f) {
 		// cfg_clang->viewCFG(LangOptions());
 
 //		Cfg cfg(cfg_clang, context);
-		std::unique_ptr<cfg::Cfg> cfg = cfg::build_cfg(context, funcBody);
+		std::unique_ptr<cfg::Cfg const> cfg = cfg::build_cfg(context, funcBody);
 
 	}
 	return true;

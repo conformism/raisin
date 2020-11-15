@@ -28,13 +28,9 @@ set( SOURCES
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_element.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_block.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_scope.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/cfg/wip_cfg.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/lang/cpp/ast_processor.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/lang/cpp/cfg_builder.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/services/freeze.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/cpp/wip_element.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/cpp/cfg_builder.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/factories/cpp/ast_processor.cpp"
 	"${CMAKE_SOURCE_DIR}/src/main.cpp"
 	)
 

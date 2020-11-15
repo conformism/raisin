@@ -25,4 +25,12 @@ int main(void) {
 	while(b>c) {
 		c++;
 		}
+
+	if(b>0) {
+		c++;
+	} else if(b=0) {
+		c++;
+	} else {
+		c++;
+		}
 	}
