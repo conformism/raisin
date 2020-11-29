@@ -46,14 +46,16 @@ void func() {
 			break;
 	}
 
-	int funk(int b);
-	class E : private B {
-	private:
-		int a;
-		friend int funk(int b);
-	public:
-		E(int _a) : a(_a) {}
-	};
+	{
+		int funk(int b);
+		class E : private B {
+		private:
+			int a;
+			friend int funk(int b);
+		public:
+			E(int _a) : a(_a) {}
+		};
+	}
 
 label:
 
