@@ -3,19 +3,23 @@
 #include <memory>
 #include <vector>
 
-#include "domain/cfg/block.hpp"
-#include "domain/cfg/scope.hpp"
+#include "./icfg.hpp"
 
 namespace cfg {
 
-//******************************************************************************
-class Cfg {
+class Cfg: public ICfg {
 public:
-	Element* element;
-	std::vector<std::unique_ptr<Block>> blocks;
-	std::vector<std::unique_ptr<Scope>> scopes;
+	virtual IElement* get_element() const override;
+	virtual Blocks get_blocks() const override;
+	virtual IBlock* get_block_by_id(Uuid uuid) const override;
+	virtual Scopes get_scopes() const override;
+	virtual IScope* get_scope_by_id(Uuid uuid) const override;
+private:
+	IElement* const _element;
+	Blocks const _blocks;
+	Scopes const _scopes;
 
-	Cfg() = default;
+	Cfg(IElement* element, ICfg::Blocks blocks, ICfg::Scopes scopes);
 };
 
 } // namespace cfg
