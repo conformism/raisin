@@ -9,12 +9,12 @@ namespace cfg {
 
 class Element: public IElement {
 public:
-	Element(IElement::Value value, Cfg* cfg);
-	Cfg * get_cfg() override;
-	Value get_value() override;
+	Element(IElement::Value value, ICfg* cfg);
+	Value get_value();
+	ICfg* get_cfg();
 private:
 	IElement::Value const _value;
-	Cfg* const _cfg;
+	ICfg* const _cfg;
 };
 
 } // namesapce cfg
