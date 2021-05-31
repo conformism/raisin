@@ -23,6 +23,8 @@ message( STATUS "LLVM version: ${LLVM_PACKAGE_VERSION}" )
 message( STATUS "Using ClangConfig.cmake in: ${Clang_DIR}" )
 message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
+
 set( SOURCES
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
