@@ -93,3 +93,4 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 	)
 
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
+add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
