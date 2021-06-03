@@ -14,6 +14,8 @@ public:
 	auto get_block_by_id(Uuid uuid) const -> IBlock* override;
 	auto get_scope_by_id(Uuid uuid) const -> IScope* override;
 	class Builder;
+	// TODO(dauliac) consider using struct to store object properties
+	// and easily pass it from dump/builder/factory.
 private:
 	const Uuid uuid;
 	// TODO(dauliac): not used yet
@@ -32,9 +34,9 @@ public:
 	auto build() const -> ICfg* override;
 private:
 	core::Uuid uuid;
-	Blocks _blocks;
-	Scopes _scopes;
-	Cfg _builded;
+	Blocks* _blocks;
+	Scopes* _scopes;
+	ICfg* _builded;
 };
 
 } // namespace cfg
