@@ -1,4 +1,5 @@
 #pragma once
+#include <variant>
 #include <string>
 #include <map>
 #include <memory>
@@ -11,10 +12,5 @@ using Aggregator = std::map<Uuid, std::shared_ptr<T>>;
 
 template<class T>
 using Compositor = std::map<Uuid, std::unique_ptr<T>>;
-template<typename T>
-struct Result {
-	int returnCode = 0;
-	T&& reference = nullptr; // TODO: check that `&&` shit: Rvalue/LValue
-};
 
-}
+}  // namespace core
