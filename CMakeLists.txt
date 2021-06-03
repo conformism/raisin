@@ -4,7 +4,7 @@ cmake_minimum_required( VERSION 3.11 )
 
 project( Raisin
 	LANGUAGES CXX
-	VERSION 0.0.0
+	VERSION 0.0.1
 	DESCRIPTION "Produce CFG from a C++ source code"
 	)
 
@@ -23,15 +23,14 @@ message( STATUS "LLVM version: ${LLVM_PACKAGE_VERSION}" )
 message( STATUS "Using ClangConfig.cmake in: ${Clang_DIR}" )
 message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
+
 set( SOURCES
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/cpp/wip_element.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/cpp/cfg_builder.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/factories/cpp/ast_processor.cpp"
-	"${CMAKE_SOURCE_DIR}/src/main.cpp"
+    "${CMAKE_SOURCE_DIR}/src/main.cpp"
 	)
 
 add_executable( ${PROJECT_NAME} ${SOURCES} )
@@ -49,7 +48,7 @@ target_compile_features( ${PROJECT_NAME}
 
 target_compile_options( ${PROJECT_NAME}
 	PRIVATE
-	$<$<CONFIG:Debug>:-Wall>
+	$<$<CONFIG:Debg>:-Wall>
 	$<$<CONFIG:Debug>:-Wextra>
 	)
 
@@ -85,8 +84,8 @@ target_link_libraries( ${PROJECT_NAME}
 #	clangStaticAnalyzerCore
 #	clangSerialization
 #	clangToolingCore
-	clangTooling
-	)
+#	clangTooling
+)
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "raisin"

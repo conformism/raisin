@@ -3,19 +3,37 @@
 #include <memory>
 #include <vector>
 
-#include "domain/cfg/block.hpp"
-#include "domain/cfg/scope.hpp"
+#include "./icfg.hpp"
 
 namespace cfg {
 
-//******************************************************************************
-class Cfg {
+class Cfg: public ICfg {
 public:
-	Element* element;
-	std::vector<std::unique_ptr<Block>> blocks;
-	std::vector<std::unique_ptr<Scope>> scopes;
-
-	Cfg() = default;
+	Cfg(IElement* element, ICfg::Blocks blocks, ICfg::Scopes scopes);
+	~Cfg();
+	IBlock* get_block_by_id(Uuid uuid) const override;
+	IScope* get_scope_by_id(Uuid uuid) const override;
+	class Builder;
+private:
+	// TODO: not used yet
+	IElement* const _element;
+	Blocks const _blocks;
+	Scopes const _scopes;
 };
+
+class Cfg::Builder: public ICfg::IBuilder {
+	public:
+		ICfg::IBuilder* set_uuid(core::Uuid uuid) override;
+		ICfg::IBuilder* add_block(IBlock block) override;
+		ICfg::IBuilder* add_scope(IScope scope) override;
+		ICfg::IBuilder* set_blocks(Blocks blocks) override;
+		ICfg::IBuilder* set_scopes(Scopes scopes) override;
+		ICfg* build() const override;
+	private:
+		core::Uuid uuid;
+		Blocks _blocks;
+		Scopes _scopes;
+		Cfg _builded;
+	};
 
 } // namespace cfg
