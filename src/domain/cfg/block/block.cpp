@@ -6,11 +6,11 @@ using namespace std;
 
 namespace cfg {
 
-IBlock::Uuid Block::get_uuid() const {
+auto Block::get_uuid() const -> IBlock::Uuid {
 	return _uuid;
 }
 
-std::string Block::get_text() const {
+auto Block::get_text() const -> std::string {
 	return _text;
 }
 
@@ -18,12 +18,12 @@ std::string Block::get_text() const {
 //     return _kind;
 // }
 
-IBlock::Successors Block::get_successors() const {
-	return _successors;
+auto Block::get_successors() const -> IBlock::Successors const& {
+	return *_successors;
 }
 
-IBlock::Precedents Block::get_precedents() const {
-	return _precedents;
+auto Block::get_precedents() const -> IBlock::Precedents const& {
+	return *_precedents;
 }
 
 } // namespace cfg

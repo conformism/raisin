@@ -43,7 +43,7 @@ target_compile_definitions( ${PROJECT_NAME}
 
 target_compile_features( ${PROJECT_NAME}
 	PRIVATE
-	cxx_std_11
+	cxx_std_17
 	)
 
 target_compile_options( ${PROJECT_NAME}
@@ -93,4 +93,4 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 	)
 
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
-add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
+# add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
