@@ -9,31 +9,34 @@ namespace cfg {
 
 class Cfg: public ICfg {
 public:
-	Cfg(IElement* element, ICfg::Blocks blocks, ICfg::Scopes scopes);
-	~Cfg();
-	IBlock* get_block_by_id(Uuid uuid) const override;
-	IScope* get_scope_by_id(Uuid uuid) const override;
+	Cfg(IElement*, ICfg::Blocks, ICfg::Scopes );
+	~Cfg() override;
+	auto get_block_by_id(Uuid uuid) const -> IBlock* override;
+	auto get_scope_by_id(Uuid uuid) const -> IScope* override;
 	class Builder;
+	// TODO(dauliac) consider using struct to store object properties
+	// and easily pass it from dump/builder/factory.
 private:
-	// TODO: not used yet
+	const Uuid uuid;
+	// TODO(dauliac): not used yet
 	IElement* const _element;
 	Blocks const _blocks;
 	Scopes const _scopes;
 };
 
 class Cfg::Builder: public ICfg::IBuilder {
-	public:
-		ICfg::IBuilder* set_uuid(core::Uuid uuid) override;
-		ICfg::IBuilder* add_block(IBlock block) override;
-		ICfg::IBuilder* add_scope(IScope scope) override;
-		ICfg::IBuilder* set_blocks(Blocks blocks) override;
-		ICfg::IBuilder* set_scopes(Scopes scopes) override;
-		ICfg* build() const override;
-	private:
-		core::Uuid uuid;
-		Blocks _blocks;
-		Scopes _scopes;
-		Cfg _builded;
-	};
+public:
+	auto set_uuid(core::Uuid uuid) -> ICfg::IBuilder* override;
+	auto add_block(IBlock block) -> ICfg::IBuilder* override;
+	auto add_scope(IScope scope) -> ICfg::IBuilder* override;
+	auto set_blocks(Blocks blocks) -> ICfg::IBuilder* override;
+	auto set_scopes(Scopes scopes) -> ICfg::IBuilder* override;
+	auto build() const -> ICfg* override;
+private:
+	core::Uuid uuid;
+	Blocks* _blocks;
+	Scopes* _scopes;
+	ICfg* _builded;
+};
 
 } // namespace cfg

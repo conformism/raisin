@@ -9,13 +9,18 @@ Cfg::Cfg(IElement* element, ICfg::Blocks blocks, ICfg::Scopes scopes)
 , _scopes(std::move(scopes))
 {}
 
-Cfg::~Cfg() {}
+Cfg::~Cfg() = default;
 
-IBlock* Cfg::get_block_by_id(Uuid uuid) const {
+auto Cfg::get_block_by_id(Uuid uuid) const -> IBlock* {
+	// core::guard::GuardResult const isValidUuidResult = core::guard::is_one_of(uuid, _blocks);
+	// if(isValidUuidResult.isLeft) {
+	//     return this->_blocks.at(uuid).get();
+	// }
+
 	return this->_blocks.at(uuid).get();
 }
 
-IScope* Cfg::get_scope_by_id(Uuid uuid) const {
+auto Cfg::get_scope_by_id(Uuid uuid) const -> IScope* {
 	return this->_scopes.at(uuid).get();
 }
 

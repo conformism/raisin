@@ -5,8 +5,6 @@
 
 #include "../../core/types.hpp"
 
-using namespace core;
-
 namespace cfg {
 
 class IBlock;
@@ -19,10 +17,10 @@ public:
 	using Childs = core::Aggregator<IScope>;
 
 	virtual ~IScope() = default;
-	virtual Uuid get_uuid() const = 0;
-	virtual Blocks get_blocks() const = 0;
-	virtual Childs get_childs() const = 0;
-	virtual Parent get_parent() const = 0;
+	virtual auto get_uuid() const -> Uuid = 0;
+	virtual auto get_blocks() const -> Blocks = 0;
+	virtual auto get_childs() const -> Childs = 0;
+	virtual auto get_parent() const -> Parent = 0;
 };
 
 } // namespace cfg
