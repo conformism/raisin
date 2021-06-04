@@ -1,6 +1,6 @@
 # cmake -DLLVM_DIR="/usr/lib/llvm-10/lib/cmake/llvm" -DClang_DIR="/usr/lib/llvm-10/lib/cmake/clang" ..
 
-cmake_minimum_required( VERSION 3.11 )
+cmake_minimum_required( VERSION 3.16 )
 
 project( Raisin
 	LANGUAGES CXX
@@ -17,6 +17,72 @@ if( NOT CMAKE_BUILD_TYPE )
 endif()
 message( STATUS "Build type: ${CMAKE_BUILD_TYPE}" )
 
+option( SONAR "The coverage target will produce SonarQube reports instead of console / HTML" OFF )
+
+if( CMAKE_BUILD_TYPE MATCHES Coverage )
+	if( CMAKE_CXX_COMPILER_ID MATCHES GNU )
+		find_program( GCOV NAMES gcov )
+		if( GCOV )
+			message( STATUS "Found gcov: ${GCOV}" )
+		else()
+			message( ERROR "Not found gcov: install it" )
+		endif()
+
+		if( SONAR )
+			find_program( GCOVR NAMES gcovr )
+			if( GCOVR )
+				message( STATUS "Found gcovr: ${GCOVR}" )
+			else()
+				message( ERROR "Not found gcovr: install it" )
+			endif()
+		else()
+			find_program( LCOV NAMES lcov )
+			if( LCOV )
+				message( STATUS "Found lcov: ${LCOV}" )
+			else()
+				message( ERROR "Not found lcov: install it" )
+			endif()
+
+			find_program( GENHTML NAMES genhtml )
+			if( GENHTML )
+				message( STATUS "Found genhtml: ${GENHTML}" )
+			else()
+				message( ERROR "Not found genhtml: install it" )
+			endif()
+		endif()
+
+	elseif( CMAKE_CXX_COMPILER_ID MATCHES Clang )
+
+		find_program( LLVM_COV NAMES llvm-cov )
+		if( LLVM_COV )
+			message( STATUS "Found llvm-cov: ${LLVM_COV}" )
+		else()
+			message( ERROR "Not found llvm-cov: install it" )
+		endif()
+
+		find_program( LLVM_PROFDATA NAMES llvm-profdata )
+		if( LLVM_PROFDATA )
+			message( STATUS "Found llvm-profdata: ${LLVM_PROFDATA}" )
+		else()
+			message( ERROR "Not found llvm-profdata: install it" )
+		endif()
+	endif()
+
+	find_package( Catch2 3.0.0 REQUIRED )
+	if( Catch2_FOUND )
+		message( STATUS "Found Catch2: ${Catch2_VERSION}" )
+	endif()
+
+else()
+
+	find_package( Catch2 3.0.0 QUIET )
+	if( Catch2_FOUND )
+		message( STATUS "Found Catch2: ${Catch2_VERSION}" )
+	else()
+		message( STATUS "Not found Catch2: unittest target disabled" )
+	endif()
+endif()
+
 find_package( Clang REQUIRED )
 
 message( STATUS "LLVM version: ${LLVM_PACKAGE_VERSION}" )
@@ -25,73 +91,6 @@ message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
-set( SOURCES
-	"${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-    "${CMAKE_SOURCE_DIR}/src/main.cpp"
-	)
-
-add_executable( ${PROJECT_NAME} ${SOURCES} )
-
-target_compile_definitions( ${PROJECT_NAME}
-	PRIVATE
-#	${LLVM_DEFINITIONS}
-#	${CLANG_DEFINITIONS}
-	)
-
-target_compile_features( ${PROJECT_NAME}
-	PRIVATE
-	cxx_std_17
-	)
-
-target_compile_options( ${PROJECT_NAME}
-	PRIVATE
-	$<$<CONFIG:Debg>:-Wall>
-	$<$<CONFIG:Debug>:-Wextra>
-	)
-
-target_include_directories( ${PROJECT_NAME}
-	PRIVATE
-	"${CMAKE_SOURCE_DIR}/src"
-#	${LLVM_INCLUDE_DIRS}
-	${CLANG_INCLUDE_DIRS}
-	)
-
-target_link_libraries( ${PROJECT_NAME}
-#	-ldl
-#	-ltinfo
-#	-lpthread
-#	clang
-#	clangAST
-#	clangAnalysis
-#	clangBasic
-#	clangDriver
-#	clangEdit
-#	clangIndex
-#	clangFrontend
-#	clangFrontendTool
-#	clangLex
-#	clangParse
-#	clangSema
-#	clangEdit
-#	clangASTMatchers
-#	clangRewrite
-#	clangRewriteFrontend
-#	clangStaticAnalyzerFrontend
-#	clangStaticAnalyzerCheckers
-#	clangStaticAnalyzerCore
-#	clangSerialization
-#	clangToolingCore
-#	clangTooling
-)
-
-set_target_properties( ${PROJECT_NAME} PROPERTIES
-	OUTPUT_NAME "raisin"
-	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out"
-	)
-
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
-# add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
+add_subdirectory( "${CMAKE_SOURCE_DIR}/src" )
+add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
