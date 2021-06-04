@@ -26,9 +26,23 @@ RUN apt update && \
         texlive-xetex \
         pdf2svg
 
+RUN apt update && \
+	apt install -y \
+		git \
+		lcov \
+		gcovr
+
+RUN ln -s /usr/bin/clang++-${LLVM_VERSION} /usr/bin/clang++ && \
+	ln -s /usr/bin/llvm-cov-${LLVM_VERSION} /usr/bin/llvm-cov && \
+	ln -s /usr/bin/llvm-profdata-${LLVM_VERSION} /usr/bin/llvm-profdata
+
+RUN git clone https://github.com/catchorg/Catch2.git \
+	&& cd Catch2 \
+	&& cmake -Bbuild -H. -DBUILD_TESTING=OFF \
+	&& cmake --build build/ --target install
+
 CMD cmake \
-        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_BUILD_TYPE=Coverage \
         -DClang_DIR="/usr/lib/llvm-${LLVM_VERSION}/lib/cmake/clang" \
         .. \
     && make
-

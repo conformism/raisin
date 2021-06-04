@@ -1,7 +1,9 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_all.hpp>
 
 #include <array>
 
+#include "domain/cfg/cfg.hpp"
+/*
 #include "domain/conflict_colinear_edges.hpp"
 #include "domain/conflict_edge_in_polygon.hpp"
 
@@ -815,3 +817,4 @@ SCENARIO("void Board::detect_non_conflicting_edges()", "[board]") {
 		}
 	}
 }
+*/
