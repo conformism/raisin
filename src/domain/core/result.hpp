@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 #include <variant>
 #include <optional>
@@ -79,21 +80,17 @@ namespace core::result {
 	template<class ValueType>
 	class ResultFactory {
 	public:
-		static auto createBasicDomainResultSuccess(ValueType* value) -> Result<ValueType*>  {
-			if(value != nullptr) {
-				return new result::BasicDomainResult<ValueType>(value);
-			}
-    		throw std::invalid_argument("Your result::Result object can't have nullptr value.");
+		[[nodiscard]]
+		static auto createBasicDomainResultSuccess(ValueType const& value) -> std::unique_ptr<Result<ValueType>> {
+			return std::make_unique<Result<ValueType>>(
+				new result::BasicDomainResult<ValueType>(value)
+			);
 		}
-		static auto createBasicDomainResultError(InvalidUseCaseTypes* error) -> Result<ValueType*> {
-			if(error != nullptr) {
-				return new result::BasicDomainResult<ValueType>(error);
-			}
-    		throw std::invalid_argument("Your result::Result can't have nullptr error.");
-		}
+		[[nodiscard]]
+		static auto createBasicDomainResultError(InvalidUseCaseTypes const* error) -> std::unique_ptr<Result<ValueType>> {
+		return std::make_unique<Result<ValueType>>(
+				new result::BasicDomainResult<ValueType>(error)
+		);
+	}
 	};
-	// template<class ValueType>
-	// auto error(InvalidUseCaseTypes error_type) const -> Result<class ValueType> {
-	// }
-
 }  // namespace core::result
