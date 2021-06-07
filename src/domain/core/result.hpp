@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <string>
+#include <utility>
 #include <variant>
 #include <optional>
 #include <stdexcept>
@@ -30,66 +31,66 @@ namespace core::result {
 		[[nodiscard]]
 		virtual auto is_success() const -> bool = 0;
 		[[nodiscard]]
-		virtual auto get_value() const -> std::optional<ValueType*> = 0;
+		virtual auto get_value() const -> const ValueType* = 0;
 		[[nodiscard]]
-		virtual auto get_error() const -> std::optional<InvalidUseCaseTypes*> = 0;
+		virtual auto get_error() const -> const InvalidUseCaseTypes* = 0;
 	};
 
 	template<class ValueType>
 	class BasicDomainResult: public Result<ValueType> {
 	public:
 		explicit BasicDomainResult(
-		  bool succeed,
-		  std::optional<InvalidUseCaseTypes*> error_type,
-		  std::optional<ValueType*> value
-		) :
-		  _succeed(succeed),
-		  _error_type(error_type),
-		  _value(value)
-		{};
-		explicit BasicDomainResult(
-		  std::optional<InvalidUseCaseTypes*> error_type
+		  InvalidUseCaseTypes const* error_type
 		) :
 		  _succeed(false),
 		  _error_type(error_type)
 		{};
 		explicit BasicDomainResult(
-		  std::optional<ValueType*> value
+		  ValueType const* value
 		) :
 		  _succeed(true),
 		  _value(value) {};
 
 		[[nodiscard]]
-		auto is_success() const -> bool {
+		auto is_success() const -> bool override {
 			return this->_succeed;
 		}
 		[[nodiscard]]
-		auto get_value() const -> std::optional<ValueType*> {
+		auto get_value() const -> const ValueType* override {
+			if(!this->is_success()) {
+				throw std::logic_error("Can't get value on error Result. Please use is_success() methods before.");
+			}
 			return this->_value;
 		}
 		[[nodiscard]]
-		auto get_error() const -> std::optional<InvalidUseCaseTypes*> {
+		auto get_error() const -> const InvalidUseCaseTypes* override {
+		// auto get_error() const -> InvalidUseCaseTypes* {
+			if(!this->is_success()) {
+				throw std::logic_error("Can't get error on value Result. Please use is_success() methods before.");
+			}
 			return this->_error_type;
 		}
 	private:
 		bool const _succeed;
-		std::optional<InvalidUseCaseTypes*> const _error_type = std::nullopt;
-		std::optional<ValueType*> const _value = std::nullopt;
+		InvalidUseCaseTypes const* _error_type = nullptr;
+		ValueType const* _value = nullptr;
 	};
 
 	template<class ValueType>
 	class ResultFactory {
 	public:
 		[[nodiscard]]
-		static auto createBasicDomainResultSuccess(ValueType const& value) -> std::unique_ptr<Result<ValueType>> {
-			return std::make_unique<Result<ValueType>>(
-				new result::BasicDomainResult<ValueType>(value)
+		static auto createBasicDomainResultSuccess(ValueType const* value) -> std::unique_ptr<Result<ValueType>> {
+			BasicDomainResult<ValueType> const result = *new BasicDomainResult<ValueType>(value);
+			return std::make_unique<BasicDomainResult<ValueType>>(
+				result
 			);
 		}
 		[[nodiscard]]
 		static auto createBasicDomainResultError(InvalidUseCaseTypes const* error) -> std::unique_ptr<Result<ValueType>> {
-		return std::make_unique<Result<ValueType>>(
-				new result::BasicDomainResult<ValueType>(error)
+		BasicDomainResult<ValueType> const result_error = *new BasicDomainResult<ValueType>(error);
+		return std::make_unique<BasicDomainResult<ValueType>>(
+			result_error
 		);
 	}
 	};

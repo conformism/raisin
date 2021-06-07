@@ -26,6 +26,7 @@ message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 set( SOURCES
+	"${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
