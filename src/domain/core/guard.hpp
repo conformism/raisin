@@ -3,6 +3,7 @@
 #include "result.hpp"
 #include "types.hpp"
 
+#include <array>
 #include <string>
 #include <utility>
 #include <variant>
@@ -30,10 +31,24 @@ private:
 	std::string const _reason;
 };
 
+template<class Container>
 auto against_zero_lenght(
-	std::string const* string_to_check,
-	std::string const* string_name
-) -> std::unique_ptr<result::Result<std::string>>;
+	Container const* container_to_check,
+	std::string const& container_name
+) -> std::unique_ptr<result::Result<Container>> {
+	if(container_to_check->empty()) {
+		return result::ResultFactory<std::string>::createBasicDomainResultSuccess(container_to_check);
+	}
+
+	std::string const reason = "The container/string" + container_name + "is empty.";
+
+
+	InvalidArgumentParameter const* invalid_use_case = new InvalidArgumentParameter(
+		reason
+	);
+	return result::ResultFactory<std::string>
+	  ::createBasicDomainResultError(invalid_use_case);
+}
 
 template<class Contained>
 auto is_one_of(

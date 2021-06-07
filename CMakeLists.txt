@@ -94,4 +94,3 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/src" )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
-
