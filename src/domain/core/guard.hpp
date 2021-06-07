@@ -20,11 +20,11 @@ public:
 	{}
 	[[nodiscard]]
 	auto get_name() const -> std::string override {
-		return this->_name;
+		return _name;
 	}
 	[[nodiscard]]
 	auto get_reason() const -> std::string override {
-		return this->_reason;
+		return _reason;
 	}
 private:
 	std::string const _name;
@@ -37,7 +37,7 @@ auto against_zero_lenght(
 	std::string const& container_name
 ) -> std::unique_ptr<result::Result<Container>> {
 	if(container_to_check->empty()) {
-		return result::ResultFactory<std::string>::createBasicDomainResultSuccess(container_to_check);
+		return result::Result<std::string>::Factory::createBasicDomainResultSuccess(container_to_check);
 	}
 
 	std::string const reason = "The container/string" + container_name + "is empty.";
@@ -46,7 +46,7 @@ auto against_zero_lenght(
 	InvalidArgumentParameter const* invalid_use_case = new InvalidArgumentParameter(
 		reason
 	);
-	return result::ResultFactory<std::string>
+	return result::Result<std::string>::Factory
 	  ::createBasicDomainResultError(invalid_use_case);
 }
 
@@ -58,7 +58,7 @@ auto is_one_of(
 ) -> std::unique_ptr<result::Result<Contained>> {
 	if(collection->count(uuid) > 0) {
 		Contained const* contained = collection->at(uuid);
-		return result::ResultFactory<Contained>
+		return result::Result<Contained>::Factory
 		  ::createBasicDomainResultSuccess(contained);
 	}
 
@@ -69,7 +69,7 @@ auto is_one_of(
 		reason
 	);
 
-	return result::ResultFactory<Contained>
+	return result::Result<Contained>::Factory
 	  ::createBasicDomainResultError(invalid_use_case);
 }
 } // namespace core::guard
