@@ -56,7 +56,7 @@ template<class Contained>
 auto isOneOf(
 	Uuid const& uuid,
 	std::map<Uuid, Contained*>* collection,
-	std::string& collection_name
+	std::string const& collection_name
 ) -> std::unique_ptr<result::Result<Contained>> {
 
 	bool const contains_this_uuid = collection->count(uuid) > 0;

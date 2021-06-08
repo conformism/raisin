@@ -43,8 +43,8 @@ template<class ValueType>
 class BasicDomainResult: public Result<ValueType> {
 public:
 
-	friend auto Factory<ValueType>::createBasicDomainResultSuccess(const ValueType *value);
-	friend auto Factory<ValueType>::createBasicDomainResultError(const InvalidUseCaseTypes *error);
+	friend auto Factory<ValueType>::createBasicDomainResultSuccess(ValueType const* value);
+	friend auto Factory<ValueType>::createBasicDomainResultError(InvalidUseCaseTypes const* error);
 
 	[[nodiscard]]
 	auto is_success() const -> bool override {
@@ -66,11 +66,11 @@ public:
 	}
 private:
 	bool const _succeed;
-	InvalidUseCaseTypes const* _error_type = nullptr;
+	InvalidUseCaseTypes const* const _error_type = nullptr;
 	ValueType const* _value = nullptr;
 
 	explicit BasicDomainResult(
-	  InvalidUseCaseTypes const* error_type
+	  InvalidUseCaseTypes const* const error_type
 	) :
 	  _succeed(false),
 	  _error_type(error_type)
@@ -91,7 +91,7 @@ class Factory {
 			return std::make_unique<BasicDomainResult<ValueType>>(value);
 		}
 		[[nodiscard]]
-		static auto create_basic_domain_result_error(InvalidUseCaseTypes const* error) -> std::unique_ptr<Result<ValueType>> {
+		static auto create_basic_domain_result_error(InvalidUseCaseTypes const* const error) -> std::unique_ptr<Result<ValueType>> {
 			return std::make_unique<BasicDomainResult<ValueType>>(error);
 		}
 	};
