@@ -32,31 +32,35 @@ private:
 };
 
 template<class Container>
-auto against_zero_lenght(
+[[nodiscard]]
+auto againstZeroLenght(
 	Container const* container_to_check,
 	std::string const& container_name
 ) -> std::unique_ptr<result::Result<Container>> {
-	if(container_to_check->empty()) {
-		return result::Result<std::string>::Factory::createBasicDomainResultSuccess(container_to_check);
+	bool const is_container_empty = container_to_check->empty();
+	if(is_container_empty) {
+		return result::Factory<std::string>::create_basic_domain_result_success(container_to_check);
 	}
 
 	std::string const reason = "The container/string" + container_name + "is empty.";
 
-
 	InvalidArgumentParameter const* invalid_use_case = new InvalidArgumentParameter(
 		reason
 	);
-	return result::Result<std::string>::Factory
-	  ::createBasicDomainResultError(invalid_use_case);
+	return result::Factory<std::string>
+	  ::create_basic_domain_result_error(invalid_use_case);
 }
 
 template<class Contained>
-auto is_one_of(
+[[nodiscard]]
+auto isOneOf(
 	Uuid const& uuid,
 	std::map<Uuid, Contained*>* collection,
 	std::string& collection_name
 ) -> std::unique_ptr<result::Result<Contained>> {
-	if(collection->count(uuid) > 0) {
+
+	bool const contains_this_uuid = collection->count(uuid) > 0;
+	if(contains_this_uuid) {
 		Contained const* contained = collection->at(uuid);
 		return result::Result<Contained>::Factory
 		  ::createBasicDomainResultSuccess(contained);
