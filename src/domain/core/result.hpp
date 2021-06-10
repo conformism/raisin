@@ -14,11 +14,8 @@ public:
 	[[nodiscard]] virtual auto get_reason() const -> std::string = 0;
 };
 
-template<class ValueType>
+template<typename ValueType, class ErrorType>
 class Factory;
-
-template<class ValueType>
-class BasicDomainResult;
 
 /**
  * @brief The Result class is the class that describe the result
@@ -28,71 +25,106 @@ class BasicDomainResult;
  * @tparam ValueType
  * @todo Add static factory methods/properties to inject logger.
  */
-template<class ValueType>
+template<typename ValueType, class ErrorType>
 class Result {
 public:
 	[[nodiscard]]
 	virtual auto is_success() const -> bool = 0;
 	[[nodiscard]]
-	virtual auto get_value() const -> const ValueType* = 0;
+	virtual auto get_value() const -> std::optional<ValueType> = 0;
 	[[nodiscard]]
-	virtual auto get_error() const -> const InvalidUseCaseTypes* = 0;
+	virtual auto get_error() const -> ErrorType = 0;
 };
 
-template<class ValueType>
-class BasicDomainResult: public Result<ValueType> {
+template<typename ValueType, class ErrorType>
+class BasicDomainResult: public Result<ValueType, ErrorType> {
 public:
-
-	friend auto Factory<ValueType>::createBasicDomainResultSuccess(ValueType const* value);
-	friend auto Factory<ValueType>::createBasicDomainResultError(InvalidUseCaseTypes const* error);
 
 	[[nodiscard]]
 	auto is_success() const -> bool override {
 		return _succeed;
 	}
 	[[nodiscard]]
-	auto get_value() const -> const ValueType* override {
-		if(!is_success()) {
-			throw std::logic_error("Can't get value on error Result. Please use is_success() methods before.");
-		}
+	auto get_value() const -> ValueType override {
 		return _value;
 	}
 	[[nodiscard]]
-	auto get_error() const -> const InvalidUseCaseTypes* override {
-		if(!is_success()) {
-			throw std::logic_error("Can't get error on value Result. Please use is_success() methods before.");
-		}
+	auto get_error() const -> std::optional<ErrorType> override {
 		return _error_type;
 	}
 private:
 	bool const _succeed;
-	InvalidUseCaseTypes const* const _error_type = nullptr;
-	ValueType const* _value = nullptr;
+	std::optional<ErrorType> const _error_type = std::nullopt;
+	ValueType const _value;
 
 	explicit BasicDomainResult(
-	  InvalidUseCaseTypes const* const error_type
+	  std::optional<ErrorType> const error_type
 	) :
 	  _succeed(false),
-	  _error_type(error_type)
-	{};
+	  _error_type(std::move(error_type))
+	{
+		_check_type();
+	};
+
 	explicit BasicDomainResult(
-	  ValueType const* value
+	  std::optional<ValueType> const value
 	) :
 	  _succeed(true),
 	  _value(value)
-	{};
+	{
+		_check_type();
+	};
+
+	auto _check_type() const -> void {
+		static_assert(
+			std::is_base_of<InvalidUseCaseTypes, ErrorType>(),
+			"`ErrorType` must extends `InvalidUseCaseTypes`."
+		);
+	}
 };
 
-template<class ValueType>
+template<typename Tp>
+using ValueType = std::optional<Tp>;
+template<typename Tp>
+using PointerType = std::unique_ptr<Tp>;
+
+template<typename Vt, class ErrorType>
+class ValueResult: public Result<ValueType<Vt>, ErrorType> {
+public:
+	friend auto Factory<Vt, ErrorType>::create_value_result_success(Vt value);
+	friend auto Factory<Vt, ErrorType>::create_value_result_error(Vt value);
+private:
+	ValueType<Vt> const _value = std::nullopt;
+};
+
+template<typename Vt, class ErrorType>
+class PointerResult: public Result<PointerType<Vt>, ErrorType> {
+public:
+	friend auto Factory<Vt, ErrorType>::create_pointer_result_success(Vt value);
+	friend auto Factory<Vt, ErrorType>::create_pointer_result_error(Vt value);
+private:
+	PointerType<Vt> const _value = nullptr;
+};
+
+template<typename Vt, class ErrorType>
 class Factory {
 	public:
 		[[nodiscard]]
-		static auto create_basic_domain_result_success(ValueType const* value) -> std::unique_ptr<Result<ValueType>> {
-			return std::make_unique<BasicDomainResult<ValueType>>(value);
+		static auto create(ValueType<Vt> const value) ->
+			Result<ValueType<Vt>, ErrorType>
+		{
+			return ValueResult<Vt, ErrorType>(std::move(value));
 		}
 		[[nodiscard]]
-		static auto create_basic_domain_result_error(InvalidUseCaseTypes const* const error) -> std::unique_ptr<Result<ValueType>> {
-			return std::make_unique<BasicDomainResult<ValueType>>(error);
+		static auto create(PointerType<Vt> const value) -> Result<PointerType<Vt>, ErrorType> {
+			return PointerResult<Vt, ErrorType>(value);
+		}
+		[[nodiscard]]
+		static auto create_error(ErrorType const error, bool const is_pointer_variant) -> Result<PointerType<Vt>, ErrorType> {
+			if(is_pointer_variant) {
+				return ValueResult<Vt, ErrorType>(error);
+			}
+			return PointerResult<Vt, ErrorType>(error);
 		}
 	};
 }  // namespace core::result

@@ -11,21 +11,11 @@
 namespace core::guard {
 class InvalidArgumentParameter: public result::InvalidUseCaseTypes {
 public:
-	explicit InvalidArgumentParameter(std::string reason) :
-		_name(
-			"Invalid-Argument-Parameter",
-			std::allocator<char>()
-		),
-		_reason(std::move(reason))
-	{}
+	explicit InvalidArgumentParameter(std::string reason);
 	[[nodiscard]]
-	auto get_name() const -> std::string override {
-		return _name;
-	}
+	auto get_name() const -> std::string override;
 	[[nodiscard]]
-	auto get_reason() const -> std::string override {
-		return _reason;
-	}
+	auto get_reason() const -> std::string override;
 private:
 	std::string const _name;
 	std::string const _reason;
@@ -36,19 +26,19 @@ template<class Container>
 auto againstZeroLenght(
 	Container const* container_to_check,
 	std::string const& container_name
-) -> std::unique_ptr<result::Result<Container>> {
+) -> result::Result<Container, InvalidArgumentParameter> {
 	bool const is_container_empty = container_to_check->empty();
 	if(is_container_empty) {
-		return result::Factory<std::string>::create_basic_domain_result_success(container_to_check);
+		return result::Factory<std::string, InvalidArgumentParameter>::create(container_to_check);
 	}
 
 	std::string const reason = "The container/string" + container_name + "is empty.";
 
-	InvalidArgumentParameter const* invalid_use_case = new InvalidArgumentParameter(
+	auto invalid_use_case = InvalidArgumentParameter(
 		reason
 	);
-	return result::Factory<std::string>
-	  ::create_basic_domain_result_error(invalid_use_case);
+	return result::Factory<std::string, InvalidArgumentParameter>::create_error(
+		InvalidArgumentParameter(reason), false);
 }
 
 template<class Contained>
@@ -57,23 +47,19 @@ auto isOneOf(
 	Uuid const& uuid,
 	std::map<Uuid, Contained*>* collection,
 	std::string const& collection_name
-) -> std::unique_ptr<result::Result<Contained>> {
+) -> result::Result<Contained, result::InvalidUseCaseTypes> {
 
 	bool const contains_this_uuid = collection->count(uuid) > 0;
 	if(contains_this_uuid) {
 		Contained const* contained = collection->at(uuid);
-		return result::Result<Contained>::Factory
+		return result::Result<Contained, result::InvalidUseCaseTypes>::Factory
 		  ::createBasicDomainResultSuccess(contained);
 	}
 
 	std::string reason = "No Contained at uuid: " + uuid + " is not present into collection: " + collection_name;
 	reason.append(collection_name);
 
-	InvalidArgumentParameter const* invalid_use_case = new InvalidArgumentParameter(
-		reason
-	);
-
-	return result::Result<Contained>::Factory
-	  ::createBasicDomainResultError(invalid_use_case);
+	return result::Result<Contained, result::InvalidUseCaseTypes>::Factory::create_error(
+		InvalidArgumentParameter(reason));
 }
 } // namespace core::guard

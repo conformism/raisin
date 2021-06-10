@@ -3,6 +3,8 @@ add_library( ${PROJECT_NAME} STATIC )
 
 target_sources( ${PROJECT_NAME}
 	PRIVATE
+	"${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
