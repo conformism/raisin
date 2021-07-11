@@ -27,11 +27,11 @@ private:
 class Cfg::Builder: public ICfg::IBuilder {
 public:
 	auto set_uuid(core::Uuid uuid) -> ICfg::IBuilder* override;
-	auto add_block(IBlock block) -> ICfg::IBuilder* override;
-	auto add_scope(IScope scope) -> ICfg::IBuilder* override;
-	auto set_blocks(Blocks blocks) -> ICfg::IBuilder* override;
-	auto set_scopes(Scopes scopes) -> ICfg::IBuilder* override;
-	auto build() const -> ICfg* override;
+	auto add_block(IBlock* block) -> ICfg::IBuilder* override;
+	auto add_scope(IScope* scope) -> ICfg::IBuilder* override;
+	auto set_blocks(Blocks* blocks) -> ICfg::IBuilder* override;
+	auto set_scopes(Scopes* scopes) -> ICfg::IBuilder* override;
+	[[nodiscard]] auto build() const -> ICfg* override;
 private:
 	core::Uuid uuid;
 	Blocks* _blocks;
