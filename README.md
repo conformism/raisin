@@ -11,7 +11,7 @@ Forked from the [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-cla
 ## Dev
 
 ```bash
-mkdir build && cd build
+cd build
 conan install -b missing -s compiler.libcxx=libstdc++11 ..
 cmake ..
 make

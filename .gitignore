@@ -32,7 +32,6 @@ out
 *.out
 *.app
 
-build
 .*.swp
 .*.swa
 .*.sw
