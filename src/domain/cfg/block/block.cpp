@@ -7,11 +7,11 @@ using namespace std;
 namespace cfg {
 
 auto Block::get_uuid() const -> IBlock::Uuid {
-	return _uuid;
+    return _uuid;
 }
 
 auto Block::get_text() const -> std::string {
-	return _text;
+    return _text;
 }
 
 // IBlock::Kind Block::get_kind() const {
@@ -19,11 +19,11 @@ auto Block::get_text() const -> std::string {
 // }
 
 auto Block::get_successors() const -> IBlock::Successors const& {
-	return *_successors;
+    return *_successors;
 }
 
 auto Block::get_precedents() const -> IBlock::Precedents const& {
-	return *_precedents;
+    return *_precedents;
 }
 
-} // namespace cfg
+}  // namespace cfg

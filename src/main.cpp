@@ -5,5 +5,4 @@
 /// @author    Dauliac <dauliac@protonmail.com>
 ///*****************************************************************************
 
-int main(int argc, const char** argv) {
-}
+int main(int argc, const char** argv) {}
