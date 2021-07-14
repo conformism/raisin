@@ -3,7 +3,8 @@ if( Catch2_FOUND )
 
 	target_sources( unittest
 		PRIVATE
-		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
+		# "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/001-result.cpp"
 		)
 
 	target_compile_definitions( unittest
