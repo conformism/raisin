@@ -1,7 +1,9 @@
 #pragma once
+#include "types.hpp"
 #include <memory>
-#include <string>
 #include <optional>
+#include <string>
+#include <utility>
 
 namespace core::result {
 
@@ -10,9 +12,30 @@ public:
 	[[nodiscard]] virtual auto get_name() const -> std::string = 0;
 	[[nodiscard]] virtual auto get_reason() const -> std::string = 0;
 };
-
 template<typename ValueType, class ErrorType>
 class Factory;
+
+class BasicInvalidUseCase: public InvalidUseCaseTypes, public Value {
+public:
+	BasicInvalidUseCase(std::string name, std::string reason) :
+		_name(std::move(name)),
+		_reason(std::move(reason))
+	{};
+	[[nodiscard]]  auto get_name() const -> std::string override {
+		return _name;
+	};
+	[[nodiscard]] auto get_reason() const -> std::string override {
+		return _reason;
+	};
+	auto operator==(const InvalidUseCaseTypes& rhs) const -> bool {
+		const auto areEquals = rhs.get_name() == get_name() && rhs.get_reason() == get_reason();
+		return areEquals;
+	};
+private:
+	std::string const _name;
+	std::string const _reason;
+};
+
 
 /**
  * @brief The Result class is the class that describe the result
@@ -30,7 +53,7 @@ public:
 	[[nodiscard]]
 	virtual auto get_value() const -> std::optional<ValueType> = 0;
 	[[nodiscard]]
-	virtual auto get_error() const -> ErrorType = 0;
+	virtual auto get_error() const -> std::optional<ErrorType> = 0;
 };
 
 template<typename ValueType, class ErrorType>
@@ -42,7 +65,7 @@ public:
 		return _succeed;
 	}
 	[[nodiscard]]
-	auto get_value() const -> ValueType override {
+	auto get_value() const -> std::optional<ValueType> override {
 		return _value;
 	}
 	[[nodiscard]]
@@ -50,12 +73,11 @@ public:
 		return _error_type;
 	}
 private:
-	bool const _succeed;
-	std::optional<ErrorType> const _error_type = std::nullopt;
-	ValueType const _value;
+	// TODO(dauliac) check If we can friend only create methods about BasicDomainResult
+	friend Factory<ValueType, ErrorType>;
 
 	explicit BasicDomainResult(
-	  std::optional<ErrorType> const error_type
+	  ErrorType error_type
 	) :
 	  _succeed(false),
 	  _error_type(std::move(error_type))
@@ -64,10 +86,10 @@ private:
 	};
 
 	explicit BasicDomainResult(
-	  std::optional<ValueType> const value
+	  ValueType value
 	) :
-	  _succeed(true),
 	  _value(value)
+	  ,_succeed(true)
 	{
 		_check_type();
 	};
@@ -78,50 +100,61 @@ private:
 			"`ErrorType` must extends `InvalidUseCaseTypes`."
 		);
 	}
+
+	bool const _succeed;
+	std::optional<ErrorType> const _error_type = std::nullopt;
+	std::optional<ValueType> const _value = std::nullopt;
 };
 
-template<typename Tp>
-using ValueType = std::optional<Tp>;
-template<typename Tp>
-using PointerType = std::unique_ptr<Tp>;
+// template<typename Tp>
+// using PointerType = std::unique_ptr<Tp>;
 
-template<typename Vt, class ErrorType>
-class ValueResult: public Result<ValueType<Vt>, ErrorType> {
-public:
-	friend auto Factory<Vt, ErrorType>::create_value_result_success(Vt value);
-	friend auto Factory<Vt, ErrorType>::create_value_result_error(Vt value);
-private:
-	ValueType<Vt> const _value = std::nullopt;
-};
+// template<typename Vt, class ErrorType>
+// class ValueResult: public BasicDomainResult<Vt, ErrorType> {
+// public:
+//     explicit ValueResult(Vt value) :
+//         BasicDomainResult<Vt, ErrorType>(value)
+//     {}
+//     explicit ValueResult(ErrorType error) :
+//         BasicDomainResult<Vt, ErrorType>(error)
+//     {}
+//     // friend auto Factory<Vt, ErrorType>::create(Vt value);
+//     // friend auto Factory<Vt, ErrorType>::create_error(Vt value);
+// private:
+//     std::optional<Vt> _value = std::nullopt;
+// };
 
-template<typename Vt, class ErrorType>
-class PointerResult: public Result<PointerType<Vt>, ErrorType> {
-public:
-	friend auto Factory<Vt, ErrorType>::create_pointer_result_success(Vt value);
-	friend auto Factory<Vt, ErrorType>::create_pointer_result_error(Vt value);
-private:
-	PointerType<Vt> const _value = nullptr;
-};
+// TODO(dauliac) Useless, you can pass unique_ptr to value template
+// template<typename Vt, class ErrorType>
+// class PointerResult: public BasicDomainResult<PointerType<Vt>, ErrorType> {
+// public:
+//     explicit PointerResult(PointerType<Vt> pointer) :
+//         BasicDomainResult<PointerType<Vt>, ErrorType>(pointer)
+//     {}
+//     explicit PointerResult(ErrorType error) :
+//         BasicDomainResult<PointerType<Vt>, ErrorType>(error)
+//     {}
+//     // friend auto Factory<Vt, ErrorType>::create(Vt value);
+//     // friend auto Factory<Vt, ErrorType>::create_error(Vt value);
+// private:
+//     PointerType<Vt> _value = nullptr;
+// };
 
 template<typename Vt, class ErrorType>
 class Factory {
 	public:
 		[[nodiscard]]
-		static auto create(ValueType<Vt> const value) ->
-			Result<ValueType<Vt>, ErrorType>
+		static auto create(Vt value) -> BasicDomainResult<Vt, ErrorType>
 		{
-			return ValueResult<Vt, ErrorType>(std::move(value));
+			return BasicDomainResult<Vt, ErrorType>(std::move(value));
 		}
+		// [[nodiscard]]
+		// static auto create(PointerType<Vt> const pointer) -> PointerResult<Vt, ErrorType> {
+		//     return PointerResult<Vt, ErrorType>(std::move(pointer));
+		// }
 		[[nodiscard]]
-		static auto create(PointerType<Vt> const value) -> Result<PointerType<Vt>, ErrorType> {
-			return PointerResult<Vt, ErrorType>(value);
-		}
-		[[nodiscard]]
-		static auto create_error(ErrorType const error, bool const is_pointer_variant) -> Result<PointerType<Vt>, ErrorType> {
-			if(is_pointer_variant) {
-				return ValueResult<Vt, ErrorType>(error);
-			}
-			return PointerResult<Vt, ErrorType>(error);
+		static auto create(ErrorType const error) -> BasicDomainResult<Vt, ErrorType> {
+			return BasicDomainResult<Vt, ErrorType>(std::move(error));
 		}
 	};
 }  // namespace core::result

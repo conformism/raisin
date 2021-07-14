@@ -37,8 +37,8 @@ auto againstZeroLenght(
 	auto invalid_use_case = InvalidArgumentParameter(
 		reason
 	);
-	return result::Factory<std::string, InvalidArgumentParameter>::create_error(
-		InvalidArgumentParameter(reason), false);
+	return result::Factory<std::string, InvalidArgumentParameter>::create(
+		InvalidArgumentParameter(reason));
 }
 
 template<class Contained>

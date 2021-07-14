@@ -1,8 +1,9 @@
 #pragma once
-#include <variant>
-#include <string>
+#include <any>
 #include <map>
 #include <memory>
+#include <string>
+#include <variant>
 
 namespace core {
 using Uuid = std::string;
@@ -27,7 +28,8 @@ private:
 };
 
 class Value {
-	auto operator==(const Entity* rhs) const -> bool;
+	// TODO(dauliac) Find way to dynamicly compare object types
+	// auto operator==(Value rhs) const -> bool;
 };
 
 }  // namespace core
