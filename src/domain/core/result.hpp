@@ -106,55 +106,21 @@ private:
 	std::optional<ValueType> const _value = std::nullopt;
 };
 
-// template<typename Tp>
-// using PointerType = std::unique_ptr<Tp>;
-
-// template<typename Vt, class ErrorType>
-// class ValueResult: public BasicDomainResult<Vt, ErrorType> {
-// public:
-//     explicit ValueResult(Vt value) :
-//         BasicDomainResult<Vt, ErrorType>(value)
-//     {}
-//     explicit ValueResult(ErrorType error) :
-//         BasicDomainResult<Vt, ErrorType>(error)
-//     {}
-//     // friend auto Factory<Vt, ErrorType>::create(Vt value);
-//     // friend auto Factory<Vt, ErrorType>::create_error(Vt value);
-// private:
-//     std::optional<Vt> _value = std::nullopt;
-// };
-
-// TODO(dauliac) Useless, you can pass unique_ptr to value template
-// template<typename Vt, class ErrorType>
-// class PointerResult: public BasicDomainResult<PointerType<Vt>, ErrorType> {
-// public:
-//     explicit PointerResult(PointerType<Vt> pointer) :
-//         BasicDomainResult<PointerType<Vt>, ErrorType>(pointer)
-//     {}
-//     explicit PointerResult(ErrorType error) :
-//         BasicDomainResult<PointerType<Vt>, ErrorType>(error)
-//     {}
-//     // friend auto Factory<Vt, ErrorType>::create(Vt value);
-//     // friend auto Factory<Vt, ErrorType>::create_error(Vt value);
-// private:
-//     PointerType<Vt> _value = nullptr;
-// };
-
 template<typename Vt, class ErrorType>
 class Factory {
-	public:
-		[[nodiscard]]
-		static auto create(Vt value) -> BasicDomainResult<Vt, ErrorType>
-		{
-			return BasicDomainResult<Vt, ErrorType>(std::move(value));
-		}
-		// [[nodiscard]]
-		// static auto create(PointerType<Vt> const pointer) -> PointerResult<Vt, ErrorType> {
-		//     return PointerResult<Vt, ErrorType>(std::move(pointer));
-		// }
-		[[nodiscard]]
-		static auto create(ErrorType const error) -> BasicDomainResult<Vt, ErrorType> {
-			return BasicDomainResult<Vt, ErrorType>(std::move(error));
-		}
-	};
+public:
+	[[nodiscard]]
+	static auto create(Vt value) -> BasicDomainResult<Vt, ErrorType>
+	{
+		return BasicDomainResult<Vt, ErrorType>(std::move(value));
+	}
+	// [[nodiscard]]
+	// static auto create(PointerType<Vt> const pointer) -> PointerResult<Vt, ErrorType> {
+	//     return PointerResult<Vt, ErrorType>(std::move(pointer));
+	// }
+	[[nodiscard]]
+	static auto create(ErrorType const error) -> BasicDomainResult<Vt, ErrorType> {
+		return BasicDomainResult<Vt, ErrorType>(std::move(error));
+	}
+};
 }  // namespace core::result
