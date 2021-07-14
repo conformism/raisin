@@ -8,9 +8,10 @@
 
 namespace cfg {
 
+using namespace core;
+
 class Scope : public IScope {
 private:
-    const Uuid _uuid;
     // TODO: check if there is way to put
     // it into const, and if we need to
     // add setter
@@ -19,7 +20,6 @@ private:
     const Childs _childs;
 
 public:
-    IBlock::Uuid get_uuid() const override;
     Blocks get_blocks() const override;
     Childs get_childs() const override;
     Parent get_parent() const override;

@@ -9,10 +9,9 @@ namespace cfg {
 
 class Cfg : public ICfg {
 public:
-    Cfg(IElement*, ICfg::Blocks, ICfg::Scopes);
-    ~Cfg() override;
-    auto get_block_by_id(Uuid uuid) const -> IBlock* override;
-    auto get_scope_by_id(Uuid uuid) const -> IScope* override;
+    Cfg(Uuid uuid, IElement*, ICfg::Blocks, ICfg::Scopes);
+    [[nodiscard]] auto get_block_by_id(Uuid uuid) const -> IBlock* override;
+    [[nodiscard]] auto get_scope_by_id(Uuid uuid) const -> IScope* override;
     class Builder;
     // TODO(dauliac) consider using struct to store object properties
     // and easily pass it from dump/builder/factory.

@@ -6,10 +6,6 @@ using namespace std;
 
 namespace cfg {
 
-auto Block::get_uuid() const -> IBlock::Uuid {
-    return _uuid;
-}
-
 auto Block::get_text() const -> std::string {
     return _text;
 }

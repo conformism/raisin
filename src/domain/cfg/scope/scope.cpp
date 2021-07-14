@@ -2,10 +2,6 @@
 
 namespace cfg {
 
-Scope::Uuid Scope::get_uuid() const {
-    return _uuid;
-}
-
 Scope::Blocks Scope::get_blocks() const {
     return _blocks;
 }

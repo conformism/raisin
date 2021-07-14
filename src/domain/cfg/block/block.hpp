@@ -9,14 +9,16 @@
 
 namespace cfg {
 
+using namespace core;
+
 class Block : public IBlock {
 public:
     Block();
-    auto get_uuid() const -> IBlock::Uuid override;
+    [[nodiscard]] auto get_uuid() const -> Uuid override;
     // IBlock::Kind get_kind() const override;
-    auto get_text() const -> std::string override;
-    auto get_successors() const -> IBlock::Successors const& override;
-    auto get_precedents() const -> IBlock::Precedents const& override;
+    [[nodiscard]] auto get_text() const -> std::string override;
+    [[nodiscard]] auto get_successors() const -> IBlock::Successors const& override;
+    [[nodiscard]] auto get_precedents() const -> IBlock::Precedents const& override;
 
 private:
     std::string const _text;

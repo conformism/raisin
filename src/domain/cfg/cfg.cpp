@@ -3,10 +3,11 @@
 namespace cfg {
 
 // Cfg
-Cfg::Cfg(IElement* element, ICfg::Blocks blocks, ICfg::Scopes scopes)
-    : _element(element), _blocks(std::move(blocks)), _scopes(std::move(scopes)) {}
-
-Cfg::~Cfg() = default;
+Cfg::Cfg(Uuid uuid, IElement* element, ICfg::Blocks blocks, ICfg::Scopes scopes)
+    : ICfg(std::move(uuid)),
+      _element(element),
+      _blocks(std::move(blocks)),
+      _scopes(std::move(scopes)) {}
 
 auto Cfg::get_block_by_id(Uuid uuid) const -> IBlock* {
     // core::guard::GuardResult const isValidUuidResult = core::guard::is_one_of(uuid, _blocks);
