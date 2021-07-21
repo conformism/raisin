@@ -7,20 +7,19 @@
 
 namespace cfg {
 
-class IBlock;
+using namespace core;
 
-class IScope {
+template<class Concrete, class ConcreteBlock>
+class IScope : public Entity {
 public:
-    using Uuid = core::Uuid;
-    using Parent = IScope*;
-    using Blocks = core::Aggregator<IBlock>;
-    using Childs = core::Aggregator<IScope>;
+	using Parent = Concrete*;
+	using Blocks = core::Aggregator<ConcreteBlock>;
+	using Childs = core::Aggregator<Concrete>;
 
-    virtual ~IScope() = default;
-    virtual auto get_uuid() const -> Uuid = 0;
-    virtual auto get_blocks() const -> Blocks = 0;
-    virtual auto get_childs() const -> Childs = 0;
-    virtual auto get_parent() const -> Parent = 0;
+	explicit IScope(core::Uuid uuid) : Entity(std::move(uuid)){};
+	[[nodiscard]] virtual auto get_blocks() const -> Blocks = 0;
+	[[nodiscard]] virtual auto get_childs() const -> Childs = 0;
+	[[nodiscard]] virtual auto get_parent() const -> Parent = 0;
 };
 
 }  // namespace cfg

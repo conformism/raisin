@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 
+#include "../block/block.hpp"
 #include "../block/iblock.hpp"
 #include "iscope.hpp"
 
@@ -10,19 +11,19 @@ namespace cfg {
 
 using namespace core;
 
-class Scope : public IScope {
+class Scope : public IScope<Scope, Block> {
 private:
-    // TODO: check if there is way to put
-    // it into const, and if we need to
-    // add setter
-    mutable Parent _parent;
-    const Blocks _blocks;
-    const Childs _childs;
+	// TODO(dauliac): check if there is way to put
+	// it into const, and if we need to
+	// add setter
+	mutable Parent _parent;
+	const Blocks _blocks;
+	const Childs _childs;
 
 public:
-    Blocks get_blocks() const override;
-    Childs get_childs() const override;
-    Parent get_parent() const override;
+	auto get_blocks() const -> Blocks override;
+	auto get_childs() const -> Childs override;
+	auto get_parent() const -> Parent override;
 };
 
 }  // namespace cfg

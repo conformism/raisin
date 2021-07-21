@@ -11,22 +11,27 @@ namespace cfg {
 
 using namespace core;
 
-class Block : public IBlock {
+class Block : public IBlock<Block> {
 public:
-    Block();
-    [[nodiscard]] auto get_uuid() const -> Uuid override;
-    // IBlock::Kind get_kind() const override;
-    [[nodiscard]] auto get_text() const -> std::string override;
-    [[nodiscard]] auto get_successors() const -> IBlock::Successors const& override;
-    [[nodiscard]] auto get_precedents() const -> IBlock::Precedents const& override;
+	// IBlock::Kind get_kind() const override;
+	Block(
+		Uuid uuid,
+		bool is_entry,
+		bool is_exit,
+		Aggregator<Block> const& precedent,
+		Aggregator<Block> const& sucessors);
+	[[nodiscard]] auto is_entry() const -> bool override;
+	[[nodiscard]] auto is_exit() const -> bool override;
+	[[nodiscard]] auto get_text() const -> std::string override;
+	[[nodiscard]] auto get_successors() const -> Aggregator<Block> const* override;
+	[[nodiscard]] auto get_precedents() const -> Aggregator<Block> const* override;
 
 private:
-    std::string const _text;
-    bool const _is_entry;
-    bool const _is_exit;
-    Uuid const _uuid;
-    Precedents const* _precedents;
-    Successors const* _successors;
-    // Kind const _kind;
+	std::string const _text;
+	bool const _is_entry;
+	bool const _is_exit;
+	Aggregator<Block> const* _precedents;
+	Aggregator<Block> const* _successors;
+	// Kind const _kind;
 };
 }  // namespace cfg

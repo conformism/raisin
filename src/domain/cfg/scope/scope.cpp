@@ -2,16 +2,16 @@
 
 namespace cfg {
 
-Scope::Blocks Scope::get_blocks() const {
-    return _blocks;
+auto Scope::get_blocks() const -> Scope::Blocks {
+	return _blocks;
 }
 
-Scope::Childs Scope::get_childs() const {
-    return _childs;
+auto Scope::get_childs() const -> Scope::Childs {
+	return _childs;
 }
 
-Scope::Parent Scope::get_parent() const {
-    return _parent;
+auto Scope::get_parent() const -> Scope::Parent {
+	return _parent;
 }
 
 }  // namespace cfg

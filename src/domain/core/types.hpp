@@ -16,22 +16,26 @@ using Compositor = std::map<Uuid, std::unique_ptr<T>>;
 
 class Entity {
 public:
-    Entity(Entity const&) = delete;
-    auto operator=(Entity const*) -> Entity& = delete;
+	// Security to prevent entity copy in memory
+	Entity(Entity&&) = default;
+	Entity(Entity const&) = delete;
+	auto operator=(Entity const&) -> Entity& = delete;
+	auto operator=(Entity const*) -> Entity& = delete;
+	auto operator=(Entity&&) -> Entity& = delete;
 
-    [[nodiscard]] virtual auto get_uuid() const -> Uuid;
+	[[nodiscard]] virtual auto get_uuid() const -> Uuid;
 
 protected:
-    explicit Entity(Uuid uuid);
-    ~Entity() = default;
+	explicit Entity(Uuid uuid);
+	~Entity() = default;
 
 private:
-    Uuid const _uuid;
+	Uuid const _uuid;
 };
 
 class Value {
-    // TODO(dauliac) Find way to dynamicly compare object types
-    // auto operator==(Value rhs) const -> bool;
+	// TODO(dauliac) Find way to dynamicly compare object types
+	// auto operator==(Value rhs) const -> bool;
 };
 
 }  // namespace core
