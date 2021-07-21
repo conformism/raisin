@@ -1,125 +1,98 @@
+# cmake -DLLVM_DIR="/usr/lib/llvm-10/lib/cmake/llvm" -DClang_DIR="/usr/lib/llvm-10/lib/cmake/clang" ..
 
-add_library( ${PROJECT_NAME} STATIC )
+cmake_minimum_required( VERSION 3.16 )
 
-target_sources( ${PROJECT_NAME}
-	PRIVATE
-	"${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
-	"${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+project( Raisin
+	LANGUAGES CXX
+	VERSION 0.0.1
+	DESCRIPTION "Produce CFG from a C++ source code"
 	)
 
-target_compile_definitions( ${PROJECT_NAME}
-	PRIVATE
-#	$<$<CONFIG:Debug>:DEBUG>
-#	${LLVM_DEFINITIONS}
-#	${CLANG_DEFINITIONS}
+list( APPEND CMAKE_MODULE_PATH
+	"${CMAKE_SOURCE_DIR}/cmake"
 	)
 
-target_compile_features( ${PROJECT_NAME}
-	PRIVATE
-	cxx_std_17
-	)
+if( NOT CMAKE_BUILD_TYPE )
+	set( CMAKE_BUILD_TYPE "Release" )
+endif()
+message( STATUS "Build type: ${CMAKE_BUILD_TYPE}" )
 
-target_compile_options( ${PROJECT_NAME}
-	PRIVATE
-	$<$<CONFIG:Coverage>:-O0>
-	$<$<OR:$<CONFIG:Coverage>,$<CONFIG:Debug>>:-Wall>
-	$<$<OR:$<CONFIG:Coverage>,$<CONFIG:Debug>>:-Wextra>
-#	$<$<OR:$<CONFIG:Coverage>,$<CONFIG:Debug>>:-Weffc++>
-	$<$<OR:$<CONFIG:Coverage>,$<CONFIG:Debug>>:-fexceptions>
-	$<$<AND:$<CONFIG:Coverage>,$<CXX_COMPILER_ID:GNU>>:--coverage>
-	$<$<AND:$<CONFIG:Coverage>,$<CXX_COMPILER_ID:Clang>>:-fprofile-instr-generate>
-	$<$<AND:$<CONFIG:Coverage>,$<CXX_COMPILER_ID:Clang>>:-fcoverage-mapping>
-	)
+option( SONAR "The coverage target will produce SonarQube reports instead of console / HTML" OFF )
 
-target_include_directories( ${PROJECT_NAME}
-	PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}
-#	${LLVM_INCLUDE_DIRS}
-	${CLANG_INCLUDE_DIRS}
-	)
+if( CMAKE_BUILD_TYPE MATCHES Coverage )
+	if( CMAKE_CXX_COMPILER_ID MATCHES GNU )
+		find_program( GCOV NAMES gcov )
+		if( GCOV )
+			message( STATUS "Found gcov: ${GCOV}" )
+		else()
+			message( ERROR "Not found gcov: install it" )
+		endif()
 
-target_link_libraries( ${PROJECT_NAME}
-	$<$<AND:$<CONFIG:Coverage>,$<CXX_COMPILER_ID:GNU>>:-lgcov>
-#	-ldl
-#	-ltinfo
-#	-lpthread
-#	clang
-#	clangAST
-#	clangAnalysis
-#	clangBasic
-#	clangDriver
-#	clangEdit
-#	clangIndex
-#	clangFrontend
-#	clangFrontendTool
-#	clangLex
-#	clangParse
-#	clangSema
-#	clangEdit
-#	clangASTMatchers
-#	clangRewrite
-#	clangRewriteFrontend
-#	clangStaticAnalyzerFrontend
-#	clangStaticAnalyzerCheckers
-#	clangStaticAnalyzerCore
-#	clangSerialization
-#	clangToolingCore
-#	clangTooling
-)
+		if( SONAR )
+			find_program( GCOVR NAMES gcovr )
+			if( GCOVR )
+				message( STATUS "Found gcovr: ${GCOVR}" )
+			else()
+				message( ERROR "Not found gcovr: install it" )
+			endif()
+		else()
+			find_program( LCOV NAMES lcov )
+			if( LCOV )
+				message( STATUS "Found lcov: ${LCOV}" )
+			else()
+				message( ERROR "Not found lcov: install it" )
+			endif()
 
-target_link_options( ${PROJECT_NAME}
-	PRIVATE
-	$<$<AND:$<CONFIG:Coverage>,$<CXX_COMPILER_ID:Clang>>:-fprofile-instr-generate>
-	)
+			find_program( GENHTML NAMES genhtml )
+			if( GENHTML )
+				message( STATUS "Found genhtml: ${GENHTML}" )
+			else()
+				message( ERROR "Not found genhtml: install it" )
+			endif()
+		endif()
 
-set_target_properties( ${PROJECT_NAME} PROPERTIES
-	OUTPUT_NAME "raisin"
-	)
+	elseif( CMAKE_CXX_COMPILER_ID MATCHES Clang )
 
-file( GLOB_RECURSE ${PROJECT_NAME}_HEADERS "*.hpp" )
+		find_program( LLVM_COV NAMES llvm-cov )
+		if( LLVM_COV )
+			message( STATUS "Found llvm-cov: ${LLVM_COV}" )
+		else()
+			message( ERROR "Not found llvm-cov: install it" )
+		endif()
 
-static_analysis_lizard(
-	TARGET ${PROJECT_NAME}
-	ADDITIONAL_FILES ${${PROJECT_NAME}_HEADERS}
-	ARGS
-		--languages cpp
-		--sort cyclomatic_complexity
-	)
+		find_program( LLVM_PROFDATA NAMES llvm-profdata )
+		if( LLVM_PROFDATA )
+			message( STATUS "Found llvm-profdata: ${LLVM_PROFDATA}" )
+		else()
+			message( ERROR "Not found llvm-profdata: install it" )
+		endif()
+	endif()
 
-static_analysis_iwyu(
-	TARGET ${PROJECT_NAME}
-	ARGS
-		--std=c++17 # Useless with -p ?
-#		-p="${CMAKE_BINARY_DIR}" # Outdated iwyu version.
-		-Xiwyu
-		--no_comments
-	)
+	find_package( Catch2 3.0.0 REQUIRED )
+	if( Catch2_FOUND )
+		message( STATUS "Found Catch2: ${Catch2_VERSION}" )
+	endif()
 
-static_analysis_tidy(
-	TARGET ${PROJECT_NAME}
-	ARGS
-		-p="${CMAKE_BINARY_DIR}"
-		-checks=*
-	)
+else()
 
-static_analysis_format(
-	TARGET ${PROJECT_NAME}
-	ADDITIONAL_FILES ${${PROJECT_NAME}_HEADERS}
-	ARGS
-	)
+	find_package( Catch2 3.0.0 QUIET )
+	if( Catch2_FOUND )
+		message( STATUS "Found Catch2: ${Catch2_VERSION}" )
+	else()
+		message( STATUS "Not found Catch2: unittest target disabled" )
+	endif()
+endif()
 
-static_analysis_cppcheck(
-	TARGET ${PROJECT_NAME}
-	ADDITIONAL_FILES ${${PROJECT_NAME}_HEADERS}
-	ARGS
-#		--enable=all
-		-v
-	)
+find_package( Clang REQUIRED )
 
-enable_clang_build_analyzer(
-	TARGET ${PROJECT_NAME}
-	)
+message( STATUS "LLVM version: ${LLVM_PACKAGE_VERSION}" )
+message( STATUS "Using ClangConfig.cmake in: ${Clang_DIR}" )
+message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
+
+include( StaticTools )
+include( ClangBuildAnalyzer )
+
+add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
+add_subdirectory( "${CMAKE_SOURCE_DIR}/src" )
+add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
+
