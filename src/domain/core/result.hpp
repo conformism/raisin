@@ -53,6 +53,8 @@ public:
 template<typename ValueType, class ErrorType>
 class BasicDomainResult : public Result<ValueType, ErrorType> {
 public:
+	// Force creation using error or value constructor
+	BasicDomainResult() = delete;
 	explicit BasicDomainResult(ErrorType error_type)
 		: _succeed(false), _error_type(std::move(error_type)) {
 		_check_type();
