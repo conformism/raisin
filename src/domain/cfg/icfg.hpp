@@ -6,6 +6,7 @@
 #include "../core/guard.hpp"
 #include "../core/types.hpp"
 
+#include "./block/iblock.hpp"
 #include "./element/ielement.hpp"
 #include "./scope/iscope.hpp"
 
@@ -13,16 +14,21 @@ namespace cfg {
 
 using namespace core;
 
+using Result = result::
+	Result<result::Success<std::any>, result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>>;
+
 template<class Concrete, class ConcreteBlock, class ConcreteScope>
 class ICfg : public Entity {
 public:
 	explicit ICfg(Uuid uuid) : Entity(std::move(uuid)){};
 	// virtual ~ICfg() = default;
 	// [[nodiscard]] virtual auto get_uuid(Uuid uuid) const -> Uuid = 0;
-	[[nodiscard]] virtual auto get_block_by_id(Uuid uuid) const -> result::
-		BasicDomainResult<std::weak_ptr<ConcreteBlock>, guard::InvalidArgumentParameter> = 0;
-	[[nodiscard]] virtual auto get_scope_by_id(Uuid uuid) const -> result::
-		BasicDomainResult<std::weak_ptr<ConcreteScope>, guard::InvalidArgumentParameter> = 0;
+	[[nodiscard]] virtual auto get_block_by_id(Uuid uuid) const -> result::Result<
+		result::Success<ConcreteBlock*>,
+		result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> = 0;
+	[[nodiscard]] virtual auto get_scope_by_id(Uuid uuid) const -> result::Result<
+		result::Success<ConcreteScope*>,
+		result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> = 0;
 	class IBuilder {
 	public:
 		// virtual ~IBuilder() = default;

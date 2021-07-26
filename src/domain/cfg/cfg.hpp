@@ -13,12 +13,14 @@ class Cfg : public ICfg<Cfg, Block, Scope> {
 public:
 	Cfg(Uuid uuid,
 	    IElement* element,
-	    const Aggregator<Block>& blocks,
-	    const Aggregator<Scope>& scopes);
-	[[nodiscard]] auto get_block_by_id(Uuid uuid) const -> result::
-		BasicDomainResult<std::weak_ptr<Block>, guard::InvalidArgumentParameter> override;
-	[[nodiscard]] auto get_scope_by_id(Uuid uuid) const -> result::
-		BasicDomainResult<std::weak_ptr<Scope>, guard::InvalidArgumentParameter> override;
+	    const Compositor<Block>& blocks,
+	    const Compositor<Scope>& scopes);
+	[[nodiscard]] auto get_block_by_id(Uuid uuid) const -> result::Result<
+		result::Success<Block*>,
+		result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> override;
+	[[nodiscard]] auto get_scope_by_id(Uuid uuid) const -> result::Result<
+		result::Success<Scope*>,
+		result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> override;
 	class Builder;
 	// TODO(dauliac) consider using struct to store object properties
 	// and easily pass it from dump/builder/factory.
@@ -26,8 +28,8 @@ private:
 	const Uuid uuid;
 	// TODO(dauliac): not used yet
 	IElement* const _element;
-	Aggregator<Block> const* _blocks;
-	Aggregator<Scope> const* _scopes;
+	Compositor<Block> const* _blocks;
+	Compositor<Scope> const* _scopes;
 };
 
 class Cfg::Builder : public ICfg::IBuilder {
@@ -41,8 +43,8 @@ public:
 
 private:
 	Uuid uuid;
-	Aggregator<Block>* _blocks;
-	Aggregator<Scope>* _scopes;
+	Compositor<Block>* _blocks;
+	Compositor<Scope>* _scopes;
 	ICfg* _builded;
 };
 

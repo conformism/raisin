@@ -12,7 +12,6 @@ Forked from the [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-cla
 
 ```bash
 cd build
-conan install -b missing -s compiler.libcxx=libstdc++11 ..
 cmake ..
 make
 ctest -V

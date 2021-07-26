@@ -90,7 +90,6 @@ message( STATUS "Using ClangConfig.cmake in: ${Clang_DIR}" )
 message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
 include( StaticTools )
-include( ClangBuildAnalyzer )
 
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/src" )
