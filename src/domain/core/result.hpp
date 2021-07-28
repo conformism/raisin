@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./failure-registrar.hpp"
+#include "failure-registrar.hpp"
 
 #include "types.hpp"
 #include <any>
@@ -24,7 +24,7 @@ public:
 	[[nodiscard]] virtual auto get_reason() const -> std::string = 0;
 };
 
-template<BasicFailureRegistrar Id>
+template<BasicFailureRegistrar Id = BasicFailureRegistrar::NOTHING>
 class BasicFailure : public Failure<BasicFailureRegistrar> {
 public:
 	explicit BasicFailure(std::string reason) : _reason(std::move(reason)){};
@@ -42,51 +42,34 @@ private:
 };
 
 // Container to store value of object to transport
-template<class T>
-struct Success {
-	T value;
+template<typename T = std::any>
+class Success {
+public:
+	[[nodiscard]] auto get_value() const -> T {
+		return value;
+	}
+	T const value;
 };
 
-// template<class T>
-// constexpr Success<T> success(T const& x) {
-//   return {x};
-// }
-
-// template<class T>
-// Success<T> success(T&& x) {
-//   return { std::forward<T>(x) };
-// }
-
-// template<class T>
-// struct Failure {
-//   T value;
-// };
-
-// template<class T>
-// constexpr Failure<T> failure(T const& x) {
-//   return {x};
-// }
-
-// template<class T>
-// Failure<T> failure(T&& x) {
-//   return { std::forward<T>(x) };
-// }
-
-/** @brief The Result class is the class that describe the result
+/** @brief The IEither class is the class that describe the result
  * of a domain action. This result can have a succeed or a failure
  * behavior.
  *
- * @tparam ValueType
+ * @tparam S Sucess template
+ * @tparam S F Failure template
  * @todo Add static factory methods/properties to inject logger.
+ * @todo Find way to static assert with typing constraint:
+ *   - Using create methods ?
+ *   - Using Factory ?
  */
-template<class S, class F>
+template<typename S, typename F>
 class IEither {
 public:
 	// static_assert(
-	//     std::is_base_of<Success<std::any>, L>(),
+	//     std::is_base_of<Success<>, S<>(),
 	//     "`L` must extends `Success<std::any>`.");
 	// static_assert(
-	//     std::is_base_of<Failure<std::any>, F>(),
+	//     std::is_base_of<Failure<FValue>, F<FValue>>(),
 	//     "`F` must extends `Failure<std::any>`.");
 
 	[[nodiscard]] virtual auto is_success() const -> bool = 0;
@@ -95,7 +78,7 @@ public:
 	[[nodiscard]] virtual auto get_failure() const -> std::optional<F> = 0;
 };
 
-template<typename S, class F>
+template<class S = Success<>, class F = BasicFailure<>>
 class Either : public IEither<S, F> {
 public:
 	[[nodiscard]] constexpr auto is_success() const -> bool override {
@@ -104,13 +87,13 @@ public:
 	[[nodiscard]] constexpr auto is_failure() const -> bool override {
 		return !_is_success;
 	}
-	[[nodiscard]] auto get_success() const -> std::optional<S> override {
+	[[nodiscard]] constexpr auto get_success() const -> std::optional<S> override {
 		if (_is_success) {
 			return std::get<S>(_value);
 		}
 		return std::nullopt;
 	}
-	[[nodiscard]] auto get_failure() const -> std::optional<F> override {
+	[[nodiscard]] constexpr auto get_failure() const -> std::optional<F> override {
 		if (!_is_success) {
 			return std::get<F>(_value);
 		}
@@ -125,7 +108,7 @@ private:
 };
 
 // To allow changing result object without renaming all objects in source Enumcode.
-template<typename S, class F>
+template<typename S = std::any, class F = BasicFailureRegistrar>
 using Result = Either<S, F>;
 
 }  // namespace core::result
