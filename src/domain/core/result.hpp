@@ -107,7 +107,7 @@ private:
 };
 
 // To allow changing result object without renaming all objects in source Enumcode.
-template<typename S = std::any, class F = BasicFailureRegistrar>
+template<typename S = Success<>, class F = BasicFailure<>>
 using Result = Either<S, F>;
 
 }  // namespace core::result
