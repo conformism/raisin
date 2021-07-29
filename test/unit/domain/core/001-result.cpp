@@ -15,10 +15,6 @@
 
 using namespace core::result;
 
-// TEST_CASE("all is good") {
-//     REQUIRE(true);
-// }
-
 SCENARIO("Core Result system should be usable as success by value") {
 	GIVEN("value variable based on random type") {
 		int test_value = 2;
@@ -30,9 +26,10 @@ SCENARIO("Core Result system should be usable as success by value") {
 					REQUIRE(result.is_success() == true);
 					REQUIRE(result.get_success()->get_value() == test_value);
 				}
-				AND_THEN("The result object failure should not be queriable")
-				REQUIRE(result.is_failure() != true);
-				REQUIRE(result.get_failure().has_value() == false);
+				AND_THEN("The result object failure should not be queriable") {
+					REQUIRE(result.is_failure() != true);
+					REQUIRE(result.get_failure().has_value() == false);
+				}
 			}
 		}
 	}
@@ -50,9 +47,32 @@ SCENARIO("Core Result system should be usable as success by pointer") {
 					REQUIRE(result.is_success() == true);
 					REQUIRE(result.get_success()->get_value() == test_ptr);
 				}
-				AND_THEN("The result object failure should not be queriable")
-				REQUIRE(result.is_failure() != true);
-				REQUIRE(result.get_failure().has_value() == false);
+				AND_THEN("The result object failure should not be queriable") {
+					REQUIRE(result.is_failure() != true);
+					REQUIRE(result.get_failure().has_value() == false);
+				}
+			}
+		}
+	}
+}
+
+SCENARIO("Core Result system should be usable as failure") {
+	GIVEN("Invalid operation") {
+		int const* invalid_result = nullptr;
+		AND_GIVEN("Failure to pass to result") {
+			std::string const reason = "The pointer is empty";
+			auto const failure = BasicFailure<BasicFailureRegistrar::NO_RESOURCES>(reason);
+			WHEN("Result is created") {
+				auto const result = Result<Success<int>, decltype(failure)>(failure);
+				THEN("The result object failure should be queried") {
+					REQUIRE(result.is_failure() == true);
+					REQUIRE(result.get_failure()->get_id() == BasicFailureRegistrar::NO_RESOURCES);
+					REQUIRE(result.get_failure()->get_reason() == reason);
+				}
+				AND_THEN("The result object success should not be queriable") {
+					REQUIRE(result.is_success() == false);
+					REQUIRE(result.get_success().has_value() == false);
+				}
 			}
 		}
 	}

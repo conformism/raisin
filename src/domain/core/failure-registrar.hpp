@@ -2,6 +2,7 @@
 
 enum BasicFailureRegistrar {
 	NOTHING = 0,
-	NOT_INSIDE = 1,
-	CANT_HAVE_ZERO_LENGTH = 2,
+	NO_RESOURCES = 1,
+	NOT_INSIDE = 2,
+	CANT_HAVE_ZERO_LENGTH = 3,
 };

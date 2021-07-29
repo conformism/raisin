@@ -1,15 +1,14 @@
 #pragma once
 
 #include "failure-registrar.hpp"
-
 #include "types.hpp"
+
 #include <any>
-#include <memory>
 #include <optional>
 #include <string>
-#include <type_traits>
 #include <utility>
 #include <variant>
+// #include <type_traits>
 
 namespace core::result {
 
