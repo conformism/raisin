@@ -3,7 +3,7 @@ if( Catch2_FOUND )
 
 	target_sources( unittest
 		PRIVATE
-		# "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/001-result.cpp"
 		)
 
@@ -39,5 +39,30 @@ if( Catch2_FOUND )
 
 	set_target_properties( unittest PROPERTIES
 		OUTPUT_NAME "unittest"
+		)
+
+	file( GLOB_RECURSE UNITTEST_HEADERS "*.hpp" )
+
+	static_analysis_iwyu(
+		TARGET unittest
+		ARGS
+			--std=c++17 # Useless with -p ?
+#			-p="${CMAKE_BINARY_DIR}" # Outdated iwyu version.
+			-Xiwyu
+			--no_comments
+		)
+
+	static_analysis_format(
+		TARGET unittest
+		ADDITIONAL_FILES ${UNITTEST_HEADERS}
+		ARGS
+		)
+
+	enable_clang_build_analyzer(
+		TARGET unittest
+		)
+
+	enable_sanitizers(
+		TARGET unittest
 		)
 endif()

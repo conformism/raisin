@@ -89,7 +89,22 @@ message( STATUS "LLVM version: ${LLVM_PACKAGE_VERSION}" )
 message( STATUS "Using ClangConfig.cmake in: ${Clang_DIR}" )
 message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
+include( CPM )
+
+CPMAddPackage(
+	NAME cmake-utils
+	GITHUB_REPOSITORY conformism/cmake-utils
+	GIT_TAG main
+	DOWNLOAD_ONLY
+	)
+
+list( APPEND CMAKE_MODULE_PATH
+	"${FETCHCONTENT_BASE_DIR}/cmake-utils-src"
+	)
+
+include( ClangBuildAnalyzer )
 include( StaticTools )
+include( Sanitizers )
 
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/src" )

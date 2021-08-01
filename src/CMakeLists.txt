@@ -68,7 +68,7 @@ target_link_libraries( ${PROJECT_NAME}
 #	clangSerialization
 #	clangToolingCore
 #	clangTooling
-)
+	)
 
 target_link_options( ${PROJECT_NAME}
 	PRIVATE
@@ -117,4 +117,12 @@ static_analysis_cppcheck(
 	ARGS
 #		--enable=all
 		-v
+	)
+
+enable_clang_build_analyzer(
+	TARGET ${PROJECT_NAME}
+	)
+
+enable_sanitizers(
+	TARGET ${PROJECT_NAME}
 	)
