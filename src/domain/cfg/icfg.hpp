@@ -35,9 +35,9 @@ public:
 		virtual auto set_uuid(Uuid uuid) -> IBuilder* = 0;
 		virtual auto add_block(ConcreteBlock* block) -> IBuilder* = 0;
 		virtual auto add_scope(ConcreteScope* scope) -> IBuilder* = 0;
-		virtual auto set_blocks(Compositor<ConcreteBlock>* blocks) -> IBuilder* = 0;
-		virtual auto set_scopes(Compositor<ConcreteScope>* scopes) -> IBuilder* = 0;
-		[[nodiscard]] virtual auto build() const -> ICfg* = 0;
+		virtual auto set_blocks(Aggregator<ConcreteBlock>* blocks) -> IBuilder* = 0;
+		virtual auto set_scopes(Aggregator<ConcreteScope>* scopes) -> IBuilder* = 0;
+		[[nodiscard]] virtual auto build() const -> Concrete = 0;
 	};
 
 protected:
