@@ -6,3 +6,4 @@ enum BasicFailureRegistrar {
 	NOT_INSIDE = 2,
 	CANT_HAVE_ZERO_LENGTH = 3,
 };
+using Err = BasicFailureRegistrar;

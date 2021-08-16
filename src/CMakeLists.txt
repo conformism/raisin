@@ -8,6 +8,7 @@ target_sources( ${PROJECT_NAME}
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
 	"${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+	"${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg-builder.cpp"
 	)
 
 target_compile_definitions( ${PROJECT_NAME}
