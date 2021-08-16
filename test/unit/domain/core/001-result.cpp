@@ -1,13 +1,9 @@
-// 120-Bdd-ScenarioGivenWhenThen.cpp
-
-// main() provided in 000-CatchMain.cpp
-// #include <catch2/catch.hpp>
-#include <any>
 #include <catch2/catch_all.hpp>
-
-#include "domain/core/result.hpp"
 #include <catch2/catch_test_macros.hpp>
 
+#include "domain/core/result.hpp"
+
+#include <any>
 #include <memory>
 #include <optional>
 #include <string>
