@@ -36,9 +36,11 @@ out
 .*.swa
 .*.sw
 
+# Vim
 :wq
 :w
 :q
+*.swo
 
 # Cmake
 CMakeLists.txt.user
