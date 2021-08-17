@@ -28,7 +28,7 @@ auto Cfg::Builder::set_scopes(Aggregator<Scope>* scopes) -> ICfg::IBuilder* {
 	return this;
 }
 
-auto Cfg::Builder::build() const -> Cfg {
+auto Cfg::Builder::build() -> Cfg {
 	Cfg _builded = Cfg(_uuid, *_blocks, *_scopes);
 	return _builded;
 }

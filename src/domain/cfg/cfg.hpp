@@ -39,7 +39,7 @@ public:
 	auto add_scope(Scope* scope) -> ICfg::IBuilder* override;
 	auto set_blocks(Aggregator<Block>* blocks) -> ICfg::IBuilder* override;
 	auto set_scopes(Aggregator<Scope>* scopes) -> ICfg::IBuilder* override;
-	[[nodiscard]] auto build() const -> Cfg override;
+	[[nodiscard]] auto build() -> Cfg override;
 
 private:
 	Uuid _uuid;

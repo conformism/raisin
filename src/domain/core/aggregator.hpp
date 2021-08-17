@@ -12,7 +12,7 @@ namespace core {
 template<class T>
 class Aggregator {
 public:
-	auto insert_or_assign(Uuid uuid, T* value) const -> result::
+	auto insert_or_assign(Uuid uuid, T* value) -> result::
 		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> {
 		auto const result_guard = guard::is_null_pointer<T>(value);
 		if (result_guard.is_success()) {
@@ -20,13 +20,13 @@ public:
 			// std::map<Uuid, T*> _aggregataaaa;
 			// _aggregataaaa.insert(std::pair<Uuid, T*>(uuid, value));
 			// std::pair<Uuid, T*> pair = std::pair<Uuid, T*>(uuid, value);
-			_aggregated.emplace(std::pair<Uuid, T*>(uuid, value));
+			_aggregated.insert_or_assign(std::pair<Uuid, T*>(uuid, value));
 		}
 
 		return result_guard;
 	};
 
-	[[nodiscard]] auto remove(Uuid const& uuid) const -> result::
+	[[nodiscard]] auto remove(Uuid const& uuid) -> result::
 		Result<result::Success<Uuid>, result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> {
 		auto const result_guard = at(uuid, *_aggregated).is_success();
 		if (result_guard.is_failure()) {
@@ -66,7 +66,10 @@ public:
 	};
 
 private:
-	std::map<Uuid, T*> _aggregated;
+	// keep this private, it's an adaptater
+	// https://en.wikipedia.org/wiki/Adapter_pattern
+	// If some map methods are missing, please implement then into aggregator using result object.
+	std::unordered_map<Uuid, T*> const _aggregated;
 };
 
 }  // namespace core
