@@ -20,7 +20,7 @@ public:
 			// std::map<Uuid, T*> _aggregataaaa;
 			// _aggregataaaa.insert(std::pair<Uuid, T*>(uuid, value));
 			// std::pair<Uuid, T*> pair = std::pair<Uuid, T*>(uuid, value);
-			_aggregated.insert_or_assign(std::pair<Uuid, T*>(uuid, value));
+			_aggregated.insert_or_assign(uuid, value);
 		}
 
 		return result_guard;
@@ -69,7 +69,7 @@ private:
 	// keep this private, it's an adaptater
 	// https://en.wikipedia.org/wiki/Adapter_pattern
 	// If some map methods are missing, please implement then into aggregator using result object.
-	std::unordered_map<Uuid, T*> const _aggregated;
+	std::unordered_map<Uuid, T*> _aggregated;
 };
 
 }  // namespace core
