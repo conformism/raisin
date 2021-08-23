@@ -20,8 +20,8 @@ namespace core::guard {
 template<typename Ptr>
 [[nodiscard]] inline auto is_null_pointer(Ptr* pointer) -> result::
 	Result<result::Success<Ptr*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> {
-	bool const is_ptr = (pointer == nullptr);
-	if (is_ptr) {
+	bool const is_valid_ptr = (pointer != nullptr);
+	if (is_valid_ptr) {
 		return result::Result<
 			result::Success<Ptr*>,
 			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
