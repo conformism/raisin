@@ -5,6 +5,8 @@ if( Catch2_FOUND )
 		PRIVATE
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/001-result.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/002-guard.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/003-aggregator.cpp"
 		)
 
 	target_compile_definitions( unittest
