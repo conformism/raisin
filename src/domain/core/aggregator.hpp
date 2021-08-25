@@ -63,6 +63,31 @@ public:
 		return result_guard;
 	};
 
+	[[nodiscard]] auto insert(Uuid uuid, T* value) -> std::variant<
+		result::
+			Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>,
+		result::Result<
+			result::Success<T*>,
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>>> {
+		auto const result_guard = guard::is_null_pointer<T>(value);
+		if (result_guard.is_failure()) {
+			return result_guard;
+		}
+		if (is_inside(uuid)) {
+			result::Result<
+				result::Success<T*>,
+				result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>>(
+				result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>(
+					"The inserted uuid is already present in."));
+		}
+		_aggregated.insert(uuid, value);
+
+		result::Result<
+			result::Success<T*>,
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>>(
+			result::Success<T*>(value));
+	}
+
 private:
 	// keep this private, it's an adaptater
 	// https://en.wikipedia.org/wiki/Adapter_pattern
