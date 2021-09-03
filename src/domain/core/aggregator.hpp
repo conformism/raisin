@@ -12,14 +12,21 @@ namespace core {
 template<class T>
 class Aggregator {
 public:
+	[[nodiscard]] auto size() const -> int {
+		return _aggregated.empty();
+	}
+	[[nodiscard]] auto empty() const -> bool {
+		return _aggregated.empty();
+	}
+
 	[[nodiscard]] auto is_inside(Uuid const& uuid) const -> bool {
 		auto const is_contains_this_uuid = _aggregated.count(uuid) > 0;
 		return is_contains_this_uuid;
-	};
+	}
 
 	[[nodiscard]] auto count(Uuid const& uuid) const -> int {
 		return _aggregated.count(uuid);
-	};
+	}
 
 	[[nodiscard]] auto at(Uuid const& uuid) const -> result::
 		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> {
@@ -37,7 +44,7 @@ public:
 		return result::
 			Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>>(
 				failure);
-	};
+	}
 
 	auto insert_or_assign(Uuid uuid, T* value) -> result::
 		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> {
@@ -51,7 +58,7 @@ public:
 		}
 
 		return result_guard;
-	};
+	}
 
 	[[nodiscard]] auto remove(Uuid const& uuid) -> result::
 		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> {
@@ -61,7 +68,7 @@ public:
 		}
 
 		return result_guard;
-	};
+	}
 
 	[[nodiscard]] auto insert(Uuid uuid, T* value) -> std::variant<
 		result::
