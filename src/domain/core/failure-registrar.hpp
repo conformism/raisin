@@ -6,5 +6,6 @@ enum class BasicFailureRegistrar {
 	NOT_INSIDE,
 	ALREADY_INSIDE,
 	CANT_HAVE_ZERO_LENGTH,
+	INVALID_UUID,
 };
 using Err = BasicFailureRegistrar;

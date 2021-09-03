@@ -92,7 +92,7 @@ private:
 	// keep this private, it's an adaptater
 	// https://en.wikipedia.org/wiki/Adapter_pattern
 	// If some map methods are missing, please implement then into aggregator using result object.
-	std::unordered_map<Uuid, T*> _aggregated{};
+	std::unordered_map<Uuid, T*> _aggregated;
 };
 
 }  // namespace core

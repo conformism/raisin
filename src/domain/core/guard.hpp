@@ -30,23 +30,8 @@ template<typename Ptr>
 			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>("The pointer is empty."));
 }
 
-// template<class Container>
-// [[nodiscard]] auto against_zero_lenght(
-//     Container const container_to_check,
-//     std::string const& container_name) -> result::Result<Container, InvalidArgumentParameter> {
-//     bool const is_container_empty = container_to_check->empty();
-//     if (is_container_empty) {
-//         return result::Factory<std::string,
-//         InvalidArgumentParameter>::create(container_to_check);
-//     }
-
-//     std::string const reason = "The container/string" + container_name + "is empty.";
-
-//     auto invalid_use_case = InvalidArgumentParameter(reason);
-//     return result::Factory<std::string, InvalidArgumentParameter>::create(
-//         InvalidArgumentParameter(reason));
-// }
-
+[[nodiscard]] auto is_valid_uuid(Uuid const& uuid) -> result::
+	Result<result::Success<Uuid>, result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>>;
 // TODO(dauliac) Remove this guard, it's removed to be implemented into Agregate object
 // template<typename Contained>
 // [[nodiscard]] inline auto is_one_of(
