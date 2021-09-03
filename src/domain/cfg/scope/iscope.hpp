@@ -1,6 +1,8 @@
 #pragma once
 
+#include "domain/core/aggregator.hpp"
 #include <map>
+#include <optional>
 #include <vector>
 
 #include "../../core/types.hpp"
@@ -12,11 +14,13 @@ using namespace core;
 template<class Concrete, class ConcreteBlock>
 class IScope : public Entity {
 public:
-	using Parent = Concrete*;
+	using Parent = std::optional<Concrete*>;
 	using Blocks = core::Aggregator<ConcreteBlock>;
 	using Childs = core::Aggregator<Concrete>;
 
 	explicit IScope(core::Uuid uuid) : Entity(std::move(uuid)){};
+	[[nodiscard]] virtual auto is_root() const -> bool = 0;
+	[[nodiscard]] virtual auto has_childs() const -> bool = 0;
 	[[nodiscard]] virtual auto get_blocks() const -> Blocks = 0;
 	[[nodiscard]] virtual auto get_childs() const -> Childs = 0;
 	[[nodiscard]] virtual auto get_parent() const -> Parent = 0;

@@ -16,11 +16,13 @@ private:
 	// TODO(dauliac): check if there is way to put
 	// it into const, and if we need to
 	// add setter
-	mutable Parent _parent;
+	const Parent _parent;
 	const Blocks _blocks;
 	const Childs _childs;
 
 public:
+	auto is_root() const -> bool override;
+	auto has_childs() const -> bool override;
 	auto get_blocks() const -> Blocks override;
 	auto get_childs() const -> Childs override;
 	auto get_parent() const -> Parent override;
