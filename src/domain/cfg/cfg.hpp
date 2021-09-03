@@ -34,11 +34,21 @@ private:
 
 class Cfg::Builder : public ICfg::IBuilder {
 public:
-	auto set_uuid(Uuid uuid) -> ICfg::IBuilder* override;
-	auto add_block(Block* block) -> ICfg::IBuilder* override;
-	auto add_scope(Scope* scope) -> ICfg::IBuilder* override;
-	auto set_blocks(Aggregator<Block>* blocks) -> ICfg::IBuilder* override;
-	auto set_scopes(Aggregator<Scope>* scopes) -> ICfg::IBuilder* override;
+	auto set_uuid(Uuid uuid) -> result::Result<
+		result::Success<ICfg::IBuilder*>,
+		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> override;
+	auto add_block(Block* block) -> result::Result<
+		result::Success<ICfg::IBuilder*>,
+		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
+	auto add_scope(Scope* scope) -> result::Result<
+		result::Success<ICfg::IBuilder*>,
+		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
+	auto set_blocks(Aggregator<Block>* blocks) -> result::Result<
+		result::Success<ICfg::IBuilder*>,
+		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
+	auto set_scopes(Aggregator<Scope>* scopes) -> result::Result<
+		result::Success<ICfg::IBuilder*>,
+		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
 	[[nodiscard]] auto build() -> Cfg override;
 
 private:
