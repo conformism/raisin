@@ -12,6 +12,7 @@ template<class Concrete>
 class IBlock : public core::Entity {
 public:
 	// enum Kind {};
+	explicit IBlock() : Entity(){};
 	explicit IBlock(Uuid uuid) : Entity(std::move(uuid)){};
 
 	[[nodiscard]] virtual auto is_entry() const -> bool = 0;

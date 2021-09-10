@@ -23,11 +23,12 @@ public:
 	[[nodiscard]] virtual auto get_uuid() const -> Uuid;
 
 	// protected:
+	Entity() = default;
 	explicit Entity(Uuid uuid);
-	// ~Entity() = default;
 
 private:
-	Uuid const _uuid;
+	// TODO(dauliac) Add lib to generate random default uuid
+	Uuid const _uuid = " ";
 };
 
 class Value {

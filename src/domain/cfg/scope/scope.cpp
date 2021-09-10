@@ -1,9 +1,23 @@
 #include "./scope.hpp"
+#include <algorithm>
+#include <utility>
 
 namespace cfg {
 
+Scope::Scope(Parent parent, Childs childs, Blocks blocks)
+	: IScope<Scope, Block>(),
+	  _parent(parent),
+	  _childs(std::move(childs)),
+	  _blocks(std::move(blocks)){};
+
+Scope::Scope(core::Uuid uuid, Parent parent, Childs childs, Blocks blocks)
+	: IScope(std::move(uuid)),
+	  _parent(parent),
+	  _childs(std::move(childs)),
+	  _blocks(std::move(blocks)){};
+
 auto Scope::is_root() const -> bool {
-	auto const is_root = !_parent.has_value();
+	auto const is_root = _parent == nullptr;
 	return is_root;
 }
 
