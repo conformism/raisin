@@ -46,20 +46,6 @@ public:
 				failure);
 	}
 
-	auto insert_or_assign(Uuid uuid, T* value) -> result::
-		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> {
-		auto const result_guard = guard::is_null_pointer<T>(value);
-		if (result_guard.is_success()) {
-			// WTF
-			// std::map<Uuid, T*> _aggregataaaa;
-			// _aggregataaaa.insert(std::pair<Uuid, T*>(uuid, value));
-			// std::pair<Uuid, T*> pair = std::pair<Uuid, T*>(uuid, value);
-			_aggregated.insert_or_assign(uuid, value);
-		}
-
-		return result_guard;
-	}
-
 	[[nodiscard]] auto remove(Uuid const& uuid) -> result::
 		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> {
 		auto const result_guard = at(uuid);
@@ -70,16 +56,13 @@ public:
 		return result_guard;
 	}
 
-	[[nodiscard]] auto insert(Uuid uuid, T* value) -> std::variant<
-		result::
-			Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>,
-		result::Result<
-			result::Success<T*>,
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>>> {
-		auto const result_guard = guard::is_null_pointer<T>(value);
-		if (result_guard.is_failure()) {
-			return result_guard;
-		}
+	[[nodiscard]] auto insert(Uuid uuid, T* value) -> result::
+		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> {
+		// TODO(dauliac) Fix return type
+		// auto const result_guard = guard::is_null_pointer<T>(value);
+		// if (result_guard.is_failure()) {
+		//     return result_guard;
+		// }
 		if (is_inside(uuid)) {
 			result::Result<
 				result::Success<T*>,
@@ -99,7 +82,7 @@ private:
 	// keep this private, it's an adaptater
 	// https://en.wikipedia.org/wiki/Adapter_pattern
 	// If some map methods are missing, please implement then into aggregator using result object.
-	std::unordered_map<Uuid, T*> _aggregated;
+	std::unordered_map<Uuid, T*> const _aggregated;
 };
 
 }  // namespace core

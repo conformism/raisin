@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include "../block/block.hpp"
@@ -21,6 +22,9 @@ private:
 	const Childs _childs;
 
 public:
+	Scope(Parent parent, Childs childs, Blocks blocks);
+	Scope(core::Uuid uuid, Parent parent, Childs childs, Blocks blocks);
+
 	auto is_root() const -> bool override;
 	auto has_childs() const -> bool override;
 	auto get_blocks() const -> Blocks override;

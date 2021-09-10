@@ -37,16 +37,16 @@ public:
 			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> = 0;
 		virtual auto add_block(ConcreteBlock* block) -> result::Result<
 			result::Success<ICfg::IBuilder*>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
 		virtual auto add_scope(ConcreteScope* scope) -> result::Result<
 			result::Success<ICfg::IBuilder*>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
 		virtual auto set_blocks(Aggregator<ConcreteBlock>* blocks) -> result::Result<
 			result::Success<ICfg::IBuilder*>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
 		virtual auto set_scopes(Aggregator<ConcreteScope>* scopes) -> result::Result<
 			result::Success<ICfg::IBuilder*>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
 		[[nodiscard]] virtual auto build() -> Concrete = 0;
 	};
 

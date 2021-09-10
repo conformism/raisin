@@ -14,10 +14,11 @@ using namespace core;
 template<class Concrete, class ConcreteBlock>
 class IScope : public Entity {
 public:
-	using Parent = std::optional<Concrete*>;
+	using Parent = Concrete const*;
 	using Blocks = core::Aggregator<ConcreteBlock>;
 	using Childs = core::Aggregator<Concrete>;
 
+	IScope() : Entity(){};
 	explicit IScope(core::Uuid uuid) : Entity(std::move(uuid)){};
 	[[nodiscard]] virtual auto is_root() const -> bool = 0;
 	[[nodiscard]] virtual auto has_childs() const -> bool = 0;
