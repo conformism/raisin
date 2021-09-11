@@ -11,7 +11,8 @@ namespace core::guard {
 		return result::Result<
 			result::Success<Uuid>,
 			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>>(
-			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>("Can't have a zero length."));
+			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>(
+				BasicFailureRegistrar::INVALID_UUID));
 	}
 
 	return result::

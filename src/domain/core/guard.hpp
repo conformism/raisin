@@ -27,11 +27,12 @@ template<typename Ptr>
 	}
 	return result::
 		Result<result::Success<Ptr*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>("The pointer is empty."));
+			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>());
 }
 
 [[nodiscard]] auto is_valid_uuid(Uuid const& uuid) -> result::
 	Result<result::Success<Uuid>, result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>>;
+
 // TODO(dauliac) Remove this guard, it's removed to be implemented into Agregate object
 // template<typename Contained>
 // [[nodiscard]] inline auto is_one_of(

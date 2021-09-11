@@ -3,40 +3,49 @@
 #include "failure-registrar.hpp"
 #include "types.hpp"
 
+#include <algorithm>
 #include <any>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <variant>
+#include <vector>
 // #include <type_traits>
 
 namespace core::result {
 
-template<typename E>
+template<typename ErrorCodeRegistrar>
 class Failure {
 public:
-	using ErrorCodeRegistrar = E;
 	static_assert(
 		std::is_enum<ErrorCodeRegistrar>::value,
 		"`ErrorCodeRegistrar` must be an enum list of errors.");
 	[[nodiscard]] virtual auto get_id() const -> ErrorCodeRegistrar = 0;
-	[[nodiscard]] virtual auto get_reason() const -> std::string = 0;
 };
 
-template<BasicFailureRegistrar Id = BasicFailureRegistrar::NOTHING>
-class BasicFailure : public Failure<BasicFailureRegistrar> {
+template<auto IdDefault = BasicFailureRegistrar::NOTHING, decltype(IdDefault) const... Ids>
+class BasicFailure : public Failure<decltype(IdDefault)> {
 public:
-	explicit BasicFailure(std::string reason) : _reason(std::move(reason)){};
-	[[nodiscard]] auto get_id() const -> ErrorCodeRegistrar override {
+	using IdType = decltype(IdDefault);
+	constexpr explicit BasicFailure(IdType const id = IdDefault) : _id(id) {
+		std::vector<IdType> const possible_values = std::vector<IdType>{IdDefault, Ids...};
+		bool const not_in_possible_values =
+			1 > std::count(possible_values.begin(), possible_values.end(), id);
+		// TODO(dauliac) Use something at compile time instead of runtime
+		// static_assert(
+		//     count < 1, "The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
+		if (not_in_possible_values) {
+			throw std::invalid_argument(
+				"The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
+		}
+	};
+	[[nodiscard]] auto get_id() const -> IdType override {
 		return _id;
 	};
 
-	[[nodiscard]] auto get_reason() const -> std::string override {
-		return _reason;
-	};
-
 private:
-	ErrorCodeRegistrar _id = Id;
+	IdType const _id;
 	std::string _reason;
 };
 
