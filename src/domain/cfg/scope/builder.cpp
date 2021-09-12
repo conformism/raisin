@@ -74,4 +74,57 @@ auto Scope::Builder::set_parent(Scope* parent) -> result::Result<
 			BasicFailureRegistrar::ALREADY_INSIDE>>(result::Success<IScope::IBuilder*>{this});
 };
 
+auto Scope::Builder::add_block(Block* block) -> result::Result<
+	result::Success<IScope::IBuilder*>,
+	result::
+		BasicFailure<BasicFailureRegistrar::NO_RESOURCES, BasicFailureRegistrar::ALREADY_INSIDE>> {
+	auto const insert_result = _blocks->insert(block->get_uuid(), block);
+	if (insert_result.is_failure()) {
+		return result::Result<
+			result::Success<IScope::IBuilder*>,
+			result::BasicFailure<
+				BasicFailureRegistrar::NO_RESOURCES,
+				BasicFailureRegistrar::ALREADY_INSIDE>>(insert_result.get_failure().value());
+	}
+	return result::Result<
+		result::Success<IScope::IBuilder*>,
+		result::BasicFailure<
+			BasicFailureRegistrar::NO_RESOURCES,
+			BasicFailureRegistrar::ALREADY_INSIDE>>(result::Success<IScope::IBuilder*>{this});
+};
+
+auto Scope::Builder::set_childs(Aggregator<Scope>* childs) -> result::Result<
+	result::Success<IScope::IBuilder*>,
+	result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> {
+	auto const result = guard::is_null_pointer(childs);
+	if (result.is_failure()) {
+		return result::Result<
+			result::Success<IScope::IBuilder*>,
+			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
+			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>::create());
+	}
+	_childs = childs;
+	return result::Result<
+		result::Success<IScope::IBuilder*>,
+		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
+		result::Success<IScope::IBuilder*>{this});
+};
+
+auto Scope::Builder::set_blocks(Aggregator<Block>* blocks) -> result::Result<
+	result::Success<IScope::IBuilder*>,
+	result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> {
+	auto const result = guard::is_null_pointer(blocks);
+	if (result.is_failure()) {
+		return result::Result<
+			result::Success<IScope::IBuilder*>,
+			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
+			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>::create());
+	}
+	_blocks = blocks;
+	return result::Result<
+		result::Success<IScope::IBuilder*>,
+		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
+		result::Success<IScope::IBuilder*>{this});
+};
+
 }  // namespace cfg
