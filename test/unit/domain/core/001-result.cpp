@@ -56,14 +56,12 @@ SCENARIO("Core Result system should be usable as failure") {
 	GIVEN("Invalid operation") {
 		int const* invalid_result = nullptr;
 		AND_GIVEN("Failure to pass to result") {
-			std::string const reason = "The pointer is empty";
-			auto const failure = BasicFailure<BasicFailureRegistrar::NO_RESOURCES>(reason);
+			auto const failure = BasicFailure<BasicFailureRegistrar::NO_RESOURCES>::create();
 			WHEN("Result is created") {
 				auto const result = Result<Success<int>, decltype(failure)>(failure);
 				THEN("The result object failure should be queried") {
 					REQUIRE(result.is_failure() == true);
 					REQUIRE(result.get_failure()->get_id() == BasicFailureRegistrar::NO_RESOURCES);
-					REQUIRE(result.get_failure()->get_reason() == reason);
 				}
 				AND_THEN("The result object success should not be queriable") {
 					REQUIRE(result.is_success() == false);

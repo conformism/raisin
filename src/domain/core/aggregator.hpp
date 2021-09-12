@@ -38,12 +38,9 @@ public:
 				result::Success<T*>{_aggregated.at(uuid)});
 		}
 
-		std::string reason = "No Contained at uuid: " + uuid + " is not present into collection.";
-
-		auto const failure = result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>(reason);
 		return result::
 			Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>>(
-				failure);
+				result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>::create());
 	}
 
 	[[nodiscard]] auto remove(Uuid const& uuid) -> result::
@@ -56,33 +53,29 @@ public:
 		return result_guard;
 	}
 
-	[[nodiscard]] auto insert(Uuid uuid, T* value) -> result::
-		Result<result::Success<T*>, result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> {
-		// TODO(dauliac) Fix return type
-		// auto const result_guard = guard::is_null_pointer<T>(value);
-		// if (result_guard.is_failure()) {
-		//     return result_guard;
-		// }
-		if (is_inside(uuid)) {
-			result::Result<
-				result::Success<T*>,
-				result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>>(
-				result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>(
-					"The inserted uuid is already present in."));
+	using insert_failure_t = result::
+		BasicFailure<BasicFailureRegistrar::NO_RESOURCES, BasicFailureRegistrar::ALREADY_INSIDE>;
+	[[nodiscard]] auto insert(Uuid uuid, T* value)
+		-> result::Result<result::Success<T*>, insert_failure_t> {
+		auto const result_guard = guard::is_null_pointer<T>(value);
+		if (result_guard.is_failure()) {
+			return result::Result<result::Success<T*>, insert_failure_t>(
+				insert_failure_t::create<BasicFailureRegistrar::NO_RESOURCES>());
 		}
-		_aggregated.insert(uuid, value);
+		if (is_inside(uuid)) {
+			return result::Result<result::Success<T*>, insert_failure_t>(
+				insert_failure_t::create());
+		}
+		_aggregated.insert_or_assign(uuid, value);
 
-		result::Result<
-			result::Success<T*>,
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>>(
-			result::Success<T*>(value));
+		return result::Result<result::Success<T*>, insert_failure_t>(result::Success<T*>{value});
 	}
 
 private:
 	// keep this private, it's an adaptater
 	// https://en.wikipedia.org/wiki/Adapter_pattern
 	// If some map methods are missing, please implement then into aggregator using result object.
-	std::unordered_map<Uuid, T*> const _aggregated;
+	std::unordered_map<Uuid, T*> _aggregated;
 };
 
 }  // namespace core

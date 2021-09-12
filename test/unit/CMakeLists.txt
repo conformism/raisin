@@ -7,7 +7,8 @@ if(Catch2_FOUND)
             "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/001-result.cpp"
             "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/002-guard.cpp"
             "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/003-aggregator.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/cfg-builder.cpp")
+            # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/cfg-builder.cpp"
+  )
 
   target_compile_definitions(unittest PRIVATE UNITTEST $<$<CONFIG:Debug>:DEBUG>)
 

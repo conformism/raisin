@@ -8,9 +8,8 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <utility>
-#include <variant>
-#include <vector>
 // #include <type_traits>
 
 namespace core::result {
@@ -28,23 +27,24 @@ template<auto IdDefault = BasicFailureRegistrar::NOTHING, decltype(IdDefault) co
 class BasicFailure : public Failure<decltype(IdDefault)> {
 public:
 	using IdType = decltype(IdDefault);
-	constexpr explicit BasicFailure(IdType const id = IdDefault) : _id(id) {
-		std::vector<IdType> const possible_values = std::vector<IdType>{IdDefault, Ids...};
-		bool const not_in_possible_values =
-			1 > std::count(possible_values.begin(), possible_values.end(), id);
-		// TODO(dauliac) Use something at compile time instead of runtime
-		// static_assert(
-		//     count < 1, "The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
-		if (not_in_possible_values) {
-			throw std::invalid_argument(
-				"The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
-		}
+	template<IdType IdValue = IdDefault>
+	static constexpr auto create() -> BasicFailure<IdDefault, Ids...> {
+		// constexpr bool not_in_possible_values = IdValue == IdDefault || ((IdValue == Ids) &&
+		// ...);
+		constexpr bool is_possible_values = IdValue == IdDefault || ((IdValue == Ids) || ...);
+		static_assert(
+			is_possible_values,
+			"The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
+		return BasicFailure<IdDefault, Ids...>(IdValue);
 	};
+
 	[[nodiscard]] auto get_id() const -> IdType override {
 		return _id;
 	};
 
 private:
+	constexpr explicit BasicFailure(IdType const id) : _id(id){};
+
 	IdType const _id;
 	std::string _reason;
 };
