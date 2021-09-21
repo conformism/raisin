@@ -53,22 +53,27 @@ public:
 		return result_guard;
 	}
 
-	using insert_failure_t = result::
-		BasicFailure<BasicFailureRegistrar::NO_RESOURCES, BasicFailureRegistrar::ALREADY_INSIDE>;
-	[[nodiscard]] auto insert(Uuid uuid, T* value)
-		-> result::Result<result::Success<T*>, insert_failure_t> {
-		auto const result_guard = guard::is_null_pointer<T>(value);
-		if (result_guard.is_failure()) {
-			return result::Result<result::Success<T*>, insert_failure_t>(
-				insert_failure_t::create<BasicFailureRegistrar::NO_RESOURCES>());
-		}
-		if (is_inside(uuid)) {
-			return result::Result<result::Success<T*>, insert_failure_t>(
-				insert_failure_t::create());
-		}
-		_aggregated.insert_or_assign(uuid, value);
+	[[nodiscard]] auto insert(Uuid uuid, T* value) -> result::Result<
+		result::Success<T*>,
+		result::BasicFailure<
+			BasicFailureRegistrar::NO_RESOURCES,
+			BasicFailureRegistrar::ALREADY_INSIDE>> {
+		// auto const result_guard = guard::is_null_pointer<T>(value);
+		// if (result_guard.is_failure()) {
+		//     return result::Result<result::Success<T*>, insert_failure_t>(
+		//         insert_failure_t::create<BasicFailureRegistrar::NO_RESOURCES>());
+		// }
+		// if (is_inside(uuid)) {
+		//     return result::Result<result::Success<T*>, insert_failure_t>(
+		//         insert_failure_t::create());
+		// }
+		// _aggregated.insert_or_assign(uuid, value);
 
-		return result::Result<result::Success<T*>, insert_failure_t>(result::Success<T*>{value});
+		return result::Result<
+			result::Success<T*>,
+			result::BasicFailure<
+				BasicFailureRegistrar::NO_RESOURCES,
+				BasicFailureRegistrar::ALREADY_INSIDE>>(result::Success<T*>{value});
 	}
 
 private:

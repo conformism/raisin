@@ -56,7 +56,7 @@ public:
 	[[nodiscard]] auto get_value() const -> T {
 		return value;
 	}
-	T const value;
+	T value;
 };
 
 /** @brief The IEither class is the class that describe the result

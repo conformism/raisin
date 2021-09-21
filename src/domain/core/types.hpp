@@ -38,7 +38,8 @@ class Value {
 
 template<class T>
 class Builder {
-	[[nodiscard]] virtual auto build() const -> T = 0;
+public:
+	[[nodiscard]] virtual auto build() -> T = 0;
 };
 
 }  // namespace core

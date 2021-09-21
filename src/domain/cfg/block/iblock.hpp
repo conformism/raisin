@@ -22,16 +22,35 @@ public:
 	[[nodiscard]] virtual auto get_successors() const -> Aggregator<Concrete> const* = 0;
 	[[nodiscard]] virtual auto get_precedents() const -> Aggregator<Concrete> const* = 0;
 
+	template<class ConcreteBlock>
 	class IBuilder : Builder<Concrete> {
 	public:
-		virtual auto set_uuid(Uuid uuid) -> IBuilder* = 0;
-		virtual auto set_text(std::string text) -> IBuilder* = 0;
-		virtual auto define_as_entry(bool is_entry) -> IBuilder* = 0;
-		virtual auto define_as_exit(bool is_exit) -> IBuilder* = 0;
-		virtual auto add_precedent(Concrete* block) -> IBuilder* = 0;
-		virtual auto add_successor(Concrete* block) -> IBuilder* = 0;
-		virtual auto set_precedents(Concrete* blocks) -> IBuilder* = 0;
-		virtual auto set_successors(Concrete* blocks) -> IBuilder* = 0;
+		virtual auto set_uuid(Uuid uuid) -> result::Result<
+			result::Success<ConcreteBlock&>,
+			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> = 0;
+		virtual auto set_text(std::string text) -> ConcreteBlock& = 0;
+		virtual auto define_as_entry(bool is_entry) -> result::Result<
+			result::Success<ConcreteBlock&>,
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> = 0;
+		virtual auto define_as_exit(bool is_exit) -> result::Result<
+			result::Success<ConcreteBlock&>,
+			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> = 0;
+		virtual auto add_precedent(Concrete* precedent) -> result::Result<
+			result::Success<ConcreteBlock&>,
+			result::BasicFailure<
+				BasicFailureRegistrar::NO_RESOURCES,
+				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
+		virtual auto add_successor(Concrete* successor) -> result::Result<
+			result::Success<ConcreteBlock&>,
+			result::BasicFailure<
+				BasicFailureRegistrar::NO_RESOURCES,
+				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
+		virtual auto set_precedents(Aggregator<Concrete>* precedents) -> result::Result<
+			result::Success<ConcreteBlock&>,
+			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
+		virtual auto set_successors(Aggregator<Concrete>* successors) -> result::Result<
+			result::Success<ConcreteBlock&>,
+			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
 	};
 };
 

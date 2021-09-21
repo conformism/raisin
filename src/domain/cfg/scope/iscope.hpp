@@ -26,32 +26,33 @@ public:
 	[[nodiscard]] virtual auto get_childs() const -> Childs = 0;
 	[[nodiscard]] virtual auto get_parent() const -> Parent = 0;
 
-	class IBuilder {
+	template<class ConcreteBuilder>
+	class IBuilder : Builder<Concrete> {
 	public:
 		// virtual ~IBuilder() = default;
 		virtual auto set_uuid(Uuid uuid) -> result::Result<
-			result::Success<IScope::IBuilder*>,
+			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> = 0;
 		virtual auto add_child(Concrete* child) -> result::Result<
-			result::Success<IScope::IBuilder*>,
+			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<
 				BasicFailureRegistrar::NO_RESOURCES,
 				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
 		virtual auto set_parent(Concrete* parent) -> result::Result<
-			result::Success<IScope::IBuilder*>,
+			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<
 				BasicFailureRegistrar::NO_RESOURCES,
 				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
 		virtual auto add_block(ConcreteBlock* block) -> result::Result<
-			result::Success<IScope::IBuilder*>,
+			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<
 				BasicFailureRegistrar::NO_RESOURCES,
 				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
 		virtual auto set_childs(Aggregator<Concrete>* childs) -> result::Result<
-			result::Success<IScope::IBuilder*>,
+			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
 		virtual auto set_blocks(Aggregator<ConcreteBlock>* blocks) -> result::Result<
-			result::Success<IScope::IBuilder*>,
+			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
 		[[nodiscard]] virtual auto build() -> Concrete = 0;
 	};

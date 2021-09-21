@@ -6,6 +6,7 @@ target_sources(
           "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/builder.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/builder.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"

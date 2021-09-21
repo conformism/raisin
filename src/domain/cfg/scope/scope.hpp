@@ -19,8 +19,8 @@ public:
 	auto get_blocks() const -> Blocks override;
 	auto get_childs() const -> Childs override;
 	auto get_parent() const -> Parent override;
-	friend IBuilder;
 	class Builder;
+	friend IBuilder<Builder>;
 
 private:
 	Scope(Parent parent, Childs childs, Blocks blocks);
@@ -31,31 +31,31 @@ private:
 	const Childs _childs;
 };
 
-class Scope::Builder : public IScope::IBuilder {
+class Scope::Builder : public IScope::IBuilder<Builder> {
 public:
 	auto set_uuid(Uuid uuid) -> result::Result<
-		result::Success<IScope::IBuilder*>,
+		result::Success<Builder&>,
 		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> override;
 	auto add_child(Scope* child) -> result::Result<
-		result::Success<IScope::IBuilder*>,
+		result::Success<Builder&>,
 		result::BasicFailure<
 			BasicFailureRegistrar::NO_RESOURCES,
 			BasicFailureRegistrar::ALREADY_INSIDE>> override;
 	auto set_parent(Scope* parent) -> result::Result<
-		result::Success<IScope::IBuilder*>,
+		result::Success<Builder&>,
 		result::BasicFailure<
 			BasicFailureRegistrar::NO_RESOURCES,
 			BasicFailureRegistrar::ALREADY_INSIDE>> override;
 	auto add_block(Block* block) -> result::Result<
-		result::Success<IScope::IBuilder*>,
+		result::Success<Builder&>,
 		result::BasicFailure<
 			BasicFailureRegistrar::NO_RESOURCES,
 			BasicFailureRegistrar::ALREADY_INSIDE>> override;
 	auto set_childs(Aggregator<Scope>* childs) -> result::Result<
-		result::Success<IScope<Scope, Block>::IBuilder*>,
+		result::Success<Builder&>,
 		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
 	auto set_blocks(Aggregator<Block>* blocks) -> result::Result<
-		result::Success<IScope<Scope, Block>::IBuilder*>,
+		result::Success<Builder&>,
 		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
 	[[nodiscard]] auto build() -> Scope override;
 
