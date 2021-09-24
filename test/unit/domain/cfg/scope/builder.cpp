@@ -72,7 +72,7 @@ SCENARIO("Scope builder should works with block") {
 		AND_GIVEN("Exising builder") {
 			auto builder = cfg::Scope::Builder();
 			WHEN("Builder take block") {
-				auto result = builder.add_block(&block);
+				auto result = builder.add_block(block_ptr);
 				//     THEN("The result shoult be a success") {
 				//         REQUIRE(result.is_success() == true);
 				//     }

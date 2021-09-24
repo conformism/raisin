@@ -78,13 +78,13 @@ auto Scope::Builder::add_block(Block* block) -> result::Result<
 	result::
 		BasicFailure<BasicFailureRegistrar::NO_RESOURCES, BasicFailureRegistrar::ALREADY_INSIDE>> {
 	auto const insert_result = _blocks->insert(block->get_uuid(), block);
-	// if (insert_result.is_failure()) {
-	//     return result::Result<
-	//         result::Success<Builder&>,
-	//         result::BasicFailure<
-	//             BasicFailureRegistrar::NO_RESOURCES,
-	//             BasicFailureRegistrar::ALREADY_INSIDE>>(insert_result.get_failure().value());
-	// }
+	if (insert_result.is_failure()) {
+		return result::Result<
+			result::Success<Builder&>,
+			result::BasicFailure<
+				BasicFailureRegistrar::NO_RESOURCES,
+				BasicFailureRegistrar::ALREADY_INSIDE>>(insert_result.get_failure().value());
+	}
 	return result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<
