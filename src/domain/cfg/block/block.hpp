@@ -79,7 +79,6 @@ private:
 	bool _is_exit;
 	Aggregator<Block>* _precedents;
 	Aggregator<Block>* _successors;
-	IBlock* _builded;
 };
 
 }  // namespace cfg

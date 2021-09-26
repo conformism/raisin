@@ -17,6 +17,7 @@ namespace core::result {
 template<typename ErrorCodeRegistrar>
 class Failure {
 public:
+	virtual ~Failure() = 0;
 	static_assert(
 		std::is_enum<ErrorCodeRegistrar>::value,
 		"`ErrorCodeRegistrar` must be an enum list of errors.");
@@ -79,7 +80,7 @@ public:
 	// static_assert(
 	//     std::is_base_of<Failure<FValue>, F<FValue>>(),
 	//     "`F` must extends `Failure<std::any>`.");
-
+	virtual ~IEither() = 0;
 	[[nodiscard]] virtual auto is_success() const -> bool = 0;
 	[[nodiscard]] virtual auto is_failure() const -> bool = 0;
 	[[nodiscard]] virtual auto get_success() const -> std::optional<S> = 0;
@@ -87,7 +88,7 @@ public:
 };
 
 template<class S = Success<>, class F = BasicFailure<>>
-class Either : public IEither<S, F> {
+class Result : public IEither<S, F> {
 public:
 	[[nodiscard]] constexpr auto is_success() const -> bool override {
 		return _is_success;
@@ -107,16 +108,12 @@ public:
 		}
 		return std::nullopt;
 	}
-	constexpr explicit Either(S const value) : _is_success(true), _value(std::move(value)){};
-	constexpr explicit Either(F const value) : _is_success(false), _value(std::move(value)){};
+	constexpr explicit Result(S const value) : _is_success(true), _value(std::move(value)){};
+	constexpr explicit Result(F const value) : _is_success(false), _value(std::move(value)){};
 
 private:
 	bool const _is_success;
 	std::variant<S, F> const _value;
 };
-
-// To allow changing result object without renaming all objects in source Enumcode.
-template<typename S = Success<>, class F = BasicFailure<>>
-using Result = Either<S, F>;
 
 }  // namespace core::result

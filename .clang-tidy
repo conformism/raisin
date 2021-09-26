@@ -5,12 +5,28 @@ Checks: '
 *,
 -llvmlibc-restrict-system-libc-headers,
 -llvmlibc-callee-namespace,
+-hicpp-special-member-functions,
+-cppcoreguidelines-special-member-functions,
 -abseil-*,
 -boost-*,
 -darwin-*,
 -fuchsia-*,-google-objc-*,
 -google-build-using-namespace,
--google-upgrade-googletest-case,-mpi-*,-objc-*,-openmp-*,-cert-err58-cpp,-clang-analyzer-osx.*,-clang-analyzer-optin.osx.*,-modernize-use-trailing-return-type,-modernize-use-transparent-functors,-readability-uppercase-literal-suffix,-cppcoreguidelines-pro-bounds-constant-array-index,-cert-dcl21-cpp,-misc-non-private-member-variables-in-classes,-google-runtime-references,-hicpp-uppercase-literal-suffix'
+-google-upgrade-googletest-case,
+-mpi-*,
+-objc-*,
+-openmp-*,
+-cert-err58-cpp,
+-clang-analyzer-osx.*,
+-clang-analyzer-optin.osx.*,
+-modernize-use-trailing-return-type,
+-modernize-use-transparent-functors,
+-readability-uppercase-literal-suffix,
+-cppcoreguidelines-pro-bounds-constant-array-index,
+-cert-dcl21-cpp,
+-misc-non-private-member-variables-in-classes,
+-google-runtime-references,
+-hicpp-uppercase-literal-suffix'
 WarningsAsErrors: '*'  # ''
 HeaderFilterRegex: '.*'  # ''
 AnalyzeTemporaryDtors: true  # false

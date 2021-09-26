@@ -7,14 +7,14 @@ namespace cfg {
 Scope::Scope(Parent parent, Childs childs, Blocks blocks)
 	: IScope<Scope, Block>(),
 	  _parent(parent),
-	  _childs(std::move(childs)),
-	  _blocks(std::move(blocks)){};
+	  _blocks(std::move(blocks)),
+	  _childs(std::move(childs)){};
 
 Scope::Scope(core::Uuid uuid, Parent parent, Childs childs, Blocks blocks)
 	: IScope(std::move(uuid)),
 	  _parent(parent),
-	  _childs(std::move(childs)),
-	  _blocks(std::move(blocks)){};
+	  _blocks(std::move(blocks)),
+	  _childs(std::move(childs)){};
 
 auto Scope::is_root() const -> bool {
 	auto const is_root = _parent == nullptr;
