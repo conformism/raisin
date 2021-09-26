@@ -70,6 +70,8 @@ public:
 					BasicFailureRegistrar::ALREADY_INSIDE>::
 					create<BasicFailureRegistrar::NO_RESOURCES>());
 		}
+
+		// TODO(dauliac) add tests, units tests not fails if false is hardcoded here
 		if (is_inside(uuid)) {
 			return result::Result<
 				result::Success<T*>,

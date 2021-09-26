@@ -14,11 +14,11 @@ using namespace core;
 
 class Scope : public IScope<Scope, Block> {
 public:
-	auto is_root() const -> bool override;
-	auto has_childs() const -> bool override;
-	auto get_blocks() const -> Blocks override;
-	auto get_childs() const -> Childs override;
-	auto get_parent() const -> Parent override;
+	[[nodiscard]] auto is_root() const -> bool override;
+	[[nodiscard]] auto has_childs() const -> bool override;
+	[[nodiscard]] auto get_blocks() const -> Blocks override;
+	[[nodiscard]] auto get_childs() const -> Childs override;
+	[[nodiscard]] auto get_parent() const -> Parent override;
 	class Builder;
 	friend IBuilder<Builder>;
 
@@ -51,20 +51,19 @@ public:
 		result::BasicFailure<
 			BasicFailureRegistrar::NO_RESOURCES,
 			BasicFailureRegistrar::ALREADY_INSIDE>> override;
-	auto set_childs(Aggregator<Scope>* childs) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
-	auto set_blocks(Aggregator<Block>* blocks) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
+	// auto set_childs(Aggregator<Scope>* childs) -> result::Result<
+	//     result::Success<Builder&>,
+	//     result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
+	// auto set_blocks(Aggregator<Block>* blocks) -> result::Result<
+	//     result::Success<Builder&>,
+	//     result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
 	[[nodiscard]] auto build() -> Scope override;
 
 private:
 	Uuid _uuid;
 	Scope* _parent;
-	Aggregator<Scope>* _childs;
-	Aggregator<Block>* _blocks;
-	IScope* _builded;
+	Aggregator<Scope> _childs;
+	Aggregator<Block> _blocks;
 };
 
 }  // namespace cfg

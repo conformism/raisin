@@ -2,7 +2,7 @@
 #include <catch2/catch_all.hpp>
 
 #include "domain/cfg/scope/scope.hpp"
-#include "domain/core/result.hpp"
+#include "domain/core/types.hpp"
 
 #include <any>
 #include <catch2/catch_test_macros.hpp>
@@ -12,6 +12,7 @@
 #include <vector>
 
 using namespace core::result;
+using namespace core;
 
 SCENARIO("Scope builder should works with uuid") {
 	GIVEN("Known UUID") {
@@ -66,7 +67,8 @@ SCENARIO("Scope builder should works with parent") {
 SCENARIO("Scope builder should works with block") {
 	GIVEN("Known Block address") {
 		cfg::Block::Builder block_builder = cfg::Block::Builder();
-		block_builder.set_uuid("12212121");
+		core::Uuid const uuid = "1234567";
+		block_builder.set_uuid(uuid);
 		cfg::Block block = block_builder.build();
 		auto* block_ptr = &block;
 		AND_GIVEN("Exising builder") {

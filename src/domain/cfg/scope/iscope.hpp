@@ -48,12 +48,12 @@ public:
 			result::BasicFailure<
 				BasicFailureRegistrar::NO_RESOURCES,
 				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
-		virtual auto set_childs(Aggregator<Concrete>* childs) -> result::Result<
-			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
-		virtual auto set_blocks(Aggregator<ConcreteBlock>* blocks) -> result::Result<
-			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
+		// virtual auto set_childs(Aggregator<Concrete>* childs) -> result::Result<
+		//     result::Success<ConcreteBuilder&>,
+		//     result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
+		// virtual auto set_blocks(Aggregator<ConcreteBlock>* blocks) -> result::Result<
+		//     result::Success<ConcreteBuilder&>,
+		//     result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
 		[[nodiscard]] virtual auto build() -> Concrete = 0;
 	};
 };
