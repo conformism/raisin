@@ -1,15 +1,13 @@
-#include "domain/core/types.hpp"
 #include <catch2/catch_all.hpp>
 
-#include "domain/cfg/scope/scope.hpp"
-#include "domain/core/types.hpp"
-
 #include <any>
-#include <catch2/catch_test_macros.hpp>
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
+
+#include "domain/cfg/scope/scope.hpp"
+#include "domain/core/types.hpp"
 
 using namespace core::result;
 using namespace core;

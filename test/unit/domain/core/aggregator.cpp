@@ -1,13 +1,13 @@
 #include <catch2/catch_all.hpp>
 
-#include "domain/core/aggregator.hpp"
-#include "domain/core/types.hpp"
-
 #include <any>
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
+
+#include "domain/core/aggregator.hpp"
+#include "domain/core/types.hpp"
 
 using namespace core;
 

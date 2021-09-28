@@ -1,12 +1,12 @@
 #include <catch2/catch_all.hpp>
 
-#include "domain/core/result.hpp"
-
 #include <any>
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
+
+#include "domain/core/result.hpp"
 
 using namespace core::result;
 

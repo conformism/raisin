@@ -1,6 +1,6 @@
-#include "domain/core/failure-registrar.hpp"
 #include <catch2/catch_all.hpp>
 
+#include "domain/core/failure-registrar.hpp"
 #include "domain/core/guard.hpp"
 
 using namespace core;
