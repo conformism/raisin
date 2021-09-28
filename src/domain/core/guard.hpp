@@ -17,20 +17,20 @@ namespace core::guard {
 
 template<typename Ptr>
 [[nodiscard]] inline auto is_null_pointer(Ptr* pointer) -> result::
-	Result<result::Success<Ptr*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> {
+	Result<result::Success<Ptr*>, result::BasicFailure<Failures::NO_RESOURCES>> {
 	bool const is_valid_ptr = (pointer != nullptr);
 	if (is_valid_ptr) {
 		return result::Result<
 			result::Success<Ptr*>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
+			result::BasicFailure<Failures::NO_RESOURCES>>(
 			result::Success<Ptr*>{pointer});
 	}
 	return result::
-		Result<result::Success<Ptr*>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>::create());
+		Result<result::Success<Ptr*>, result::BasicFailure<Failures::NO_RESOURCES>>(
+			result::BasicFailure<Failures::NO_RESOURCES>::create());
 }
 
 [[nodiscard]] auto is_valid_uuid(Uuid const& uuid) -> result::
-	Result<result::Success<Uuid>, result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>>;
+	Result<result::Success<Uuid>, result::BasicFailure<Failures::INVALID_UUID>>;
 
 }  // namespace core::guard

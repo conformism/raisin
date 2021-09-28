@@ -23,7 +23,7 @@ public:
 	[[nodiscard]] virtual auto get_id() const -> ErrorCodeRegistrar = 0;
 };
 
-template<auto IdDefault = BasicFailureRegistrar::NOTHING, decltype(IdDefault) const... Ids>
+template<auto IdDefault = Failures::NOTHING, decltype(IdDefault) const... Ids>
 class BasicFailure : public Failure<decltype(IdDefault)> {
 public:
 	using IdType = decltype(IdDefault);

@@ -35,22 +35,22 @@ class Scope::Builder : public IScope::IBuilder<Builder> {
 public:
 	auto set_uuid(Uuid uuid) -> result::Result<
 		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> override;
+		result::BasicFailure<Failures::INVALID_UUID>> override;
 	auto add_child(Scope* child) -> result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<
-			BasicFailureRegistrar::NO_RESOURCES,
-			BasicFailureRegistrar::ALREADY_INSIDE>> override;
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>> override;
 	auto set_parent(Scope* parent) -> result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<
-			BasicFailureRegistrar::NO_RESOURCES,
-			BasicFailureRegistrar::ALREADY_INSIDE>> override;
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>> override;
 	auto add_block(Block* block) -> result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<
-			BasicFailureRegistrar::NO_RESOURCES,
-			BasicFailureRegistrar::ALREADY_INSIDE>> override;
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>> override;
 	[[nodiscard]] auto build() -> Scope override;
 
 private:

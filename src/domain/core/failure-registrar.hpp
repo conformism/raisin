@@ -1,6 +1,6 @@
 #pragma once
 
-enum class BasicFailureRegistrar {
+enum class Failures {
 	NOTHING = 0,
 	NO_RESOURCES,
 	NOT_INSIDE,
@@ -9,4 +9,4 @@ enum class BasicFailureRegistrar {
 	CANT_HAVE_ZERO_LENGTH,
 	INVALID_UUID,
 };
-using Err = BasicFailureRegistrar;
+using Err = Failures;

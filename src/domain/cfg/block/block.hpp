@@ -37,18 +37,18 @@ class Block::Builder : public IBlock::IBuilder<Block::Builder> {
 public:
 	auto set_uuid(Uuid uuid) -> result::Result<
 		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> override;
+		result::BasicFailure<Failures::INVALID_UUID>> override;
 	auto set_text(std::string text) -> Builder& override;
 	auto add_precedent(Block* precedent) -> result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<
-			BasicFailureRegistrar::NO_RESOURCES,
-			BasicFailureRegistrar::ALREADY_INSIDE>> override;
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>> override;
 	auto add_successor(Block* successor) -> result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<
-			BasicFailureRegistrar::NO_RESOURCES,
-			BasicFailureRegistrar::ALREADY_INSIDE>> override;
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>> override;
 	[[nodiscard]] auto build() -> Block override;
 
 private:

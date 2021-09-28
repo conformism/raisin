@@ -29,7 +29,7 @@ SCENARIO("Guard against null ptr should works with invalid pointer.") {
 			THEN("The result should be sucess.") {
 				REQUIRE(result.is_failure() == true);
 				AND_THEN("The result failure value should say there is no resouces.") {
-					REQUIRE(result.get_failure()->get_id() == BasicFailureRegistrar::NO_RESOURCES);
+					REQUIRE(result.get_failure()->get_id() == Failures::NO_RESOURCES);
 				}
 			}
 		}

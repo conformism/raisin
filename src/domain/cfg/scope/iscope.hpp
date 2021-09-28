@@ -32,22 +32,22 @@ public:
 		// virtual ~IBuilder() = default;
 		virtual auto set_uuid(Uuid uuid) -> result::Result<
 			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> = 0;
+			result::BasicFailure<Failures::INVALID_UUID>> = 0;
 		virtual auto add_child(Concrete* child) -> result::Result<
 			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<
-				BasicFailureRegistrar::NO_RESOURCES,
-				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
+				Failures::NO_RESOURCES,
+				Failures::ALREADY_INSIDE>> = 0;
 		virtual auto set_parent(Concrete* parent) -> result::Result<
 			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<
-				BasicFailureRegistrar::NO_RESOURCES,
-				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
+				Failures::NO_RESOURCES,
+				Failures::ALREADY_INSIDE>> = 0;
 		virtual auto add_block(ConcreteBlock* block) -> result::Result<
 			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<
-				BasicFailureRegistrar::NO_RESOURCES,
-				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
+				Failures::NO_RESOURCES,
+				Failures::ALREADY_INSIDE>> = 0;
 	};
 };
 

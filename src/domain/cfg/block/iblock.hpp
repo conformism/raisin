@@ -27,18 +27,18 @@ public:
 	public:
 		virtual auto set_uuid(Uuid uuid) -> result::Result<
 			result::Success<ConcreteBlock&>,
-			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> = 0;
+			result::BasicFailure<Failures::INVALID_UUID>> = 0;
 		virtual auto set_text(std::string text) -> ConcreteBlock& = 0;
 		virtual auto add_precedent(Concrete* precedent) -> result::Result<
 			result::Success<ConcreteBlock&>,
 			result::BasicFailure<
-				BasicFailureRegistrar::NO_RESOURCES,
-				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
+				Failures::NO_RESOURCES,
+				Failures::ALREADY_INSIDE>> = 0;
 		virtual auto add_successor(Concrete* successor) -> result::Result<
 			result::Success<ConcreteBlock&>,
 			result::BasicFailure<
-				BasicFailureRegistrar::NO_RESOURCES,
-				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
+				Failures::NO_RESOURCES,
+				Failures::ALREADY_INSIDE>> = 0;
 	};
 };
 
