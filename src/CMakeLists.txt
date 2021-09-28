@@ -10,8 +10,8 @@ target_sources(
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/builder.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-          # "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg-builder.cpp"
-)
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/builder.cpp")
 
 target_compile_definitions(
   ${PROJECT_NAME} PRIVATE # $<$<CONFIG:Debug>:DEBUG> ${LLVM_DEFINITIONS}

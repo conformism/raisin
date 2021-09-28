@@ -6,23 +6,23 @@
 #include <string>
 #include <vector>
 
-#include "domain/cfg/scope/scope.hpp"
+#include "domain/cfg/cfg.hpp"
 
 using namespace core::result;
 using namespace core;
 
-SCENARIO("Block builder should works with uuid") {
+SCENARIO("Cfg builder should works with uuid") {
 	GIVEN("Known UUID") {
 		core::Uuid uuid = "randomuuid";
 		AND_GIVEN("Exising builder") {
-			auto builder = cfg::Block::Builder();
+			auto builder = cfg::Cfg::Builder();
 			WHEN("Builder take uuid") {
 				auto result = builder.set_uuid(uuid);
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
-					AND_THEN("The scope sould build") {
+					AND_THEN("The cfg should build") {
 						builder = result.get_success()->get_value();
-						cfg::Block scope = builder.build();
+						cfg::Cfg cfg = builder.build();
 					}
 				}
 			}
@@ -30,21 +30,21 @@ SCENARIO("Block builder should works with uuid") {
 	}
 }
 
-SCENARIO("Block builder should works without uuid") {
+SCENARIO("Cfg builder should works without uuid") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Block::Builder();
+		auto builder = cfg::Cfg::Builder();
 		WHEN("Build") {
-			auto const scope = builder.build();
-			THEN("The scope should build") {}
+			auto const cfg = builder.build();
+			THEN("The cfg should build") {}
 		}
 	}
 }
 
-SCENARIO("Block builder should fail with invalid uuid") {
+SCENARIO("Cfg builder should fail with invalid uuid") {
 	GIVEN("Known UUID") {
 		core::Uuid invalid_uuid;
 		AND_GIVEN("Exising builder") {
-			auto builder = cfg::Block::Builder();
+			auto builder = cfg::Cfg::Builder();
 			WHEN("Builder take uuid") {
 				auto result = builder.set_uuid(invalid_uuid);
 				THEN("The result shoult be failure") {
@@ -55,14 +55,15 @@ SCENARIO("Block builder should fail with invalid uuid") {
 	}
 }
 
-SCENARIO("Block builder should works with precedent") {
+SCENARIO("Cfg builder should works with block") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Block::Builder();
-		AND_GIVEN("Exising blocks address") {
-			auto precedent = builder.build();
-			auto* precedent_ptr = &precedent;
+		auto builder = cfg::Cfg::Builder();
+		AND_GIVEN("Exising block address") {
+			auto block_builder = cfg::Block::Builder();
+			auto block = block_builder.build();
+			auto* block_ptr = &block;
 			WHEN("Builder take scope") {
-				auto const result = builder.add_precedent(precedent_ptr);
+				auto const result = builder.add_block(block_ptr);
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
 				}
@@ -71,14 +72,15 @@ SCENARIO("Block builder should works with precedent") {
 	}
 }
 
-SCENARIO("Block builder should works with successor") {
+SCENARIO("Cfg builder should works with scope") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Block::Builder();
-		AND_GIVEN("Exising blocks address") {
-			auto successor = builder.build();
-			auto* successor_ptr = &successor;
+		auto builder = cfg::Cfg::Builder();
+		AND_GIVEN("Exising scope address") {
+			auto scope_builder = cfg::Scope::Builder();
+			auto scope = scope_builder.build();
+			auto* scope_ptr = &scope;
 			WHEN("Builder take scope") {
-				auto const result = builder.add_precedent(successor_ptr);
+				auto const result = builder.add_scope(scope_ptr);
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
 				}
