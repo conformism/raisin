@@ -45,12 +45,6 @@ public:
 			result::BasicFailure<
 				BasicFailureRegistrar::NO_RESOURCES,
 				BasicFailureRegistrar::ALREADY_INSIDE>> = 0;
-		virtual auto set_precedents(Aggregator<Concrete>* precedents) -> result::Result<
-			result::Success<ConcreteBlock&>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
-		virtual auto set_successors(Aggregator<Concrete>* successors) -> result::Result<
-			result::Success<ConcreteBlock&>,
-			result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> = 0;
 	};
 };
 

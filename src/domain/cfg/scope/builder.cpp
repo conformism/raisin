@@ -1,5 +1,4 @@
 #include "domain/core/guard.hpp"
-#include "iscope.hpp"
 #include "scope.hpp"
 
 namespace cfg {
@@ -91,38 +90,6 @@ auto Scope::Builder::add_block(Block* block) -> result::Result<
 			BasicFailureRegistrar::NO_RESOURCES,
 			BasicFailureRegistrar::ALREADY_INSIDE>>(result::Success<Builder&>{*this});
 };
-
-// auto Scope::Builder::set_childs(Aggregator<Scope> childs) -> result::Result<
-//     result::Success<Scope::Builder&>,
-//     result::BasicFailure<BasicFailureRegistrar::>> {
-//     auto const result = guard::is_null_pointer(childs);
-//     if (result.is_failure()) {
-//         return result::Result<
-//             result::Success<Builder&>,
-//             result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
-//             result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>::create());
-//     }
-//     _childs = childs;
-//     return result::Result<
-//         result::Success<Builder&>,
-//         result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
-//         result::Success<Builder&>{*this});
-// };
-
-// auto Scope::Builder::set_blocks(Aggregator<Block> blocks) -> result::
-//     Result<result::Success<Builder&>, result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>
-//     { auto const result = guard::is_null_pointer(blocks); if (result.is_failure()) {
-//         return result::Result<
-//             result::Success<Builder&>,
-//             result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
-//             result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>::create());
-//     }
-//     _blocks = blocks;
-//     return result::Result<
-//         result::Success<Builder&>,
-//         result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>>(
-//         result::Success<Builder&>{*this});
-// };
 
 [[nodiscard]] auto Scope::Builder::build() -> Scope {
 	if (_uuid.empty()) {

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "domain/core/aggregator.hpp"
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "./iblock.hpp"
+#include "domain/core/aggregator.hpp"
 #include "domain/core/core.hpp"
 
 namespace cfg {
@@ -64,12 +64,6 @@ public:
 		result::BasicFailure<
 			BasicFailureRegistrar::NO_RESOURCES,
 			BasicFailureRegistrar::ALREADY_INSIDE>> override;
-	auto set_precedents(Aggregator<Block>* precedents) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
-	auto set_successors(Aggregator<Block>* successors) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
 	[[nodiscard]] auto build() -> Block override;
 
 private:
@@ -77,8 +71,8 @@ private:
 	std::string _text;
 	bool _is_entry;
 	bool _is_exit;
-	Aggregator<Block>* _precedents;
-	Aggregator<Block>* _successors;
+	Aggregator<Block> _precedents;
+	Aggregator<Block> _successors;
 };
 
 }  // namespace cfg

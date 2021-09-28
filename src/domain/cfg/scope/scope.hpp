@@ -51,12 +51,6 @@ public:
 		result::BasicFailure<
 			BasicFailureRegistrar::NO_RESOURCES,
 			BasicFailureRegistrar::ALREADY_INSIDE>> override;
-	// auto set_childs(Aggregator<Scope>* childs) -> result::Result<
-	//     result::Success<Builder&>,
-	//     result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
-	// auto set_blocks(Aggregator<Block>* blocks) -> result::Result<
-	//     result::Success<Builder&>,
-	//     result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
 	[[nodiscard]] auto build() -> Scope override;
 
 private:
