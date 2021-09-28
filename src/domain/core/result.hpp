@@ -17,7 +17,6 @@ namespace core::result {
 template<typename ErrorCodeRegistrar>
 class Failure {
 public:
-	virtual ~Failure() = 0;
 	static_assert(
 		std::is_enum<ErrorCodeRegistrar>::value,
 		"`ErrorCodeRegistrar` must be an enum list of errors.");
@@ -80,7 +79,6 @@ public:
 	// static_assert(
 	//     std::is_base_of<Failure<FValue>, F<FValue>>(),
 	//     "`F` must extends `Failure<std::any>`.");
-	virtual ~IEither() = 0;
 	[[nodiscard]] virtual auto is_success() const -> bool = 0;
 	[[nodiscard]] virtual auto is_failure() const -> bool = 0;
 	[[nodiscard]] virtual auto get_success() const -> std::optional<S> = 0;
