@@ -17,11 +17,13 @@ public:
 	[[nodiscard]] auto get_scope_by_id(Uuid uuid) const -> result::Result<
 		result::Success<Scope*>,
 		result::BasicFailure<BasicFailureRegistrar::NOT_INSIDE>> override;
-	friend IBuilder;
 	class Builder;
-	// TODO(dauliac) consider using struct to store object properties
-	// and easily pass it from dump/builder/factory.
+	friend IBuilder<Builder>;
+
 private:
+	Cfg(  // IElement* element,
+		Aggregator<Block> blocks,
+		Aggregator<Scope> scopes);
 	Cfg(Uuid uuid,
 	    // IElement* element,
 	    Aggregator<Block> blocks,
@@ -34,30 +36,27 @@ private:
 	Aggregator<Scope> const _scopes;
 };
 
-class Cfg::Builder : public ICfg::IBuilder {
+class Cfg::Builder : public ICfg::IBuilder<Builder> {
 public:
 	auto set_uuid(Uuid uuid) -> result::Result<
-		result::Success<ICfg::IBuilder*>,
-		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> override;
-	auto add_block(Block* block) -> result::Result<
-		result::Success<ICfg::IBuilder*>,
-		result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> override;
+		result::Success<ConcreteBuilder&>,
+		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> auto add_block(Block* block)
+		-> result::Result<
+			result::Success<Builder&>,
+			result::BasicFailure<
+				BasicFailureRegistrar::NO_RESOURCES,
+				BasicFailureRegistrar::ALREADY_INSIDE>> override;
 	auto add_scope(Scope* scope) -> result::Result<
-		result::Success<ICfg::IBuilder*>,
-		result::BasicFailure<BasicFailureRegistrar::ALREADY_INSIDE>> override;
-	auto set_blocks(Aggregator<Block>* blocks) -> result::Result<
-		result::Success<ICfg::IBuilder*>,
-		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
-	auto set_scopes(Aggregator<Scope>* scopes) -> result::Result<
-		result::Success<ICfg::IBuilder*>,
-		result::BasicFailure<BasicFailureRegistrar::NO_RESOURCES>> override;
+		result::Success<Builder&>,
+		result::BasicFailure<
+			BasicFailureRegistrar::NO_RESOURCES,
+			BasicFailureRegistrar::ALREADY_INSIDE>> override;
 	[[nodiscard]] auto build() -> Cfg override;
 
 private:
 	Uuid _uuid;
-	Aggregator<Block>* _blocks;
-	Aggregator<Scope>* _scopes;
-	ICfg* _builded;
+	Aggregator<Block> _blocks;
+	Aggregator<Scope> _scopes;
 };
 
 }  // namespace cfg

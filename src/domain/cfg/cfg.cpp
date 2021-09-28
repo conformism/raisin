@@ -8,6 +8,14 @@ namespace cfg {
 
 // Cfg
 Cfg::Cfg(
+	// IElement* element,
+	Aggregator<Block> blocks,
+	Aggregator<Scope> scopes)
+	:  // _element(element),
+	  _blocks(std::move(blocks)),
+	  _scopes(std::move(scopes)) {}
+
+Cfg::Cfg(
 	Uuid uuid,
 	// IElement* element,
 	Aggregator<Block> blocks,
