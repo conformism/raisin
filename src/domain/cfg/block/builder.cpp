@@ -27,38 +27,6 @@ auto Block::Builder::set_text(std::string text) -> Builder& {
 	return *this;
 };
 
-auto Block::Builder::define_as_entry(bool is_entry) -> result::Result<
-	result::Success<Block::Builder&>,
-	result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> {
-	if (_is_entry == is_entry) {
-		return result::Result<
-			result::Success<Block::Builder&>,
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>>(
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>::create());
-	}
-	_is_entry = is_entry;
-	return result::Result<
-		result::Success<Block::Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>>(
-		result::Success<Block::Builder&>{*this});
-};
-
-auto Block::Builder::define_as_exit(bool is_exit) -> result::Result<
-	result::Success<Block::Builder&>,
-	result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> {
-	if (_is_exit == is_exit) {
-		return result::Result<
-			result::Success<Block::Builder&>,
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>>(
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>::create());
-	}
-	_is_exit = is_exit;
-	return result::Result<
-		result::Success<Block::Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>>(
-		result::Success<Block::Builder&>{*this});
-};
-
 auto Block::Builder::add_precedent(Block* precedent) -> result::Result<
 	result::Success<Block::Builder&>,
 	result::

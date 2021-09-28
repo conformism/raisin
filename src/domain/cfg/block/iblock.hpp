@@ -29,12 +29,6 @@ public:
 			result::Success<ConcreteBlock&>,
 			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> = 0;
 		virtual auto set_text(std::string text) -> ConcreteBlock& = 0;
-		virtual auto define_as_entry(bool is_entry) -> result::Result<
-			result::Success<ConcreteBlock&>,
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> = 0;
-		virtual auto define_as_exit(bool is_exit) -> result::Result<
-			result::Success<ConcreteBlock&>,
-			result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> = 0;
 		virtual auto add_precedent(Concrete* precedent) -> result::Result<
 			result::Success<ConcreteBlock&>,
 			result::BasicFailure<

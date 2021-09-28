@@ -24,19 +24,10 @@ public:
 	friend IBuilder<Builder>;
 
 private:
-	Block(
-		/*bool is_entry, bool is_exit, */ Aggregator<Block> precedents,
-		Aggregator<Block> successors);
-	Block(
-		core::Uuid uuid,
-		// bool is_entry,
-	    // bool is_exit,
-		Aggregator<Block> precedents,
-		Aggregator<Block> successors);
+	Block(Aggregator<Block> precedents, Aggregator<Block> successors);
+	Block(core::Uuid uuid, Aggregator<Block> precedents, Aggregator<Block> successors);
 
 	std::string const _text;
-	bool const _is_entry;
-	bool const _is_exit;
 	Aggregator<Block> const _precedents;
 	Aggregator<Block> const _successors;
 	// Kind const _kind;
@@ -48,12 +39,6 @@ public:
 		result::Success<Builder&>,
 		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> override;
 	auto set_text(std::string text) -> Builder& override;
-	auto define_as_entry(bool is_entry) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> override;
-	auto define_as_exit(bool is_exit) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<BasicFailureRegistrar::ALREADY_SETTED>> override;
 	auto add_precedent(Block* precedent) -> result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<
@@ -69,8 +54,6 @@ public:
 private:
 	Uuid _uuid;
 	std::string _text;
-	bool _is_entry;
-	bool _is_exit;
 	Aggregator<Block> _precedents;
 	Aggregator<Block> _successors;
 };
