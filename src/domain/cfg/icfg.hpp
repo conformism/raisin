@@ -34,9 +34,7 @@ public:
 	public:
 		[[nodiscard]] virtual auto set_uuid(Uuid uuid) -> result::Result<
 			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<
-				BasicFailureRegistrar::NO_RESOURCES,
-				BasicFailureRegistrar::INVALID_UUID>> = 0;
+			result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> = 0;
 		[[nodiscard]] virtual auto add_block(ConcreteBlock* block) -> result::Result<
 			result::Success<ConcreteBuilder&>,
 			result::BasicFailure<

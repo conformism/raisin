@@ -39,13 +39,13 @@ private:
 class Cfg::Builder : public ICfg::IBuilder<Builder> {
 public:
 	auto set_uuid(Uuid uuid) -> result::Result<
-		result::Success<ConcreteBuilder&>,
-		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> auto add_block(Block* block)
-		-> result::Result<
-			result::Success<Builder&>,
-			result::BasicFailure<
-				BasicFailureRegistrar::NO_RESOURCES,
-				BasicFailureRegistrar::ALREADY_INSIDE>> override;
+		result::Success<Builder&>,
+		result::BasicFailure<BasicFailureRegistrar::INVALID_UUID>> override;
+	auto add_block(Block* block) -> result::Result<
+		result::Success<Builder&>,
+		result::BasicFailure<
+			BasicFailureRegistrar::NO_RESOURCES,
+			BasicFailureRegistrar::ALREADY_INSIDE>> override;
 	auto add_scope(Scope* scope) -> result::Result<
 		result::Success<Builder&>,
 		result::BasicFailure<

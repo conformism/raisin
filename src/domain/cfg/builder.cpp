@@ -61,12 +61,10 @@ auto Cfg::Builder::add_scope(Scope* scope) -> result::Result<
 
 auto Cfg::Builder::build() -> Cfg {
 	if (_uuid.empty()) {
-		// return Cfg(_is_exit, _is_exit, precedents, successors);
-		return Cfg(_scopes, _blocks);
+		return Cfg(_blocks, _scopes);
 	}
 
-	// return Cfg(_uuid, _is_exit, _is_exit, precedents, successors);
-	return Cfg(_uuid, _precedents, _successors);
+	return Cfg(_uuid, _blocks, _scopes);
 };
 
 }  // namespace cfg
