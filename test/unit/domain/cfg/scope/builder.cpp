@@ -33,7 +33,17 @@ SCENARIO("Scope builder should works with uuid") {
 	}
 }
 
-SCENARIO("Scope builder should fail with invalid uuid") {
+SCENARIO("Scope builder should works without uuid") {
+	GIVEN("Exising builder.") {
+		auto builder = cfg::Scope::Builder();
+		WHEN("Build.") {
+			auto const scope = builder.build();
+			THEN("The scope should build.") {}
+		}
+	}
+}
+
+SCENARIO("Scope builder should fail with invalid uuid.") {
 	GIVEN("Known UUID") {
 		core::Uuid invalid_uuid;
 		AND_GIVEN("Exising builder") {
@@ -48,10 +58,10 @@ SCENARIO("Scope builder should fail with invalid uuid") {
 	}
 }
 
-SCENARIO("Scope builder should works with parent") {
-	GIVEN("Exising builder") {
+SCENARIO("Scope builder should works with parent.") {
+	GIVEN("Exising builder.") {
 		auto builder = cfg::Scope::Builder();
-		AND_GIVEN("Exising scope address") {
+		AND_GIVEN("Exising scope address.") {
 			auto scope = builder.build();
 			cfg::Scope* scope_ptr = &scope;
 			WHEN("Builder take scope") {
@@ -64,7 +74,7 @@ SCENARIO("Scope builder should works with parent") {
 	}
 }
 
-SCENARIO("Scope builder should works with block") {
+SCENARIO("Scope builder should works with block.") {
 	GIVEN("Known Block address") {
 		cfg::Block::Builder block_builder = cfg::Block::Builder();
 		core::Uuid const uuid = "1234567";
@@ -75,9 +85,12 @@ SCENARIO("Scope builder should works with block") {
 			auto builder = cfg::Scope::Builder();
 			WHEN("Builder take block") {
 				auto result = builder.add_block(block_ptr);
-				//     THEN("The result shoult be a success") {
-				//         REQUIRE(result.is_success() == true);
-				//     }
+				THEN("The result shoult be a success") {
+					REQUIRE(result.is_success() == true);
+					AND_THEN("The scope should build.") {
+						auto const scope = builder.build();
+					}
+				}
 			}
 		}
 	}
