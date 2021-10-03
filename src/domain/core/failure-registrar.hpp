@@ -1,7 +1,8 @@
 #pragma once
 
 enum class Failures {
-	NOTHING = 0,
+	UNKNOWN = 0,
+	NOTHING,
 	NO_RESOURCES,
 	NOT_INSIDE,
 	ALREADY_INSIDE,

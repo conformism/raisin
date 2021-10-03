@@ -14,38 +14,17 @@
 
 namespace core::result {
 
-template<typename ErrorCodeRegistrar>
+template<Failures idValue>
 class Failure {
 public:
-	static_assert(
-		std::is_enum<ErrorCodeRegistrar>::value,
-		"`ErrorCodeRegistrar` must be an enum list of errors.");
-	[[nodiscard]] virtual auto get_id() const -> ErrorCodeRegistrar = 0;
-};
+	using IdType = decltype(idValue);
 
-template<auto IdDefault = Failures::NOTHING, decltype(IdDefault) const... Ids>
-class BasicFailure : public Failure<decltype(IdDefault)> {
-public:
-	using IdType = decltype(IdDefault);
-	template<IdType IdValue = IdDefault>
-	static constexpr auto create() -> BasicFailure<IdDefault, Ids...> {
-		// constexpr bool not_in_possible_values = IdValue == IdDefault || ((IdValue == Ids) &&
-		// ...);
-		constexpr bool is_possible_values = IdValue == IdDefault || ((IdValue == Ids) || ...);
-		static_assert(
-			is_possible_values,
-			"The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
-		return BasicFailure<IdDefault, Ids...>(IdValue);
-	};
-
-	[[nodiscard]] auto get_id() const -> IdType override {
+	[[nodiscard]] auto get_id() const -> IdType {
 		return _id;
 	};
 
 private:
-	constexpr explicit BasicFailure(IdType const id) : _id(id){};
-
-	IdType const _id;
+	IdType const _id = idValue;
 	std::string _reason;
 };
 
@@ -70,48 +49,46 @@ public:
  *   - Using create methods ?
  *   - Using Factory ?
  */
-template<typename S, typename F>
-class IEither {
-public:
-	// static_assert(
-	//     std::is_base_of<Success<>, S<>(),
-	//     "`L` must extends `Success<std::any>`.");
-	// static_assert(
-	//     std::is_base_of<Failure<FValue>, F<FValue>>(),
-	//     "`F` must extends `Failure<std::any>`.");
-	[[nodiscard]] virtual auto is_success() const -> bool = 0;
-	[[nodiscard]] virtual auto is_failure() const -> bool = 0;
-	[[nodiscard]] virtual auto get_success() const -> std::optional<S> = 0;
-	[[nodiscard]] virtual auto get_failure() const -> std::optional<F> = 0;
-};
 
-template<class S = Success<>, class F = BasicFailure<>>
-class Result : public IEither<S, F> {
+template<class SuccessType, auto FirstId = Failures::UNKNOWN, decltype(FirstId) const... Ids>
+class Result {
 public:
-	[[nodiscard]] constexpr auto is_success() const -> bool override {
+	using FailureType = decltype(FirstId);
+
+	template<FailureType Id>
+	static constexpr auto create() -> Result<SuccessType, FirstId, Ids...> {
+		constexpr bool is_possible_values = Id == FirstId || ((Id == Ids) || ...);
+		static_assert(
+			is_possible_values,
+			"The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
+		return Result(Id);
+	};
+
+	template<SuccessType value>
+	static constexpr auto createi() -> Result<SuccessType, FirstId, Ids...> {
+		return Result(value);
+	};
+	[[nodiscard]] constexpr auto is_success() const -> bool {
 		return _is_success;
 	}
-	[[nodiscard]] constexpr auto is_failure() const -> bool override {
+	[[nodiscard]] constexpr auto is_failure() const -> bool {
 		return !_is_success;
 	}
-	[[nodiscard]] constexpr auto get_success() const -> std::optional<S> override {
-		if (_is_success) {
-			return std::get<S>(_value);
-		}
-		return std::nullopt;
+	[[nodiscard]] constexpr auto get_succes() const -> SuccessType {
+		return std::get<SuccessType>(_value);
 	}
-	[[nodiscard]] constexpr auto get_failure() const -> std::optional<F> override {
-		if (!_is_success) {
-			return std::get<F>(_value);
-		}
-		return std::nullopt;
+	[[nodiscard]] constexpr auto get_failure() const -> FailureType {
+		FailureType const id = std::get<Failure<_value>>(_value).get_id;
+		return id;
 	}
-	constexpr explicit Result(S const value) : _is_success(true), _value(std::move(value)){};
-	constexpr explicit Result(F const value) : _is_success(false), _value(std::move(value)){};
+	constexpr explicit Result(SuccessType const value)
+		: _is_success(true), _value(std::move(Success<SuccessType>{value})){};
+	constexpr explicit Result(FailureType const value)
+		: _is_success(false), _value(Failure<value>()){};
 
 private:
 	bool const _is_success;
-	std::variant<S, F> const _value;
+	std::variant<Success<SuccessType>, Failure<FirstId>> const _value{};
 };
 
 }  // namespace core::result
