@@ -10,4 +10,3 @@ enum class Failures {
 	CANT_HAVE_ZERO_LENGTH,
 	INVALID_UUID,
 };
-using Err = Failures;

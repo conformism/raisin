@@ -21,11 +21,11 @@ template<typename Ptr>
 	-> result::Result<Ptr*, Failures::NO_RESOURCES> {
 	bool const is_valid_ptr = (pointer != nullptr);
 	if (is_valid_ptr) {
-		result::Result<Ptr*, Failures::NO_RESOURCES> const a =
-			result::Result<Ptr*, Failures::NO_RESOURCES>::createi<pointer>();
-		return result::Result<Ptr*, Failures::NO_RESOURCES>::createi<pointer>();
+		// return result::Result<Ptr*, Failures::NO_RESOURCES>::createi<pointer>();
+		return result::Result<Ptr*, Failures::NO_RESOURCES>::template create<
+			Failures::NO_RESOURCES>();
 	}
-	return result::Result<Ptr*, Failures::NO_RESOURCES>::create<Failures::NO_RESOURCES>();
+	return result::Result<Ptr*, Failures::NO_RESOURCES>::template create<Failures::NO_RESOURCES>();
 }
 
 [[nodiscard]] auto is_valid_uuid(Uuid const& uuid) -> result::Result<Uuid, Failures::INVALID_UUID>;

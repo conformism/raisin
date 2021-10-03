@@ -10,29 +10,26 @@
 #include <string>
 #include <type_traits>
 #include <utility>
-// #include <type_traits>
 
 namespace core::result {
 
-template<Failures idValue>
+template<typename FailureType>
 class Failure {
 public:
-	using IdType = decltype(idValue);
-
-	[[nodiscard]] auto get_id() const -> IdType {
+	explicit constexpr Failure(FailureType id) : _id(id){};
+	[[nodiscard]] constexpr auto get_id() const {
 		return _id;
 	};
 
 private:
-	IdType const _id = idValue;
-	std::string _reason;
+	FailureType const _id;
 };
 
 // Container to store value of object to transport
 template<typename T = std::any>
 class Success {
 public:
-	[[nodiscard]] auto get_value() const -> T {
+	[[nodiscard]] constexpr auto get_value() const -> T {
 		return value;
 	}
 	T value;
@@ -56,18 +53,18 @@ public:
 	using FailureType = decltype(FirstId);
 
 	template<FailureType Id>
-	static constexpr auto create() -> Result<SuccessType, FirstId, Ids...> {
+	[[nodiscard]] static constexpr auto create() -> Result<SuccessType, FirstId, Ids...> {
 		constexpr bool is_possible_values = Id == FirstId || ((Id == Ids) || ...);
 		static_assert(
 			is_possible_values,
-			"The given arguemnt parameter Id is not into Ids list {Id, Ids...}");
-		return Result(Id);
+			"The given argument parameter Id is not into Ids list {Id, Ids...}");
+		return Result<SuccessType, FirstId, Ids...>(Id);
 	};
 
-	template<SuccessType value>
-	static constexpr auto createi() -> Result<SuccessType, FirstId, Ids...> {
-		return Result(value);
-	};
+	// template<SuccessType value>
+	// static constexpr auto createi() -> Result<SuccessType, FirstId, Ids...> {
+	//     return Result(value);
+	// };
 	[[nodiscard]] constexpr auto is_success() const -> bool {
 		return _is_success;
 	}
@@ -78,17 +75,17 @@ public:
 		return std::get<SuccessType>(_value);
 	}
 	[[nodiscard]] constexpr auto get_failure() const -> FailureType {
-		FailureType const id = std::get<Failure<_value>>(_value).get_id;
+		FailureType const id = std::get<Failure<FailureType>>(_value).get_id;
 		return id;
 	}
-	constexpr explicit Result(SuccessType const value)
-		: _is_success(true), _value(std::move(Success<SuccessType>{value})){};
-	constexpr explicit Result(FailureType const value)
-		: _is_success(false), _value(Failure<value>()){};
-
+	// constexpr explicit Result(SuccessType const value)
+	//     : _is_success(true), _value(std::move(Success<SuccessType>{value})){};
 private:
+	explicit constexpr Result(FailureType const value)
+		: _is_success(false), _value(Failure<FailureType>(value)){};
+
 	bool const _is_success;
-	std::variant<Success<SuccessType>, Failure<FirstId>> const _value{};
+	std::variant<Success<SuccessType>, Failure<FailureType>> const _value{};
 };
 
 }  // namespace core::result
