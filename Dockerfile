@@ -52,6 +52,11 @@ RUN git clone https://github.com/aras-p/ClangBuildAnalyzer.git \
 	&& cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release \
 	&& cmake --build build/ --target install
 
+RUN git clone https://github.com/uncrustify/uncrustify \
+	&& cd uncrustify \
+	&& cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release \
+	&& cmake --build build/ --target install
+
 # TODO is -DClang_DIR useful?
 CMD cmake \
         -DCMAKE_BUILD_TYPE=Coverage \
