@@ -14,7 +14,7 @@ SCENARIO("Guard against null pointer should works with valid pointer.") {
 			auto const result = guard::is_null_pointer<const int>(ptr);
 			THEN("The result should be sucess.") {
 				REQUIRE(result.is_success() == true);
-				REQUIRE(result.get_success()->get_value() == ptr);
+				REQUIRE(result.get_success().value() == ptr);
 			}
 		}
 	}
@@ -29,7 +29,7 @@ SCENARIO("Guard against null ptr should works with invalid pointer.") {
 			THEN("The result should be sucess.") {
 				REQUIRE(result.is_failure() == true);
 				AND_THEN("The result failure value should say there is no resouces.") {
-					REQUIRE(result.get_failure()->get_id() == Failures::NO_RESOURCES);
+					REQUIRE(result.get_failure() == Failures::NO_RESOURCES);
 				}
 			}
 		}

@@ -1,15 +1,20 @@
 if(Catch2_FOUND)
   add_executable(unittest EXCLUDE_FROM_ALL)
 
+  # target_sources( unittest PRIVATE #
+  # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
+  # "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/result.cpp"
+  # "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/guard.cpp"
+  # "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp"
+  # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/block/builder.cpp"
+  # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/scope/builder.cpp"
+  # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/builder.cpp")
   target_sources(
     unittest
     PRIVATE # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
             "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/result.cpp"
             "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/guard.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/block/builder.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/scope/builder.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/builder.cpp")
+            "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp")
 
   target_compile_definitions(unittest PRIVATE UNITTEST $<$<CONFIG:Debug>:DEBUG>)
 

@@ -23,12 +23,12 @@ SCENARIO("Core Aggregator should be fillable.") {
 				auto const result = aggregator.insert(uuid, value_object_ptr);
 				THEN("The object should be sucessfully inserted.") {
 					REQUIRE(result.is_success() == true);
-					REQUIRE(result.get_success()->get_value() == value_object_ptr);
+					REQUIRE(result.get_success() == value_object_ptr);
 					REQUIRE(aggregator.is_inside(uuid) == true);
 					REQUIRE(aggregator.count(uuid) == 1);
 				}
 				AND_THEN("The value inside the aggregator must be the ineserted value.") {
-					const int* value_in = aggregator.at(uuid).get_success()->get_value();
+					const int* value_in = aggregator.at(uuid).get_success().value();
 					REQUIRE(value_in == value_object_ptr);
 				}
 			}
