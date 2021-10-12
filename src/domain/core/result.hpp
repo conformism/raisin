@@ -60,7 +60,8 @@ public:
 
 	template<typename SuccessCombined = SuccessType, FailureType const... NewIds>
 	[[nodiscard]] static constexpr auto combine_failures(Result result) {
-		return Result<SuccessType, FirstId, Ids..., NewIds...>::template create(result);
+		return Result<SuccessType, FirstId, Ids..., NewIds...>::template create(
+			result.get_failure());
 	};
 
 	[[nodiscard]] constexpr auto is_success() const -> bool {
@@ -83,12 +84,13 @@ public:
 		auto const failure_value = std::get<Failure<FailureType>>(_value);
 		return failure_value.get_id();
 	}
-	constexpr explicit Result(SuccessType const value)
-		: _is_success(true), _value(std::move(Success<SuccessType>{value})){};
 
 private:
+	constexpr explicit Result(SuccessType const value)
+		: _is_success(true), _value(std::move(Success<SuccessType>{value})){};
 	explicit constexpr Result(FailureType const value)
 		: _is_success(false), _value(Failure<FailureType>(value)){};
+
 	bool const _is_success;
 	std::variant<Success<SuccessType>, Failure<FailureType>> const _value{};
 };
@@ -101,9 +103,9 @@ template<typename SuccessType, auto FirstId = Failures::UNKNOWN, decltype(FirstI
 
 template<
 	typename SuccessType,
-	auto const Value,
+	auto const Value = Failures::UNKNOWN,
 	decltype(Value) const FirstPossibleValue = Value,
-	decltype(FirstPossibleValue) const... PossibleValues>
+	decltype(Value) const... PossibleValues>
 [[nodiscard]] constexpr auto failure()
 	-> Result<SuccessType, FirstPossibleValue, PossibleValues...> {
 	return Result<SuccessType, FirstPossibleValue, PossibleValues...>::template create<Value>();
