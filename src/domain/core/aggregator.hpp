@@ -28,19 +28,31 @@ public:
 		return _aggregated.count(uuid);
 	}
 
-	[[nodiscard]] auto at(Uuid const& uuid) const -> result::Result<T*, Failures::NOT_INSIDE> {
-		constexpr auto success = result::success<T*, Failures::NOT_INSIDE>;
-		constexpr auto failure = result::failure<T*, Failures::NOT_INSIDE>;
+	[[nodiscard]] auto at(Uuid const& uuid) const
+		-> result::Result<T*, Failures::INVALID_UUID, Failures::NOT_INSIDE> {
+		constexpr auto success = result::success<T*, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
+		constexpr auto failure_not_inside =
+			result::failure<T*, Failures::NOT_INSIDE, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
+		constexpr auto failure_invalid_uuid = result::
+			failure<T*, Failures::INVALID_UUID, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
+
+		auto const guard_uuid = guard::is_valid_uuid(uuid);
+		if (guard_uuid.is_success()) {
+			// TOODO(dauliac) fix combine
+			// return guard_uuid.combine_failures<T*, Failures::NOT_INSIDE>();
+			return failure_invalid_uuid();
+		}
 
 		bool const is_contains_this_uuid = _aggregated.count(uuid) > 0;
 		if (is_contains_this_uuid) {
 			return success(_aggregated.at(uuid));
 		}
 
-		return failure();
+		return failure_not_inside();
 	}
 
-	[[nodiscard]] auto remove(Uuid const& uuid) -> result::Result<T*, Failures::NOT_INSIDE> {
+	[[nodiscard]] auto remove(Uuid const& uuid)
+		-> result::Result<T*, Failures::INVALID_UUID, Failures::NOT_INSIDE> {
 		auto const result_guard = at(uuid);
 		if (result_guard.is_success()) {
 			_aggregated.erase(uuid);
@@ -49,18 +61,40 @@ public:
 		return result_guard;
 	}
 
-	[[nodiscard]] auto insert(Uuid uuid, T* value)
-		-> result::Result<T*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
-		constexpr auto success =
-			result::success<T*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
-		constexpr auto failure_no_resource = result::
-			failure<T*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
-		constexpr auto failure_already_inside = result::
-			failure<T*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+	[[nodiscard]] auto insert(Uuid uuid, T* value) -> result::
+		Result<T*, Failures::INVALID_UUID, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
+		constexpr auto success = result::
+			success<T*, Failures::INVALID_UUID, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		constexpr auto failure_no_resource = result::failure<
+			T*,
+			Failures::NO_RESOURCES,
+			Failures::INVALID_UUID,
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>;
+		constexpr auto failure_invalid_uuid = result::failure<
+			T*,
+			Failures::INVALID_UUID,
+			Failures::INVALID_UUID,
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>;
 
-		auto const result_guard = guard::is_null_pointer<T>(value);
+		constexpr auto failure_already_inside = result::failure<
+			T*,
+			Failures::NO_RESOURCES,
+			Failures::INVALID_UUID,
+			Failures::NO_RESOURCES,
+			Failures::ALREADY_INSIDE>;
 
-		if (result_guard.is_failure()) {
+		auto const guard_uuid = guard::is_valid_uuid(uuid);
+		if (guard_uuid.is_failure()) {
+			// TODO(dauliac) find way to have combine working
+			// return guard_uuid
+			//     .combine_failures<T*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>();
+			return failure_invalid_uuid();
+		}
+
+		auto const guard_pointer = guard::is_null_pointer<T>(value);
+		if (guard_pointer.is_failure()) {
 			return failure_no_resource();
 		}
 

@@ -102,8 +102,8 @@ SCENARIO("Core Result helper should be usable as failure with some possibility."
 		int const* invalid_result = nullptr;
 		WHEN("Result is created") {
 			auto const result = failure<
-				Failures::NO_RESOURCES,
 				int,
+				Failures::NO_RESOURCES,
 				Failures::NO_RESOURCES,
 				Failures::INVALID_UUID>();
 			THEN("The result object failure should be queried") {

@@ -58,12 +58,6 @@ public:
 		return Result<SuccessType, FirstId, Ids...>(value);
 	};
 
-	template<typename SuccessCombined = SuccessType, FailureType const... NewIds>
-	[[nodiscard]] static constexpr auto combine_failures(Result result) {
-		return Result<SuccessType, FirstId, Ids..., NewIds...>::template create(
-			result.get_failure());
-	};
-
 	[[nodiscard]] constexpr auto is_success() const -> bool {
 		return _is_success;
 	}
@@ -84,6 +78,13 @@ public:
 		auto const failure_value = std::get<Failure<FailureType>>(_value);
 		return failure_value.get_id();
 	}
+
+	// Note: We need to check that executing result is a failure: undefined behavior
+	template<typename SuccessCombined = SuccessType, FailureType const... NewIds>
+	[[nodiscard]] constexpr auto combine_failures() const
+		-> Result<SuccessType, FirstId, Ids..., NewIds...> {
+		return Result<SuccessType, FirstId, Ids..., NewIds...>(get_failure().value());
+	};
 
 private:
 	constexpr explicit Result(SuccessType const value)

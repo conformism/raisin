@@ -27,7 +27,7 @@ SCENARIO("Core Aggregator should be fillable.") {
 					REQUIRE(aggregator.is_inside(uuid) == true);
 					REQUIRE(aggregator.count(uuid) == 1);
 				}
-				AND_THEN("The value inside the aggregator must be the ineserted value.") {
+				AND_THEN("The value inside the aggregator must be the inserted value.") {
 					const int* value_in = aggregator.at(uuid).get_success().value();
 					REQUIRE(value_in == value_object_ptr);
 				}
