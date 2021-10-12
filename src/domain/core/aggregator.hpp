@@ -29,12 +29,15 @@ public:
 	}
 
 	[[nodiscard]] auto at(Uuid const& uuid) const -> result::Result<T*, Failures::NOT_INSIDE> {
+		constexpr auto success = result::success<T*, Failures::NOT_INSIDE>;
+		constexpr auto failure = result::failure<T*, Failures::NOT_INSIDE>;
+
 		bool const is_contains_this_uuid = _aggregated.count(uuid) > 0;
 		if (is_contains_this_uuid) {
-			return result::Result<T*, Failures::NOT_INSIDE>::create(_aggregated.at(uuid));
+			return success(_aggregated.at(uuid));
 		}
 
-		return result::Result<T*, Failures::NOT_INSIDE>::template create<Failures::NOT_INSIDE>();
+		return failure();
 	}
 
 	[[nodiscard]] auto remove(Uuid const& uuid) -> result::Result<T*, Failures::NOT_INSIDE> {
@@ -48,21 +51,26 @@ public:
 
 	[[nodiscard]] auto insert(Uuid uuid, T* value)
 		-> result::Result<T*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
-		using r = result::Result<T*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		constexpr auto success =
+			result::success<T*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		constexpr auto failure_no_resource = result::
+			failure<T*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		constexpr auto failure_already_inside = result::
+			failure<T*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 
 		auto const result_guard = guard::is_null_pointer<T>(value);
 
 		if (result_guard.is_failure()) {
-			return r::template create<Failures::NO_RESOURCES>();
+			return failure_no_resource();
 		}
 
 		// TODO(dauliac) add tests, units tests not fails if false is hardcoded here
 		if (is_inside(uuid)) {
-			return r::template create<Failures::ALREADY_INSIDE>();
+			return failure_already_inside();
 		}
 		_aggregated.insert_or_assign(uuid, value);
 
-		return r::template create(value);
+		return success(value);
 	}
 
 private:

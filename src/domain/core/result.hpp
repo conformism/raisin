@@ -36,12 +36,15 @@ public:
 	T _value;
 };
 
-template<typename SuccessType, auto FirstId = Failures::UNKNOWN, decltype(FirstId) const... Ids>
+template<
+	typename SuccessType,
+	auto const FirstId = Failures::UNKNOWN,
+	decltype(FirstId) const... Ids>
 class Result {
 public:
 	using FailureType = decltype(FirstId);
 
-	template<FailureType Id>
+	template<FailureType const Id>
 	[[nodiscard]] static constexpr auto create() -> Result<SuccessType, FirstId, Ids...> {
 		constexpr bool is_possible_values = Id == FirstId || ((Id == Ids) || ...);
 		static_assert(
@@ -54,6 +57,12 @@ public:
 		-> Result<SuccessType, FirstId, Ids...> {
 		return Result<SuccessType, FirstId, Ids...>(value);
 	};
+
+	template<typename SuccessCombined = SuccessType, FailureType const... NewIds>
+	[[nodiscard]] static constexpr auto combine_failures(Result result) {
+		return Result<SuccessType, FirstId, Ids..., NewIds...>::template create(result);
+	};
+
 	[[nodiscard]] constexpr auto is_success() const -> bool {
 		return _is_success;
 	}
@@ -92,8 +101,8 @@ template<typename SuccessType, auto FirstId = Failures::UNKNOWN, decltype(FirstI
 
 template<
 	typename SuccessType,
-	auto Value,
-	decltype(Value) FirstPossibleValue = Value,
+	auto const Value,
+	decltype(Value) const FirstPossibleValue = Value,
 	decltype(FirstPossibleValue) const... PossibleValues>
 [[nodiscard]] constexpr auto failure()
 	-> Result<SuccessType, FirstPossibleValue, PossibleValues...> {
