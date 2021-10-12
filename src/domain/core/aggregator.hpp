@@ -37,7 +37,7 @@ public:
 			failure<T*, Failures::INVALID_UUID, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
 
 		auto const guard_uuid = guard::is_valid_uuid(uuid);
-		if (guard_uuid.is_success()) {
+		if (guard_uuid.is_failure()) {
 			// TOODO(dauliac) fix combine
 			// return guard_uuid.combine_failures<T*, Failures::NOT_INSIDE>();
 			return failure_invalid_uuid();
