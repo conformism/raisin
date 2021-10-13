@@ -1,19 +1,17 @@
 add_library(${PROJECT_NAME} STATIC)
 
-# target_sources( ${PROJECT_NAME} PRIVATE
-# "${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/builder.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/builder.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-# "${CMAKE_SOURCE_DIR}/src/domain/cfg/builder.cpp")
 target_sources(
-  ${PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
-                          "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp")
+  ${PROJECT_NAME}
+  PRIVATE "${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/builder.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/builder.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/cfg/builder.cpp")
 
 target_compile_definitions(
   ${PROJECT_NAME} PRIVATE # $<$<CONFIG:Debug>:DEBUG> ${LLVM_DEFINITIONS}

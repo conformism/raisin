@@ -30,24 +30,14 @@ public:
 	class IBuilder : Builder<Concrete> {
 	public:
 		// virtual ~IBuilder() = default;
-		virtual auto set_uuid(Uuid uuid) -> result::Result<
-			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<Failures::INVALID_UUID>> = 0;
-		virtual auto add_child(Concrete* child) -> result::Result<
-			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<
-				Failures::NO_RESOURCES,
-				Failures::ALREADY_INSIDE>> = 0;
-		virtual auto set_parent(Concrete* parent) -> result::Result<
-			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<
-				Failures::NO_RESOURCES,
-				Failures::ALREADY_INSIDE>> = 0;
-		virtual auto add_block(ConcreteBlock* block) -> result::Result<
-			result::Success<ConcreteBuilder&>,
-			result::BasicFailure<
-				Failures::NO_RESOURCES,
-				Failures::ALREADY_INSIDE>> = 0;
+		virtual auto set_uuid(Uuid uuid)
+			-> result::Result<ConcreteBuilder&, Failures::INVALID_UUID> = 0;
+		virtual auto add_child(Concrete* child) -> result::
+			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
+		virtual auto set_parent(Concrete* parent) -> result::
+			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
+		virtual auto add_block(ConcreteBlock* block) -> result::
+			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
 	};
 };
 

@@ -31,11 +31,10 @@ public:
 	[[nodiscard]] auto at(Uuid const& uuid) const
 		-> result::Result<T*, Failures::INVALID_UUID, Failures::NOT_INSIDE> {
 		constexpr auto success = result::success<T*, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
-		constexpr auto failure_not_inside =
-			result::failure<T*, Failures::NOT_INSIDE, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
 		constexpr auto failure_invalid_uuid = result::
 			failure<T*, Failures::INVALID_UUID, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
-
+		constexpr auto failure_not_inside =
+			result::failure<T*, Failures::NOT_INSIDE, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
 		auto const guard_uuid = guard::is_valid_uuid(uuid);
 		if (guard_uuid.is_failure()) {
 			// TOODO(dauliac) fix combine

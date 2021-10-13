@@ -52,7 +52,6 @@ public:
 			"The given argument parameter Id is not into Ids list {Id, Ids...}");
 		return Result<SuccessType, FirstId, Ids...>(Id);
 	};
-
 	[[nodiscard]] static constexpr auto create(SuccessType value)
 		-> Result<SuccessType, FirstId, Ids...> {
 		return Result<SuccessType, FirstId, Ids...>(value);
@@ -80,11 +79,22 @@ public:
 	}
 
 	// Note: We need to check that executing result is a failure: undefined behavior
-	template<typename SuccessCombined = SuccessType, FailureType const... NewIds>
-	[[nodiscard]] constexpr auto combine_failures() const
-		-> Result<SuccessType, FirstId, Ids..., NewIds...> {
-		return Result<SuccessType, FirstId, Ids..., NewIds...>(get_failure().value());
+	template<typename SuccessCombined = SuccessType, FailureType const NewId>
+	[[nodiscard]] constexpr auto combine_failure() const -> Result<SuccessType, FirstId, Ids...> {
+		return Result<SuccessType, NewId, FirstId, Ids...>(get_failure().value());
 	};
+
+	// template<typename SuccessCombined = SuccessType, FailureType NewId, FailureType const...
+	// NewIds>
+	// [[nodiscard]] constexpr auto combine_failures(Result result) const
+	//     -> Result<SuccessType, FirstId, Ids...> {
+	//     // if constexpr (sizeof...(NewIds) > 1) {
+	//     //     constexpr auto result_with_one_more_failure =
+	//     //         Result<SuccessType, NewId, FirstId, Ids...>(get_failure().value())
+	//     //             combine_failures<>(result);
+	//     // }
+	//     return Result<SuccessType, NewId, FirstId, Ids...>(get_failure().value());
+	// };
 
 private:
 	constexpr explicit Result(SuccessType const value)

@@ -25,12 +25,12 @@ Cfg::Cfg(
 	  _blocks(std::move(blocks)),
 	  _scopes(std::move(scopes)) {}
 
-auto Cfg::get_block_by_id(Uuid uuid) const -> result::
-	Result<result::Success<Block*>, result::BasicFailure<Failures::NOT_INSIDE>> {
+auto Cfg::get_block_by_id(Uuid uuid) const
+	-> result::Result<Block*, Failures::INVALID_UUID, Failures::NOT_INSIDE> {
 	return _blocks.at(uuid);
 }
-auto Cfg::get_scope_by_id(Uuid uuid) const -> result::
-	Result<result::Success<Scope*>, result::BasicFailure<Failures::NOT_INSIDE>> {
+auto Cfg::get_scope_by_id(Uuid uuid) const
+	-> result::Result<Scope*, Failures::INVALID_UUID, Failures::NOT_INSIDE> {
 	return _scopes.at(uuid);
 }
 

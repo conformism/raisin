@@ -11,12 +11,10 @@ namespace cfg {
 
 class Cfg : public ICfg<Cfg, Block, Scope> {
 public:
-	[[nodiscard]] auto get_block_by_id(Uuid uuid) const -> result::Result<
-		result::Success<Block*>,
-		result::BasicFailure<Failures::NOT_INSIDE>> override;
-	[[nodiscard]] auto get_scope_by_id(Uuid uuid) const -> result::Result<
-		result::Success<Scope*>,
-		result::BasicFailure<Failures::NOT_INSIDE>> override;
+	[[nodiscard]] auto get_block_by_id(Uuid uuid) const
+		-> result::Result<Block*, Failures::INVALID_UUID, Failures::NOT_INSIDE> override;
+	[[nodiscard]] auto get_scope_by_id(Uuid uuid) const
+		-> result::Result<Scope*, Failures::INVALID_UUID, Failures::NOT_INSIDE> override;
 	class Builder;
 	friend IBuilder<Builder>;
 
@@ -38,19 +36,11 @@ private:
 
 class Cfg::Builder : public ICfg::IBuilder<Builder> {
 public:
-	auto set_uuid(Uuid uuid) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<Failures::INVALID_UUID>> override;
-	auto add_block(Block* block) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<
-			Failures::NO_RESOURCES,
-			Failures::ALREADY_INSIDE>> override;
-	auto add_scope(Scope* scope) -> result::Result<
-		result::Success<Builder&>,
-		result::BasicFailure<
-			Failures::NO_RESOURCES,
-			Failures::ALREADY_INSIDE>> override;
+	auto set_uuid(Uuid uuid) -> result::Result<Builder&, Failures::INVALID_UUID> override;
+	auto add_block(Block* block)
+		-> result::Result<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> override;
+	auto add_scope(Scope* scope)
+		-> result::Result<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> override;
 	[[nodiscard]] auto build() -> Cfg override;
 
 private:

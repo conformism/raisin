@@ -14,7 +14,8 @@ if(Catch2_FOUND)
     PRIVATE # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
             "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/result.cpp"
             "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/guard.cpp"
-            "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp")
+            "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp"
+            "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/block/builder.cpp")
 
   target_compile_definitions(unittest PRIVATE UNITTEST $<$<CONFIG:Debug>:DEBUG>)
 
