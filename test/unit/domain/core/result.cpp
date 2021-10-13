@@ -117,3 +117,18 @@ SCENARIO("Core Result helper should be usable as failure with some possibility."
 		}
 	}
 }
+
+SCENARIO("Core Result combine should works.") {
+	GIVEN("Invalid operation result") {
+		auto const result_test = failure<int, Failures::INVALID_UUID>();
+		WHEN("Result combine") {
+			Result<int, Failures::NOT_INSIDE, Failures::INVALID_UUID> const combined_result =
+				result_test.combine<int, Failures::NOT_INSIDE>();
+
+			THEN("The combined result object should be queried") {
+				REQUIRE(combined_result.is_failure() == true);
+				REQUIRE(combined_result.get_failure() == Failures::INVALID_UUID);
+			}
+		}
+	}
+}

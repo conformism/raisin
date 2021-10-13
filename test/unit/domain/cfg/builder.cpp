@@ -21,7 +21,7 @@ SCENARIO("Cfg builder should works with uuid") {
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
 					AND_THEN("The cfg should build") {
-						builder = result.get_success()->get_value();
+						builder = result.get_success().value();
 						cfg::Cfg cfg = builder.build();
 					}
 				}

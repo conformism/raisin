@@ -78,30 +78,25 @@ public:
 		return failure_value.get_id();
 	}
 
-	// Note: We need to check that executing result is a failure: undefined behavior
-	template<typename SuccessCombined = SuccessType, FailureType const NewId>
-	[[nodiscard]] constexpr auto combine_failure() const -> Result<SuccessType, FirstId, Ids...> {
-		return Result<SuccessType, NewId, FirstId, Ids...>(get_failure().value());
+	template<
+		typename SuccessCombined = SuccessType,
+		FailureType const NewId,
+		FailureType const... NewIds>
+	[[nodiscard]] constexpr auto append() const {
+		auto const result = Result<SuccessType, NewId, FirstId, Ids...>(get_failure().value());
+		if constexpr (sizeof...(NewIds) > 1) {
+			return result.template append<SuccessType, NewIds...>();
+		}
+		return result;
 	};
 
-	// template<typename SuccessCombined = SuccessType, FailureType NewId, FailureType const...
-	// NewIds>
-	// [[nodiscard]] constexpr auto combine_failures(Result result) const
-	//     -> Result<SuccessType, FirstId, Ids...> {
-	//     // if constexpr (sizeof...(NewIds) > 1) {
-	//     //     constexpr auto result_with_one_more_failure =
-	//     //         Result<SuccessType, NewId, FirstId, Ids...>(get_failure().value())
-	//     //             combine_failures<>(result);
-	//     // }
-	//     return Result<SuccessType, NewId, FirstId, Ids...>(get_failure().value());
-	// };
+	// Error constuctors must be public in fault of combine method recursivity
+	explicit constexpr Result(FailureType const value)
+		: _is_success(false), _value(Failure<FailureType>(value)){};
 
 private:
 	constexpr explicit Result(SuccessType const value)
 		: _is_success(true), _value(std::move(Success<SuccessType>{value})){};
-	explicit constexpr Result(FailureType const value)
-		: _is_success(false), _value(Failure<FailureType>(value)){};
-
 	bool const _is_success;
 	std::variant<Success<SuccessType>, Failure<FailureType>> const _value{};
 };

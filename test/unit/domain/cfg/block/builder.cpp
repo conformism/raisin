@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "domain/cfg/scope/scope.hpp"
-
 using namespace core::result;
 using namespace core;
 
@@ -21,7 +20,7 @@ SCENARIO("Block builder should works with uuid") {
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
 					AND_THEN("The scope sould build") {
-						builder = result.get_success()->get_value();
+						builder = result.get_success().value();
 						cfg::Block scope = builder.build();
 					}
 				}
