@@ -2,11 +2,15 @@
 #include <any>
 #include <map>
 #include <memory>
+#include <random>
+#include <sstream>
 #include <string>
 #include <variant>
 
 namespace core {
 using Uuid = std::string;
+constexpr int UUID_LENGTH = 16;
+[[nodiscard]] auto create_uuid() -> Uuid;
 
 template<class T>
 using Compositor = std::map<Uuid, std::unique_ptr<T>>;
@@ -28,7 +32,7 @@ public:
 
 private:
 	// TODO(dauliac) Add lib to generate random default uuid
-	Uuid const _uuid = " ";
+	Uuid const _uuid = create_uuid();
 };
 
 class Value {

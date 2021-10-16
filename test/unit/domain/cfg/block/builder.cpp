@@ -86,27 +86,60 @@ SCENARIO("Block builder should works with successor") {
 	}
 }
 
-SCENARIO("Block builder sould be chained") {
+SCENARIO("Block builder sould be reusable") {
+	GIVEN("Exising builder") {
+		auto builder = cfg::Block::Builder();
+
+		WHEN("Build") {
+			auto successor = builder.build();
+			auto precedent = builder.build();
+			auto* successor_ptr = &successor;
+			auto* precedent_ptr = &precedent;
+			INFO("Precedent" << precedent_ptr);
+			INFO("Successor" << successor_ptr);
+
+			THEN("The block should have different address") {
+				REQUIRE(successor_ptr != precedent_ptr);
+				AND_THEN("The block should have different UUID") {
+					INFO("Precedent UUID: " << precedent.get_uuid());
+					INFO("Successor UUID: " << successor.get_uuid());
+
+					REQUIRE(precedent.get_uuid() != successor.get_text());
+				}
+			}
+		}
+	}
+}
+
+SCENARIO("Block builder sould works with multiple actions") {
 	GIVEN("Exising builder") {
 		auto builder = cfg::Block::Builder();
 
 		AND_GIVEN("Exising blocks address") {
 			auto successor = builder.build();
+			auto successor_2 = builder.build();
 			auto precedent = builder.build();
+			auto precedent_2 = builder.build();
+
 			auto* successor_ptr = &successor;
+			auto* successor_2_ptr = &successor_2;
 			auto* precedent_ptr = &precedent;
-			WHEN("Chain") {
-				INFO("precedent ptr" << successor_ptr);
-				INFO("precedent ptr" << precedent_ptr);
+			auto* precedent_2_ptr = &precedent_2;
+
+			WHEN("Insert multiple values") {
 				auto const successor_result = builder.add_successor(successor_ptr);
-				auto const precedent_result = builder.add_successor(precedent_ptr);
-				auto f = precedent_result.get_failure().value();
+				auto const successor_result_2 = builder.add_successor(successor_2_ptr);
+
+				auto const precedent_result = builder.add_precedent(precedent_ptr);
+				auto const precedent_result_2 = builder.add_precedent(precedent_2_ptr);
+
 				auto const scope = builder.build();
 
 				THEN("The scope should build") {
 					REQUIRE(successor_result.is_success() == true);
-					// REQUIRE(f == Failures::NO_RESOURCES);
+					REQUIRE(successor_result_2.is_success() == true);
 					REQUIRE(precedent_result.is_success() == true);
+					REQUIRE(precedent_result_2.is_success() == true);
 				}
 			}
 		}
