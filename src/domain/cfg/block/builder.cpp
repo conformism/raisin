@@ -55,11 +55,12 @@ auto Block::Builder::add_successor(Block* successor)
 		Failures::ALREADY_INSIDE>;
 	constexpr auto failure_already_inside = result::failure<
 		Block::Builder*,
-		Failures::NO_RESOURCES,
+		Failures::ALREADY_INSIDE,
 		Failures::NO_RESOURCES,
 		Failures::ALREADY_INSIDE>;
 
-	auto const insert_result = _precedents.insert(successor->get_uuid(), successor);
+	// Assume that uuis is valid
+	auto const insert_result = _successors.insert(successor->get_uuid(), successor);
 	if (insert_result.is_failure()) {
 		// TODO(dauliac) find way to create union
 		return insert_result.get_failure().value() == Failures::NO_RESOURCES
