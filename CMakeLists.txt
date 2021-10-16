@@ -36,15 +36,24 @@ list( APPEND CMAKE_MODULE_PATH
 	"${FETCHCONTENT_BASE_DIR}/cmake-utils-src"
 	)
 
+set( CMAKE_UTILS * )
 set( COVERAGE_GLOBAL_ONLY ON )
-
-include( ClangBuildAnalyzer )
-include( Coverage )
-include( Sanitizers )
-include( StaticTools )
+include( CMakeUtils )
 
 add_subdirectory( "${CMAKE_SOURCE_DIR}/icon" )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/src" )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
 
 coverage_global()
+static_analysis_codechecker(
+	GLOBAL
+	NO_CTU
+	SKIP
+		+${CMAKE_SOURCE_DIR}/src
+		-*
+	ARGS
+		"${CMAKE_BINARY_DIR}/compile_commands.json"
+		-j 4
+	ADDITIONAL_OPTIONAL_REPORTS
+		"${CMAKE_BINARY_DIR}/src/CMakeFiles/raisin_cppcheck.dir/codechecker_reports"
+	)
