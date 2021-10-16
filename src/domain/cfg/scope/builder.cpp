@@ -41,8 +41,11 @@ auto Scope::Builder::set_parent(Scope* parent)
 		result::success<Scope::Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_no_resource = result::
 		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
-	constexpr auto failure_already_inside = result::
-		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+	constexpr auto failure_already_inside = result::failure<
+		Builder*,
+		Failures::ALREADY_INSIDE,
+		Failures::NO_RESOURCES,
+		Failures::ALREADY_INSIDE>;
 
 	auto const result = guard::is_null_pointer(parent);
 	if (result.is_failure()) {

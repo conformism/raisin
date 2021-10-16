@@ -92,3 +92,67 @@ SCENARIO("Scope builder should works with block") {
 		}
 	}
 }
+
+SCENARIO("Scope builder sould be reusable") {
+	GIVEN("Exising builder") {
+		auto builder = cfg::Scope::Builder();
+
+		WHEN("Build") {
+			auto successor = builder.build();
+			auto precedent = builder.build();
+			auto* successor_ptr = &successor;
+			auto* precedent_ptr = &precedent;
+			INFO("Precedent" << precedent_ptr);
+			INFO("Successor" << successor_ptr);
+
+			THEN("The scope should have different address") {
+				REQUIRE(successor_ptr != precedent_ptr);
+				AND_THEN("The scope should have different UUID") {
+					INFO("Precedent UUID: " << precedent.get_uuid());
+					INFO("Successor UUID: " << successor.get_uuid());
+
+					REQUIRE(precedent.get_uuid() != successor.get_uuid());
+				}
+			}
+		}
+	}
+}
+
+SCENARIO("Scope builder sould works with multiple actions") {
+	GIVEN("Exising builders") {
+		auto builder = cfg::Scope::Builder();
+		auto block_builder = cfg::Block::Builder();
+
+		AND_GIVEN("Exising scopes address") {
+			auto parent = builder.build();
+			auto child = builder.build();
+			auto child_2 = builder.build();
+			auto block = block_builder.build();
+			auto block_2 = block_builder.build();
+
+			auto* parent_ptr = &parent;
+			auto* child_ptr = &child;
+			auto* child_2_ptr = &child_2;
+			auto* block_ptr = &block;
+			auto* block_2_ptr = &block_2;
+
+			WHEN("Insert multiple values") {
+				auto const child_result = builder.add_child(child_ptr);
+				auto const child_result_2 = builder.add_child(child_2_ptr);
+				auto const parent_result = builder.set_parent(parent_ptr);
+				auto const block_result = builder.add_block(block_ptr);
+				auto const block_result_2 = builder.add_block(block_2_ptr);
+
+				auto const scope = builder.build();
+
+				THEN("The scope should build") {
+					REQUIRE(child_result.is_success() == true);
+					REQUIRE(child_result_2.is_success() == true);
+					REQUIRE(parent_result.is_success() == true);
+					REQUIRE(block_result.is_success() == true);
+					REQUIRE(block_result_2.is_success() == true);
+				}
+			}
+		}
+	}
+}
