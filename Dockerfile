@@ -34,7 +34,9 @@ RUN apt update && \
 		iwyu \
 		pip
 
-RUN pip install lizard
+RUN pip install \
+		lizard \
+		codechecker
 
 #RUN ln -s /usr/bin/clang++-${LLVM_VERSION} /usr/bin/clang++ && \
 RUN ln -s /usr/bin/clang-format-${LLVM_VERSION} /usr/bin/clang-format && \
