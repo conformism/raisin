@@ -123,7 +123,7 @@ SCENARIO("Core Result combine should works.") {
 		auto const result_test = failure<int, Failures::INVALID_UUID>();
 		WHEN("Result combine") {
 			Result<int, Failures::NOT_INSIDE, Failures::INVALID_UUID> const combined_result =
-				result_test.combine<int, Failures::NOT_INSIDE>();
+				result_test.append<int, Failures::NOT_INSIDE>();
 
 			THEN("The combined result object should be queried") {
 				REQUIRE(combined_result.is_failure() == true);

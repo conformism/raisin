@@ -20,8 +20,8 @@ SCENARIO("Block builder should works with uuid") {
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
 					AND_THEN("The scope sould build") {
-						builder = result.get_success().value();
-						cfg::Block scope = builder.build();
+						auto* const builder = result.get_success().value();
+						cfg::Block scope = builder->build();
 					}
 				}
 			}
@@ -80,6 +80,33 @@ SCENARIO("Block builder should works with successor") {
 				auto const result = builder.add_precedent(successor_ptr);
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
+				}
+			}
+		}
+	}
+}
+
+SCENARIO("Block builder sould be chained") {
+	GIVEN("Exising builder") {
+		auto builder = cfg::Block::Builder();
+
+		AND_GIVEN("Exising blocks address") {
+			auto successor = builder.build();
+			auto precedent = builder.build();
+			auto* successor_ptr = &successor;
+			auto* precedent_ptr = &precedent;
+			WHEN("Chain") {
+				INFO("precedent ptr" << successor_ptr);
+				INFO("precedent ptr" << precedent_ptr);
+				auto const successor_result = builder.add_successor(successor_ptr);
+				auto const precedent_result = builder.add_successor(precedent_ptr);
+				auto f = precedent_result.get_failure().value();
+				auto const scope = builder.build();
+
+				THEN("The scope should build") {
+					REQUIRE(successor_result.is_success() == true);
+					// REQUIRE(f == Failures::NO_RESOURCES);
+					REQUIRE(precedent_result.is_success() == true);
 				}
 			}
 		}

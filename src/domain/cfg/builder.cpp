@@ -7,26 +7,26 @@
 
 namespace cfg {
 
-auto Cfg::Builder::set_uuid(Uuid uuid) -> result::Result<Builder&, Failures::INVALID_UUID> {
-	constexpr auto success = result::success<Builder&, Failures::INVALID_UUID>;
-	constexpr auto failure = result::failure<Builder&, Failures::INVALID_UUID>;
+auto Cfg::Builder::set_uuid(Uuid uuid) -> result::Result<Builder*, Failures::INVALID_UUID> {
+	constexpr auto success = result::success<Builder*, Failures::INVALID_UUID>;
+	constexpr auto failure = result::failure<Builder*, Failures::INVALID_UUID>;
 
 	auto const result = guard::is_valid_uuid(uuid);
 	if (result.is_failure()) {
 		return failure();
 	}
 	_uuid = uuid;
-	return success(*this);
+	return success(this);
 };
 
 auto Cfg::Builder::add_block(Block* block)
-	-> result::Result<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
+	-> result::Result<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
 	constexpr auto success =
-		result::success<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		result::success<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_no_resource = result::
-		failure<Builder&, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_already_inside = result::failure<
-		Builder&,
+		Builder*,
 		Failures::ALREADY_INSIDE,
 		Failures::NO_RESOURCES,
 		Failures::ALREADY_INSIDE>;
@@ -38,16 +38,16 @@ auto Cfg::Builder::add_block(Block* block)
 			? failure_no_resource()
 			: failure_already_inside();
 	}
-	return success(*this);
+	return success(this);
 };
 auto Cfg::Builder::add_scope(Scope* scope)
-	-> result::Result<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
+	-> result::Result<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
 	constexpr auto success =
-		result::success<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		result::success<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_no_resource = result::
-		failure<Builder&, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_already_inside = result::failure<
-		Builder&,
+		Builder*,
 		Failures::ALREADY_INSIDE,
 		Failures::NO_RESOURCES,
 		Failures::ALREADY_INSIDE>;
@@ -59,7 +59,7 @@ auto Cfg::Builder::add_scope(Scope* scope)
 			? failure_no_resource()
 			: failure_already_inside();
 	}
-	return success(*this);
+	return success(this);
 };
 
 auto Cfg::Builder::build() -> Cfg {

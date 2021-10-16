@@ -28,11 +28,11 @@ public:
 	class IBuilder {
 	public:
 		[[nodiscard]] virtual auto set_uuid(Uuid uuid)
-			-> result::Result<ConcreteBuilder&, Failures::INVALID_UUID> = 0;
+			-> result::Result<ConcreteBuilder*, Failures::INVALID_UUID> = 0;
 		[[nodiscard]] virtual auto add_block(ConcreteBlock* block) -> result::
-			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
+			Result<ConcreteBuilder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
 		[[nodiscard]] virtual auto add_scope(ConcreteScope* scope) -> result::
-			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
+			Result<ConcreteBuilder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
 		[[nodiscard]] virtual auto build() -> Concrete = 0;
 	};
 };

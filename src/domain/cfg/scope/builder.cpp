@@ -2,26 +2,26 @@
 #include "scope.hpp"
 
 namespace cfg {
-auto Scope::Builder::set_uuid(Uuid uuid) -> result::Result<Builder&, Failures::INVALID_UUID> {
-	constexpr auto success = result::success<Builder&, Failures::INVALID_UUID>;
-	constexpr auto failure = result::failure<Builder&, Failures::INVALID_UUID>;
+auto Scope::Builder::set_uuid(Uuid uuid) -> result::Result<Builder*, Failures::INVALID_UUID> {
+	constexpr auto success = result::success<Builder*, Failures::INVALID_UUID>;
+	constexpr auto failure = result::failure<Builder*, Failures::INVALID_UUID>;
 
 	auto const result = guard::is_valid_uuid(uuid);
 	if (result.is_failure()) {
 		return failure();
 	}
 	this->_uuid = uuid;
-	return success(*this);
+	return success(this);
 };
 
 auto Scope::Builder::add_child(Scope* child)
-	-> result::Result<Scope::Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
+	-> result::Result<Scope::Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
 	constexpr auto success =
-		result::success<Scope::Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		result::success<Scope::Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_no_resource = result::
-		failure<Builder&, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_already_inside = result::
-		failure<Builder&, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 
 	auto const insert_result = _childs.insert(child->get_uuid(), child);
 	if (insert_result.is_failure()) {
@@ -32,17 +32,17 @@ auto Scope::Builder::add_child(Scope* child)
 			: failure_already_inside();
 	}
 
-	return success(*this);
+	return success(this);
 };
 
 auto Scope::Builder::set_parent(Scope* parent)
-	-> result::Result<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
+	-> result::Result<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
 	constexpr auto success =
-		result::success<Scope::Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		result::success<Scope::Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_no_resource = result::
-		failure<Builder&, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_already_inside = result::
-		failure<Builder&, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 
 	auto const result = guard::is_null_pointer(parent);
 	if (result.is_failure()) {
@@ -52,17 +52,17 @@ auto Scope::Builder::set_parent(Scope* parent)
 		return failure_already_inside();
 	}
 	_parent = parent;
-	return success(*this);
+	return success(this);
 };
 
 auto Scope::Builder::add_block(Block* block)
-	-> result::Result<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
+	-> result::Result<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
 	constexpr auto success =
-		result::success<Builder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		result::success<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_no_resource = result::
-		failure<Builder&, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		failure<Builder*, Failures::NO_RESOURCES, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	constexpr auto failure_already_inside = result::failure<
-		Builder&,
+		Builder*,
 		Failures::ALREADY_INSIDE,
 		Failures::NO_RESOURCES,
 		Failures::ALREADY_INSIDE>;
@@ -75,7 +75,7 @@ auto Scope::Builder::add_block(Block* block)
 			? failure_no_resource()
 			: failure_already_inside();
 	}
-	return success(*this);
+	return success(this);
 };
 
 [[nodiscard]] auto Scope::Builder::build() -> Scope {

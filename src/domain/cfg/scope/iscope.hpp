@@ -31,13 +31,13 @@ public:
 	public:
 		// virtual ~IBuilder() = default;
 		virtual auto set_uuid(Uuid uuid)
-			-> result::Result<ConcreteBuilder&, Failures::INVALID_UUID> = 0;
+			-> result::Result<ConcreteBuilder*, Failures::INVALID_UUID> = 0;
 		virtual auto add_child(Concrete* child) -> result::
-			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
+			Result<ConcreteBuilder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
 		virtual auto set_parent(Concrete* parent) -> result::
-			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
+			Result<ConcreteBuilder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
 		virtual auto add_block(ConcreteBlock* block) -> result::
-			Result<ConcreteBuilder&, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
+			Result<ConcreteBuilder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> = 0;
 	};
 };
 
