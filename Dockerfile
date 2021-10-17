@@ -59,6 +59,10 @@ RUN git clone https://github.com/uncrustify/uncrustify --depth 1 \
 	&& cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release \
 	&& cmake --build build/ --target install
 
+RUN git clone https://github.com/pwndbg/pwndbg --depth 1 /pwndbg \
+	&& cd /pwndbg \
+	&& ./setup.sh
+
 # TODO is -DClang_DIR useful?
 CMD cmake \
         -DCMAKE_BUILD_TYPE=Coverage \
