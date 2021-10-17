@@ -34,7 +34,9 @@ RUN apt update && \
 		iwyu \
 		pip
 
-RUN pip install lizard
+RUN pip install \
+		lizard \
+		codechecker
 
 #RUN ln -s /usr/bin/clang++-${LLVM_VERSION} /usr/bin/clang++ && \
 RUN ln -s /usr/bin/clang-format-${LLVM_VERSION} /usr/bin/clang-format && \
@@ -42,13 +44,18 @@ RUN ln -s /usr/bin/clang-format-${LLVM_VERSION} /usr/bin/clang-format && \
 	ln -s /usr/bin/llvm-cov-${LLVM_VERSION} /usr/bin/llvm-cov && \
 	ln -s /usr/bin/llvm-profdata-${LLVM_VERSION} /usr/bin/llvm-profdata
 
-RUN git clone https://github.com/catchorg/Catch2.git \
+RUN git clone https://github.com/catchorg/Catch2.git --depth 1 \
 	&& cd Catch2 \
 	&& cmake -Bbuild -H. -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release \
 	&& cmake --build build/ --target install
 
-RUN git clone https://github.com/aras-p/ClangBuildAnalyzer.git \
+RUN git clone https://github.com/aras-p/ClangBuildAnalyzer.git --depth 1 \
 	&& cd ClangBuildAnalyzer \
+	&& cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release \
+	&& cmake --build build/ --target install
+
+RUN git clone https://github.com/uncrustify/uncrustify --depth 1 \
+	&& cd uncrustify \
 	&& cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release \
 	&& cmake --build build/ --target install
 
