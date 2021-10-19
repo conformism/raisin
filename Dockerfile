@@ -44,22 +44,28 @@ RUN ln -s /usr/bin/clang-format-${LLVM_VERSION} /usr/bin/clang-format && \
 	ln -s /usr/bin/llvm-cov-${LLVM_VERSION} /usr/bin/llvm-cov && \
 	ln -s /usr/bin/llvm-profdata-${LLVM_VERSION} /usr/bin/llvm-profdata
 
-RUN git clone https://github.com/catchorg/Catch2.git --depth 1 \
+ARG CATCH2_VERSION=v3.0.0-preview3
+ARG UNCRUSTIFY_VERSION=uncrustify-0.73.0
+ARG PWNDBG_VERSION=2021.06.22
+ARG CLANGBUILDANALYZER_VERSION=5d40542
+
+RUN git clone https://github.com/catchorg/Catch2.git --depth 1 -b ${CATCH2_VERSION} \
 	&& cd Catch2 \
 	&& cmake -Bbuild -H. -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release \
 	&& cmake --build build/ --target install
 
-RUN git clone https://github.com/aras-p/ClangBuildAnalyzer.git --depth 1 \
+RUN git clone https://github.com/aras-p/ClangBuildAnalyzer.git \
 	&& cd ClangBuildAnalyzer \
+	&& git checkout ${CLANGBUILDANALYZER_VERSION} \
 	&& cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release \
 	&& cmake --build build/ --target install
 
-RUN git clone https://github.com/uncrustify/uncrustify --depth 1 \
+RUN git clone https://github.com/uncrustify/uncrustify --depth 1 -b ${UNCRUSTIFY_VERSION} \
 	&& cd uncrustify \
 	&& cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release \
 	&& cmake --build build/ --target install
 
-RUN git clone https://github.com/pwndbg/pwndbg --depth 1 /pwndbg \
+RUN git clone https://github.com/pwndbg/pwndbg --depth 1 /pwndbg -b ${PWNDBG_VERSION} \
 	&& cd /pwndbg \
 	&& ./setup.sh
 
