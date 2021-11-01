@@ -1,10 +1,11 @@
+#include "infra/services/iservice.hpp"
+
 namespace infra::services::cfg {
 
 template<class Cfgs>
-class ICfgPaser {
+class ICfgParser : IService<Cfgs> {
 public:
 	auto run() -> Cfgs;
-	auto is_changed() -> Cfgs;
 };
 
 }  // namespace infra::services::cfg
