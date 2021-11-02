@@ -4,7 +4,7 @@
 #include <memory>
 #include <utility>
 
-namespace cfg {
+namespace domain::cfg {
 
 // Cfg
 Cfg::Cfg(
@@ -34,4 +34,4 @@ auto Cfg::get_scope_by_id(Uuid uuid) const
 	return _scopes.at(uuid);
 }
 
-}  // namespace cfg
+}  // namespace domain::cfg

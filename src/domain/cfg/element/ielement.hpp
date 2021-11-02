@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace cfg {
+namespace domain::cfg {
 
 class IElement {
 public:
@@ -12,4 +12,4 @@ public:
 	// virtual ICfg* get_cfg() = 0;
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

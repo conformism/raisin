@@ -6,12 +6,12 @@
 
 using namespace std;
 
-namespace cfg {
+namespace domain::cfg {
 
 Block::Block(Aggregator<Block> precedents, Aggregator<Block> successors)
 	: IBlock<Block>(), _precedents(std::move(precedents)), _successors(std::move(successors)) {}
 
-Block::Block(core::Uuid uuid, Aggregator<Block> precedents, Aggregator<Block> successors)
+Block::Block(domain::core::Uuid uuid, Aggregator<Block> precedents, Aggregator<Block> successors)
 	: IBlock<Block>(std::move(uuid)),
 	  _precedents(std::move(precedents)),
 	  _successors(std::move(successors)) {}
@@ -35,4 +35,4 @@ auto Block::get_successors() const -> Aggregator<Block> const* {
 auto Block::get_precedents() const -> Aggregator<Block> const* {
 	return &_precedents;
 }
-}  // namespace cfg
+}  // namespace domain::cfg

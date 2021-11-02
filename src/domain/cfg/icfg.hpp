@@ -10,9 +10,9 @@
 #include "./element/ielement.hpp"
 #include "./scope/iscope.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
-using namespace core;
+using namespace domain::core;
 
 template<class Concrete, class ConcreteBlock, class ConcreteScope>
 class ICfg : public Entity {
@@ -37,4 +37,4 @@ public:
 	};
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

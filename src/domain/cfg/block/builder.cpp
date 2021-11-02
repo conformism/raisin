@@ -3,7 +3,7 @@
 
 #include "./block.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
 auto Block::Builder::set_uuid(Uuid uuid) -> result::Result<Builder*, Failures::INVALID_UUID> {
 	constexpr auto success = result::success<Builder*, Failures::INVALID_UUID>;
@@ -79,4 +79,4 @@ auto Block::Builder::build() -> Block {
 	return Block(_uuid, _precedents, _successors);
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

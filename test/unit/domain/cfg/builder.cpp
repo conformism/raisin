@@ -8,21 +8,21 @@
 
 #include "domain/cfg/cfg.hpp"
 
-using namespace core::result;
-using namespace core;
+using namespace domain::core::result;
+using namespace domain::core;
 
 SCENARIO("Cfg builder should works with uuid") {
 	GIVEN("Known UUID") {
-		core::Uuid uuid = "randomuuid";
+		domain::core::Uuid uuid = "randomuuid";
 		AND_GIVEN("Exising builder") {
-			auto builder = cfg::Cfg::Builder();
+			auto builder = domain::cfg::Cfg::Builder();
 			WHEN("Builder take uuid") {
 				auto result = builder.set_uuid(uuid);
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
 					AND_THEN("The cfg should build") {
 						builder = result.get_success().value();
-						cfg::Cfg cfg = builder.build();
+						domain::cfg::Cfg cfg = builder.build();
 					}
 				}
 			}
@@ -32,7 +32,7 @@ SCENARIO("Cfg builder should works with uuid") {
 
 SCENARIO("Cfg builder should works without uuid") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Cfg::Builder();
+		auto builder = domain::cfg::Cfg::Builder();
 		WHEN("Build") {
 			auto const cfg = builder.build();
 			THEN("The cfg should build") {}
@@ -42,9 +42,9 @@ SCENARIO("Cfg builder should works without uuid") {
 
 SCENARIO("Cfg builder should fail with invalid uuid") {
 	GIVEN("Known UUID") {
-		core::Uuid invalid_uuid;
+		domain::core::Uuid invalid_uuid;
 		AND_GIVEN("Exising builder") {
-			auto builder = cfg::Cfg::Builder();
+			auto builder = domain::cfg::Cfg::Builder();
 			WHEN("Builder take uuid") {
 				auto result = builder.set_uuid(invalid_uuid);
 				THEN("The result shoult be failure") {
@@ -57,9 +57,9 @@ SCENARIO("Cfg builder should fail with invalid uuid") {
 
 SCENARIO("Cfg builder should works with block") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Cfg::Builder();
+		auto builder = domain::cfg::Cfg::Builder();
 		AND_GIVEN("Exising block address") {
-			auto block_builder = cfg::Block::Builder();
+			auto block_builder = domain::cfg::Block::Builder();
 			auto block = block_builder.build();
 			auto* block_ptr = &block;
 			WHEN("Builder take scope") {
@@ -74,9 +74,9 @@ SCENARIO("Cfg builder should works with block") {
 
 SCENARIO("Cfg builder should works with scope") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Cfg::Builder();
+		auto builder = domain::cfg::Cfg::Builder();
 		AND_GIVEN("Exising scope address") {
-			auto scope_builder = cfg::Scope::Builder();
+			auto scope_builder = domain::cfg::Scope::Builder();
 			auto scope = scope_builder.build();
 			auto* scope_ptr = &scope;
 			WHEN("Builder take scope") {

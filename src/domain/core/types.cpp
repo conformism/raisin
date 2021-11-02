@@ -1,6 +1,6 @@
 #include "types.hpp"
 
-namespace core {
+namespace domain::core {
 
 auto create_uuid() -> Uuid {
 	std::stringstream string_stream;
@@ -25,4 +25,4 @@ auto Entity::get_uuid() const -> Uuid {
 	return _uuid;
 }
 
-}  // namespace core
+}  // namespace domain::core

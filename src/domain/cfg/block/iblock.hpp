@@ -4,12 +4,12 @@
 #include <map>
 #include <string>
 
-namespace cfg {
+namespace domain::cfg {
 
-using namespace core;
+using namespace domain::core;
 
 template<class Concrete>
-class IBlock : public core::Entity {
+class IBlock : public domain::core::Entity {
 public:
 	// enum Kind {};
 	explicit IBlock() : Entity(){};
@@ -35,4 +35,4 @@ public:
 	};
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

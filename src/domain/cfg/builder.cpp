@@ -5,7 +5,7 @@
 
 #include "./cfg.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
 auto Cfg::Builder::set_uuid(Uuid uuid) -> result::Result<Builder*, Failures::INVALID_UUID> {
 	constexpr auto success = result::success<Builder*, Failures::INVALID_UUID>;
@@ -70,4 +70,4 @@ auto Cfg::Builder::build() -> Cfg {
 	return Cfg(_uuid, _blocks, _scopes);
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

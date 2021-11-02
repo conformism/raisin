@@ -2,7 +2,7 @@
 
 using namespace std;
 
-namespace cfg {
+namespace domain::cfg {
 
 // Element::Element(IElement::Value value, ICfg* cfg) : _value(value), _cfg(cfg) {}
 
@@ -14,4 +14,4 @@ namespace cfg {
 //     return _cfg;
 // }
 
-}  // namespace cfg
+}  // namespace domain::cfg

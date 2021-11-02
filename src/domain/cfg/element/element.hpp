@@ -5,7 +5,7 @@
 
 #include "./ielement.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
 class Element : public IElement {
 public:
@@ -18,4 +18,4 @@ private:
 	// ICfg* const _cfg;
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

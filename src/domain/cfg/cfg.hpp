@@ -7,7 +7,7 @@
 #include "icfg.hpp"
 #include "scope/scope.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
 class Cfg : public ICfg<Cfg, Block, Scope> {
 public:
@@ -49,4 +49,4 @@ private:
 	Aggregator<Scope> _scopes;
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

@@ -1,6 +1,6 @@
 #include "guard.hpp"
 
-namespace core::guard {
+namespace domain::core::guard {
 // InvalidArgumentParameter::InvalidArgumentParameter(std::string reason)
 //     : BasicInvalidUseCase("Invalid-Argument-Parameter", std::move(reason)){};
 
@@ -15,4 +15,4 @@ namespace core::guard {
 
 	return success(uuid);
 }
-}  // namespace core::guard
+}  // namespace domain::core::guard

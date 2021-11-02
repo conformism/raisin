@@ -8,9 +8,9 @@
 #include "../block/iblock.hpp"
 #include "iscope.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
-using namespace core;
+using namespace domain::core;
 
 class Scope : public IScope<Scope, Block> {
 public:
@@ -24,7 +24,7 @@ public:
 
 private:
 	Scope(Parent parent, Childs childs, Blocks blocks);
-	Scope(core::Uuid uuid, Parent parent, Childs childs, Blocks blocks);
+	Scope(domain::core::Uuid uuid, Parent parent, Childs childs, Blocks blocks);
 
 	const Parent _parent;
 	const Blocks _blocks;
@@ -49,4 +49,4 @@ private:
 	Aggregator<Block> _blocks;
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg
