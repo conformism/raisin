@@ -2,7 +2,7 @@
 
 #include "domain/cfg/scope/scope.hpp"
 
-using namespace cfg;
+using namespace domain::cfg;
 
 SCENARIO("Create scopes without blocks to test scope creation") {
 	GIVEN("A root scope") {

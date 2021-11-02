@@ -8,7 +8,7 @@
 
 #include "domain/core/result.hpp"
 
-using namespace core::result;
+using namespace domain::core::result;
 
 SCENARIO("Core Result system should be usable as success by value") {
 	GIVEN("value variable based on random type") {

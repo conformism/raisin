@@ -8,21 +8,21 @@
 
 #include "domain/cfg/scope/scope.hpp"
 
-using namespace core::result;
-using namespace core;
+using namespace domain::core::result;
+using namespace domain::core;
 
 SCENARIO("Scope builder should works with uuid") {
 	GIVEN("Known UUID") {
-		core::Uuid uuid = "randomuuid";
+		domain::core::Uuid uuid = "randomuuid";
 		AND_GIVEN("Exising builder") {
-			auto builder = cfg::Scope::Builder();
+			auto builder = domain::cfg::Scope::Builder();
 			WHEN("Builder take uuid") {
 				auto result = builder.set_uuid(uuid);
 				THEN("The result shoult not be failure") {
 					REQUIRE(result.is_success() == true);
 					AND_THEN("The scope sould build") {
 						builder = result.get_success()->get_value();
-						cfg::Scope scope = builder.build();
+						domain::cfg::Scope scope = builder.build();
 					}
 				}
 			}
@@ -32,7 +32,7 @@ SCENARIO("Scope builder should works with uuid") {
 
 SCENARIO("Scope builder should works without uuid") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Scope::Builder();
+		auto builder = domain::cfg::Scope::Builder();
 		WHEN("Build") {
 			auto const scope = builder.build();
 			THEN("The scope should build") {}
@@ -42,9 +42,9 @@ SCENARIO("Scope builder should works without uuid") {
 
 SCENARIO("Scope builder should fail with invalid uuid") {
 	GIVEN("Known UUID") {
-		core::Uuid invalid_uuid;
+		domain::core::Uuid invalid_uuid;
 		AND_GIVEN("Exising builder") {
-			auto builder = cfg::Scope::Builder();
+			auto builder = domain::cfg::Scope::Builder();
 			WHEN("Builder take uuid") {
 				auto result = builder.set_uuid(invalid_uuid);
 				THEN("The result shoult be failure") {
@@ -57,10 +57,10 @@ SCENARIO("Scope builder should fail with invalid uuid") {
 
 SCENARIO("Scope builder should works with parent") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Scope::Builder();
+		auto builder = domain::cfg::Scope::Builder();
 		AND_GIVEN("Exising scope address") {
 			auto scope = builder.build();
-			cfg::Scope* scope_ptr = &scope;
+			domain::cfg::Scope* scope_ptr = &scope;
 			WHEN("Builder take scope") {
 				auto const result = builder.set_parent(scope_ptr);
 				THEN("The result shoult not be failure") {
@@ -73,13 +73,13 @@ SCENARIO("Scope builder should works with parent") {
 
 SCENARIO("Scope builder should works with block") {
 	GIVEN("Known Block address") {
-		cfg::Block::Builder block_builder = cfg::Block::Builder();
-		core::Uuid const uuid = "1234567";
+		domain::cfg::Block::Builder block_builder = domain::cfg::Block::Builder();
+		domain::core::Uuid const uuid = "1234567";
 		block_builder.set_uuid(uuid);
-		cfg::Block block = block_builder.build();
+		domain::cfg::Block block = block_builder.build();
 		auto* block_ptr = &block;
 		AND_GIVEN("Exising builder") {
-			auto builder = cfg::Scope::Builder();
+			auto builder = domain::cfg::Scope::Builder();
 			WHEN("Builder take block") {
 				auto result = builder.add_block(block_ptr);
 				THEN("The result shoult be a success") {
@@ -95,7 +95,7 @@ SCENARIO("Scope builder should works with block") {
 
 SCENARIO("Scope builder sould be reusable") {
 	GIVEN("Exising builder") {
-		auto builder = cfg::Scope::Builder();
+		auto builder = domain::cfg::Scope::Builder();
 
 		WHEN("Build") {
 			auto successor = builder.build();
@@ -120,8 +120,8 @@ SCENARIO("Scope builder sould be reusable") {
 
 SCENARIO("Scope builder sould works with multiple actions") {
 	GIVEN("Exising builders") {
-		auto builder = cfg::Scope::Builder();
-		auto block_builder = cfg::Block::Builder();
+		auto builder = domain::cfg::Scope::Builder();
+		auto block_builder = domain::cfg::Block::Builder();
 
 		AND_GIVEN("Exising scopes address") {
 			auto parent = builder.build();

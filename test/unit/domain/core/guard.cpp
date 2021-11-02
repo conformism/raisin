@@ -3,7 +3,7 @@
 #include "domain/core/failure-registrar.hpp"
 #include "domain/core/guard.hpp"
 
-using namespace core;
+using namespace domain::core;
 
 SCENARIO("Guard against null pointer should works with valid pointer.") {
 	GIVEN("Valid pointer.") {

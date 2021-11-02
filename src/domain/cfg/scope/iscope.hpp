@@ -7,19 +7,19 @@
 
 #include "../../core/types.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
-using namespace core;
+using namespace domain::core;
 
 template<class Concrete, class ConcreteBlock>
 class IScope : public Entity {
 public:
 	using Parent = Concrete const*;
-	using Blocks = core::Aggregator<ConcreteBlock>;
-	using Childs = core::Aggregator<Concrete>;
+	using Blocks = domain::core::Aggregator<ConcreteBlock>;
+	using Childs = domain::core::Aggregator<Concrete>;
 
 	IScope() : Entity(){};
-	explicit IScope(core::Uuid uuid) : Entity(std::move(uuid)){};
+	explicit IScope(domain::core::Uuid uuid) : Entity(std::move(uuid)){};
 	[[nodiscard]] virtual auto is_root() const -> bool = 0;
 	[[nodiscard]] virtual auto has_childs() const -> bool = 0;
 	[[nodiscard]] virtual auto get_blocks() const -> Blocks = 0;
@@ -41,4 +41,4 @@ public:
 	};
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

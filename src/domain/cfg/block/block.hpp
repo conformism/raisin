@@ -9,9 +9,9 @@
 #include "domain/core/aggregator.hpp"
 #include "domain/core/core.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 
-using namespace core;
+using namespace domain::core;
 
 class Block : public IBlock<Block> {
 public:
@@ -25,7 +25,7 @@ public:
 
 private:
 	Block(Aggregator<Block> precedents, Aggregator<Block> successors);
-	Block(core::Uuid uuid, Aggregator<Block> precedents, Aggregator<Block> successors);
+	Block(domain::core::Uuid uuid, Aggregator<Block> precedents, Aggregator<Block> successors);
 
 	std::string const _text;
 	Aggregator<Block> const _precedents;
@@ -50,4 +50,4 @@ private:
 	Aggregator<Block> _successors;
 };
 
-}  // namespace cfg
+}  // namespace domain::cfg

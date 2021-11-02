@@ -11,7 +11,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace core::result {
+namespace domain::core::result {
 
 template<typename FailureType>
 class Failure {
@@ -117,4 +117,4 @@ template<
 	return Result<SuccessType, FirstPossibleValue, PossibleValues...>::template create<Value>();
 };
 
-}  // namespace core::result
+}  // namespace domain::core::result

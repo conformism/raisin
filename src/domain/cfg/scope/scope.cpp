@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <utility>
 
-namespace cfg {
+namespace domain::cfg {
 
 Scope::Scope(Parent parent, Childs childs, Blocks blocks)
 	: IScope<Scope, Block>(),
@@ -10,7 +10,7 @@ Scope::Scope(Parent parent, Childs childs, Blocks blocks)
 	  _blocks(std::move(blocks)),
 	  _childs(std::move(childs)){};
 
-Scope::Scope(core::Uuid uuid, Parent parent, Childs childs, Blocks blocks)
+Scope::Scope(domain::core::Uuid uuid, Parent parent, Childs childs, Blocks blocks)
 	: IScope(std::move(uuid)),
 	  _parent(parent),
 	  _blocks(std::move(blocks)),
@@ -38,4 +38,4 @@ auto Scope::get_parent() const -> Scope::Parent {
 	return _parent;
 }
 
-}  // namespace cfg
+}  // namespace domain::cfg

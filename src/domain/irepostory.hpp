@@ -5,7 +5,7 @@
 template<class Cfg>
 class IRespository {
 public:
-	using Cfgs = core::Aggregator<Cfg>;
+	using Cfgs = domain::core::Aggregator<Cfg>;
 
 	// TODO(dauliac) version cfgs using file system hash
 	virtual auto readCfgs() -> Cfgs = 0;

@@ -7,7 +7,7 @@
 #include <string>
 #include <variant>
 
-namespace core {
+namespace domain::core {
 using Uuid = std::string;
 constexpr int UUID_LENGTH = 16;
 [[nodiscard]] auto create_uuid() -> Uuid;
@@ -46,4 +46,4 @@ public:
 	[[nodiscard]] virtual auto build() -> T = 0;
 };
 
-}  // namespace core
+}  // namespace domain::core

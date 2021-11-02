@@ -9,12 +9,12 @@
 #include "result.hpp"
 #include "types.hpp"
 
-namespace core {
+namespace domain::core {
 template<class T>
 class Aggregator;
-}  // namespace core
+}  // namespace domain::core
 
-namespace core::guard {
+namespace domain::core::guard {
 
 template<typename Ptr>
 [[nodiscard]] inline auto is_null_pointer(Ptr* pointer)
@@ -32,4 +32,4 @@ template<typename Ptr>
 
 [[nodiscard]] auto is_valid_uuid(Uuid const& uuid) -> result::Result<Uuid, Failures::INVALID_UUID>;
 
-}  // namespace core::guard
+}  // namespace domain::core::guard

@@ -9,7 +9,7 @@
 #include "domain/core/aggregator.hpp"
 #include "domain/core/types.hpp"
 
-using namespace core;
+using namespace domain::core;
 
 SCENARIO("Core Aggregator should be fillable.") {
 	GIVEN("Uuid and related object to insert into it.") {

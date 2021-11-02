@@ -7,11 +7,13 @@
 #include <unordered_map>
 #include <utility>
 
-namespace core {
+namespace domain::core {
 
 template<class T>
 class Aggregator {
 public:
+	using Contained = T;
+
 	[[nodiscard]] auto size() const -> int {
 		return _aggregated.empty();
 	}
@@ -112,4 +114,4 @@ private:
 	std::unordered_map<Uuid, T*> _aggregated;
 };
 
-}  // namespace core
+}  // namespace domain::core

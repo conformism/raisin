@@ -1,7 +1,7 @@
 #include "domain/core/guard.hpp"
 #include "scope.hpp"
 
-namespace cfg {
+namespace domain::cfg {
 auto Scope::Builder::set_uuid(Uuid uuid) -> result::Result<Builder*, Failures::INVALID_UUID> {
 	constexpr auto success = result::success<Builder*, Failures::INVALID_UUID>;
 	constexpr auto failure = result::failure<Builder*, Failures::INVALID_UUID>;
@@ -88,4 +88,4 @@ auto Scope::Builder::add_block(Block* block)
 	return Scope(_uuid, _parent, std::move(_childs), std::move(_blocks));
 }
 
-}  // namespace cfg
+}  // namespace domain::cfg
