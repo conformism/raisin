@@ -32,11 +32,17 @@ RUN apt update && \
 		clang-format-${LLVM_VERSION} \
 		clang-tidy-${LLVM_VERSION} \
 		iwyu \
+		doxygen \
+		graphviz \
+		plantuml \
+		python3-jinja2 \
+		python3-pygments \
 		pip
 
 RUN pip install \
 		lizard \
-		codechecker
+		codechecker \
+		coverxygen
 
 #RUN ln -s /usr/bin/clang++-${LLVM_VERSION} /usr/bin/clang++ && \
 RUN ln -s /usr/bin/clang-format-${LLVM_VERSION} /usr/bin/clang-format && \
