@@ -1,6 +1,8 @@
 #include <catch2/catch_all.hpp>
 
 #include <any>
+#include <catch2/catch_message.hpp>
+#include <catch2/catch_test_macros.hpp>
 #include <memory>
 #include <optional>
 #include <string>
@@ -17,7 +19,7 @@ SCENARIO("Core Result system should be usable as success by value") {
 			auto const result = Result<int>::create(test_value);
 			THEN("The result object success should be queried") {
 				REQUIRE(result.is_success() == true);
-				REQUIRE(result.get_success() == test_value);
+				REQUIRE(result.get_success().value() == test_value);
 			}
 			AND_THEN("The result object failure should not be queriable") {
 				REQUIRE(result.is_failure() != true);
@@ -118,16 +120,109 @@ SCENARIO("Core Result helper should be usable as failure with some possibility."
 	}
 }
 
-SCENARIO("Core Result combine should works.") {
+SCENARIO("Core Result failure appening should works.") {
 	GIVEN("Invalid operation result") {
 		auto const result_test = failure<int, Failures::INVALID_UUID>();
 		WHEN("Result combine") {
 			Result<int, Failures::NOT_INSIDE, Failures::INVALID_UUID> const combined_result =
-				result_test.append<int, Failures::NOT_INSIDE>();
+				result_test.append_failures<Failures::NOT_INSIDE>();
 
 			THEN("The combined result object should be queried") {
 				REQUIRE(combined_result.is_failure() == true);
 				REQUIRE(combined_result.get_failure() == Failures::INVALID_UUID);
+			}
+		}
+	}
+}
+
+SCENARIO("Core Result failure removing should works with one Id.") {
+	GIVEN("Invalid operation result") {
+		auto const result_test = failure<
+			int,
+			Failures::INVALID_UUID,
+			Failures::INVALID_UUID,
+			Failures::NOT_INSIDE,
+			Failures::NO_RESOURCES,
+			Failures::UNKNOWN>();
+		WHEN("Result removing") {
+			auto const new_result = result_test.set_failures<Failures::INVALID_UUID>();
+
+			THEN("The combined result object should be coherent") {
+				INFO("result_test type is:" << typeid(result_test).name());
+				INFO("new_result tested type is :" << typeid(new_result.value()).name());
+				INFO(
+					"new_result correct type is:"
+					<< typeid(Result<int, Failures::INVALID_UUID>).name());
+				REQUIRE(new_result.has_value() == true);
+				REQUIRE(new_result.value().get_failure().value() == Failures::INVALID_UUID);
+				REQUIRE(
+					typeid(decltype(new_result.value())).name()
+					== typeid(Result<int, Failures::INVALID_UUID>).name());
+			}
+		}
+	}
+}
+
+SCENARIO("Core Result failure removing should works with many Ids.") {
+	GIVEN("Invalid operation result") {
+		auto const result_test = failure<
+			int,
+			Failures::INVALID_UUID,
+			Failures::INVALID_UUID,
+			Failures::NOT_INSIDE,
+			Failures::NO_RESOURCES,
+			Failures::UNKNOWN>();
+		WHEN("Result removing") {
+			auto const new_result = result_test.set_failures<
+				Failures::INVALID_UUID,
+				Failures::NO_RESOURCES,
+				Failures::NOT_INSIDE>();
+
+			THEN("The combined result object should be coherent") {
+				// INFO("result_test Failure Id is: " << result_test.get_failure().value());
+				INFO("result_test type is:" << typeid(result_test).name());
+				INFO("new_result tested type is :" << typeid(new_result.value()).name());
+				INFO(
+					"new_result correct type is:" << typeid(Result<
+																int,
+																Failures::INVALID_UUID,
+																Failures::NO_RESOURCES,
+																Failures::NOT_INSIDE>)
+														 .name());
+				REQUIRE(new_result.has_value() == true);
+				REQUIRE(new_result.value().get_failure().value() == Failures::INVALID_UUID);
+				REQUIRE(
+					typeid(decltype(new_result.value())).name()
+					== typeid(Result<
+								  int,
+								  Failures::INVALID_UUID,
+								  Failures::NO_RESOURCES,
+								  Failures::NOT_INSIDE>)
+						   .name());
+			}
+		}
+	}
+}
+
+SCENARIO(
+	"Core Result failure setting should fail if not at least one setted is equal to the base "
+	"Result "
+	"value.") {
+	GIVEN("Invalid operation result") {
+		auto const result_test = failure<
+			int,
+			Failures::INVALID_UUID,
+			Failures::INVALID_UUID,
+			Failures::NOT_INSIDE,
+			Failures::NO_RESOURCES,
+			Failures::UNKNOWN>();
+		WHEN("Result removing") {
+			auto const new_result = result_test.set_failures<Failures::NOT_INSIDE>();
+
+			THEN("The combined result object should be coherent") {
+				INFO("result_test type is:" << typeid(result_test).name());
+				INFO("new_result tested type is :" << typeid(new_result.value()).name());
+				REQUIRE(new_result.has_value() == false);
 			}
 		}
 	}
