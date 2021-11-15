@@ -135,29 +135,44 @@ SCENARIO("Core Result failure appening should works.") {
 	}
 }
 
-SCENARIO("Core Result failure removing should works with one Id.") {
+SCENARIO("Core Result success setting should works.") {
 	GIVEN("Invalid operation result") {
+		auto const result_test = failure<int, Failures::INVALID_UUID>();
+		WHEN("Result combine") {
+			Result<int, Failures::NOT_INSIDE, Failures::INVALID_UUID> const combined_result =
+				result_test.append_failures<Failures::NOT_INSIDE>();
+
+			THEN("The combined result object should be queried") {
+				REQUIRE(combined_result.is_failure() == true);
+				REQUIRE(combined_result.get_failure() == Failures::INVALID_UUID);
+			}
+		}
+	}
+}
+
+scenario("core result failure removing should works with one id.") {
+	given("invalid operation result") {
 		auto const result_test = failure<
 			int,
-			Failures::INVALID_UUID,
-			Failures::INVALID_UUID,
-			Failures::NOT_INSIDE,
-			Failures::NO_RESOURCES,
-			Failures::UNKNOWN>();
-		WHEN("Result removing") {
-			auto const new_result = result_test.set_failures<Failures::INVALID_UUID>();
+			failures::invalid_uuid,
+			failures::invalid_uuid,
+			failures::not_inside,
+			failures::no_resources,
+			failures::unknown>();
+		when("result removing") {
+			auto const new_result = result_test.set_failures<failures::invalid_uuid>();
 
-			THEN("The combined result object should be coherent") {
-				INFO("result_test type is:" << typeid(result_test).name());
-				INFO("new_result tested type is :" << typeid(new_result.value()).name());
-				INFO(
+			then("the combined result object should be coherent") {
+				info("result_test type is:" << typeid(result_test).name());
+				info("new_result tested type is :" << typeid(new_result.value()).name());
+				info(
 					"new_result correct type is:"
-					<< typeid(Result<int, Failures::INVALID_UUID>).name());
-				REQUIRE(new_result.has_value() == true);
-				REQUIRE(new_result.value().get_failure().value() == Failures::INVALID_UUID);
-				REQUIRE(
+					<< typeid(result<int, failures::invalid_uuid>).name());
+				require(new_result.has_value() == true);
+				require(new_result.value().get_failure().value() == failures::invalid_uuid);
+				require(
 					typeid(decltype(new_result.value())).name()
-					== typeid(Result<int, Failures::INVALID_UUID>).name());
+					== typeid(result<int, failures::invalid_uuid>).name());
 			}
 		}
 	}
@@ -227,3 +242,10 @@ SCENARIO(
 		}
 	}
 }
+// TODO(Add tests for failures setting with success)
+// TODO(Add tests for success setting with failure)
+// TODO(Add tests for success setting with Succes type)
+// TODO(Add tests for success setting with bad Succes type)
+// TODO(Add tests for success setting with Failure)
+// TODO(Add tests for success setting with Succes value)
+// TODO(Add tests for success setting with bad Succes value)

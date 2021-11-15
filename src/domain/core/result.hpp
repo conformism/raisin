@@ -87,6 +87,36 @@ public:
 		return result;
 	};
 
+	template<typename SettedSuccess>
+	[[nodiscard]] constexpr auto set_success() const
+		-> std::optional<Result<SettedSuccess, FirstId, Ids...>> {
+		if (is_failure()) {
+			return Result<SettedSuccess, FirstId, Ids...>(get_success().value());
+		}
+		bool const isSettedSuccessValid =
+			std::is_same<decltype(get_success().value()), SettedSuccess>::value;
+		// bool const areNewFailuresValid = true;
+		if (isSettedSuccessValid) {
+			return Result<SettedSuccess, FirstId, Ids...>(get_success().value());
+		}
+		return std::nullopt;
+	};
+
+	template<typename SettedSuccess>
+	[[nodiscard]] constexpr auto set_success(SettedSuccess setted_success) const
+		-> std::optional<Result<SettedSuccess, FirstId, Ids...>> {
+		if (is_failure()) {
+			return Result<SettedSuccess, FirstId, Ids...>(get_success().value());
+		}
+		bool const isSettedSuccessValid =
+			std::is_same<decltype(get_success().value()), SettedSuccess>::value;
+		// bool const areNewFailuresValid = true;
+		if (isSettedSuccessValid) {
+			return Result<SettedSuccess, FirstId, Ids...>(setted_success);
+		}
+		return std::nullopt;
+	};
+
 	template<FailureType const... SettedFailures>
 	[[nodiscard]] constexpr auto set_failures() const
 		-> std::optional<Result<SuccessType, SettedFailures...>> {
