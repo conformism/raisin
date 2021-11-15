@@ -306,28 +306,22 @@ SCENARIO("Core Result success setting should works with failure") {
 	}
 }
 
-SCENARIO("Core Result success setting should works with success") {
-	GIVEN("Invalid operation result") {
+SCENARIO("core result success setting should works with success") {
+	GIVEN("valid operation result") {
 		constexpr int success_value = 2;
 		auto const result_test =
 			success<int, Failures::INVALID_UUID, Failures::NOT_INSIDE>(success_value);
-		WHEN("Result setting") {
+		WHEN("result setting") {
 			const float new_success_value = 2.3;
-			std::optional<Result<float, Failures::INVALID_UUID, Failures::NOT_INSIDE>> const
-				new_result = result_test.set_success<float>(new_success_value);
+			Result<float, Failures::INVALID_UUID, Failures::NOT_INSIDE> const new_result =
+				result_test.set_success<float>(new_success_value);
 
-			THEN("The setted result object should be coherent") {
+			THEN("the setted result object should be coherent") {
 				INFO("result_test type is:" << typeid(result_test).name());
-				INFO("new_result tested type is :" << typeid(new_result.value()).name());
-				REQUIRE(new_result.has_value() == true);
-				REQUIRE(new_result.value().is_success() == true);
-				REQUIRE(new_result.value().get_success().value() == new_success_value);
+				INFO("new_result tested type is :" << typeid(new_result).name());
+				REQUIRE(new_result.is_success() == true);
+				REQUIRE(new_result.get_success().value() == new_success_value);
 			}
 		}
 	}
 }
-
-// TODO(Add tests for success setting with bad Succes type)
-// TODO(Add tests for success setting with Failure)
-// TODO(Add tests for success setting with Succes value)
-// TODO(Add tests for success setting with bad Succes value)
