@@ -98,7 +98,7 @@ public:
 
 	template<typename SettedSuccess>
 	[[nodiscard]] constexpr auto set_success(SettedSuccess setted_success) const
-		-> std::optional<Result<SettedSuccess, FirstId, Ids...>> {
+		-> Result<SettedSuccess, FirstId, Ids...> {
 		if (is_failure()) {
 			return Result<SettedSuccess, FirstId, Ids...>(get_failure().value());
 		}
