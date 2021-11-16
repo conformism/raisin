@@ -1,18 +1,16 @@
-#include "domain/core/aggregator.hpp"
-#include "domain/core/types.hpp"
 #include <catch2/catch_all.hpp>
+#include <memory>
 
 #include "domain/cfg/cfg.hpp"
 #include "domain/cfg/icfg.hpp"
-#include "domain/irepostory.hpp"
+#include "domain/core/aggregator.hpp"
+#include "domain/core/types.hpp"
+#include "domain/irepository.hpp"
 #include "infra/repositories/repository-in-memory.hpp"
 #include "infra/services/cfg/cfg-parser-clang.hpp"
 #include "infra/services/cfg/icfg-parser.hpp"
 
 #include "cfg-parser-mock.hpp"
-
-#include <catch2/catch_test_macros.hpp>
-#include <memory>
 
 using namespace domain::core::result;
 using namespace domain::core;
