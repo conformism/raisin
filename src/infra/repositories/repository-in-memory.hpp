@@ -5,6 +5,7 @@
 #include "domain/core/types.hpp"
 #include "domain/irepository.hpp"
 #include "domain/program.hpp"
+
 #include <memory>
 
 namespace infra::repository {
@@ -12,10 +13,6 @@ namespace infra::repository {
 template<class Cfg, class CfgParserService>
 class RespositoryInMemory : public domain::IRespository<domain::Program> {
 public:
-	using Cfgs = typename domain::IRespository<Cfg>::Cfgs;
-	explicit RespositoryInMemory(CfgParserService* cfg_parser_service)
-		: _cfg_parser_service(cfg_parser_service){};
-
 	auto write(domain::Program program) -> void override {
 		_program = std::make_unique<domain::Program>(program);
 	}
@@ -35,6 +32,5 @@ public:
 private:
 	std::unique_ptr<domain::Program> _program =
 		std::make_unique<domain::Program>(domain::Program());
-	CfgParserService* _cfg_parser_service;
 };
 }  // namespace infra::repository
