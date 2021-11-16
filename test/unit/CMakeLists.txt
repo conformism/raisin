@@ -9,7 +9,7 @@ if(Catch2_FOUND)
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/compositor.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/block/builder.cpp"
-#		"${CMAKE_CURRENT_SOURCE_DIR}/infra/repositories/repository-in-memory.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/infra/repositories/repository-in-memory.cpp"
 		)
 
 	target_compile_definitions( raisin_unittest
