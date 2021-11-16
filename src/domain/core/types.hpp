@@ -12,9 +12,6 @@ using Uuid = std::string;
 constexpr int UUID_LENGTH = 16;
 [[nodiscard]] auto create_uuid() -> Uuid;
 
-template<class T>
-using Compositor = std::map<Uuid, std::unique_ptr<T>>;
-
 class Entity {
 public:
 	// Security to prevent entity copy in memory
