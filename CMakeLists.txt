@@ -45,11 +45,12 @@ add_subdirectory( "${CMAKE_SOURCE_DIR}/src" )
 add_subdirectory( "${CMAKE_SOURCE_DIR}/test" )
 
 coverage_global()
-static_analysis_codechecker(
+codechecker(
 	GLOBAL
 	NO_CTU
 	SKIP
 		+${CMAKE_SOURCE_DIR}/src
+		+${CMAKE_SOURCE_DIR}/test/unit
 		-*
 	ARGS
 		"${CMAKE_BINARY_DIR}/compile_commands.json"

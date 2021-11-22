@@ -70,7 +70,7 @@ target_include_directories( raisin
 
 file( GLOB_RECURSE RAISIN_HEADERS "*.hpp" )
 
-static_analysis_lizard(
+lizard(
 	TARGET raisin
 	ADDITIONAL_FILES
 		${RAISIN_HEADERS}
@@ -79,7 +79,7 @@ static_analysis_lizard(
 		--sort cyclomatic_complexity
 	)
 
-static_analysis_iwyu(
+iwyu(
 	TARGET raisin
 	ARGS
 		--std=c++17 # Useless with -p ?
@@ -88,21 +88,21 @@ static_analysis_iwyu(
 		--no_comments
 	)
 
-static_analysis_tidy(
+clang_tidy(
 	TARGET raisin
 	ARGS
 		-p="${CMAKE_BINARY_DIR}"
 	-checks=*
 	)
 
-static_analysis_format(
+clang_format(
 	TARGET raisin
 	ADDITIONAL_FILES
 		${RAISIN_HEADERS}
 	ARGS
 	)
 
-static_analysis_cppcheck(
+cppcheck(
 	TARGET raisin
 	ADDITIONAL_FILES
 		${RAISIN_HEADERS}

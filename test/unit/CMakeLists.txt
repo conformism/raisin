@@ -49,7 +49,7 @@ if( Catch2_FOUND )
 		TARGETS_TO_COVER raisin
 		)
 
-	static_analysis_iwyu(
+	iwyu(
 		TARGET raisin_unittest
 		ARGS
 			--std=c++17 # Useless with -p ?
@@ -58,7 +58,7 @@ if( Catch2_FOUND )
 			--no_comments
 		)
 
-	static_analysis_format(
+	clang_format(
 		TARGET raisin_unittest
 		ADDITIONAL_FILES
 			${RAISIN_UNITTEST_HEADERS}
