@@ -43,30 +43,46 @@ target_include_directories(
 
 file(GLOB_RECURSE RAISIN_HEADERS "*.hpp")
 
-static_analysis_lizard(
-  TARGET
-  raisin
-  ADDITIONAL_FILES
-  ${RAISIN_HEADERS}
-  ARGS
-  --languages
-  cpp
-  --sort
-  cyclomatic_complexity)
+lizard(
+	TARGET raisin
+	ADDITIONAL_FILES
+		${RAISIN_HEADERS}
+	ARGS
+		--languages cpp
+		--sort cyclomatic_complexity
+	)
 
-static_analysis_iwyu(
-  TARGET raisin ARGS --std=c++17 # Useless with -p ?
-  # -p="${CMAKE_BINARY_DIR}" # Outdated iwyu version.
-  -Xiwyu --no_comments)
+iwyu(
+	TARGET raisin
+	ARGS
+		--std=c++17 # Useless with -p ?
+#		-p="${CMAKE_BINARY_DIR}" # Outdated iwyu version.
+		-Xiwyu
+		--no_comments
+	)
 
-static_analysis_tidy(TARGET raisin ARGS -p="${CMAKE_BINARY_DIR}" -checks=*)
+clang_tidy(
+	TARGET raisin
+	ARGS
+		-p="${CMAKE_BINARY_DIR}"
+	-checks=*
+	)
 
-static_analysis_format(TARGET raisin ADDITIONAL_FILES ${RAISIN_HEADERS} ARGS)
+clang_format(
+	TARGET raisin
+	ADDITIONAL_FILES
+		${RAISIN_HEADERS}
+	ARGS
+	)
 
-static_analysis_cppcheck(
-  TARGET raisin ADDITIONAL_FILES ${RAISIN_HEADERS} ARGS
-  # --enable=all
-  -v)
+cppcheck(
+	TARGET raisin
+	ADDITIONAL_FILES
+		${RAISIN_HEADERS}
+	ARGS
+#		--enable=all
+		-v
+	)
 
 enable_clang_build_analyzer(TARGET raisin)
 

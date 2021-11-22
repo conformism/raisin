@@ -35,13 +35,21 @@ if(Catch2_FOUND)
 
   coverage(TARGET_TO_RUN raisin_unittest TARGETS_TO_COVER raisin)
 
-  static_analysis_iwyu(
-    TARGET raisin_unittest ARGS --std=c++17 # Useless with -p ?
-    # -p="${CMAKE_BINARY_DIR}" # Outdated iwyu version.
-    -Xiwyu --no_comments)
+	iwyu(
+		TARGET raisin_unittest
+		ARGS
+			--std=c++17 # Useless with -p ?
+#			-p="${CMAKE_BINARY_DIR}" # Outdated iwyu version.
+			-Xiwyu
+			--no_comments
+		)
 
-  static_analysis_format(TARGET raisin_unittest ADDITIONAL_FILES
-                         ${RAISIN_UNITTEST_HEADERS} ARGS)
+	clang_format(
+		TARGET raisin_unittest
+		ADDITIONAL_FILES
+			${RAISIN_UNITTEST_HEADERS}
+		ARGS
+		)
 
   enable_clang_build_analyzer(TARGET raisin_unittest)
 
