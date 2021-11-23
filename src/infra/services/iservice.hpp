@@ -1,9 +1,9 @@
 namespace infra::services {
 
-template<class Result>
+template<typename Result>
 class IService {
 public:
-	auto run() -> Result;
+	virtual auto run() -> Result = 0;
 };
 
 }  // namespace infra::services
