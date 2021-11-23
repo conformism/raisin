@@ -17,8 +17,6 @@ public:
 	// TODO(dauliac) version cfgs using file system hash
 	virtual auto write(Program program) -> void = 0;
 	[[nodiscard]] virtual auto read() -> Program* = 0;
-	[[nodiscard]] virtual auto read_cfg_by_id(core::Uuid uuid)
-		-> Result<Program*, Failures::INVALID_UUID, Failures::NO_RESOURCES> = 0;
 };
 
 }  // namespace domain

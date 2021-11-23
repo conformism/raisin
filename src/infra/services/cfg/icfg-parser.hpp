@@ -6,10 +6,10 @@
 namespace infra::services::cfg {
 
 template<class Cfg>
-class ICfgParser : IService<domain::core::Aggregator<Cfg>> {
+// TODO(dauliac) Replace void with Result
+class ICfgParser : IService<void> {
 public:
 	using Cfgs = domain::core::Aggregator<Cfg>;
-	virtual auto run() -> Cfgs = 0;
 };
 
 }  // namespace infra::services::cfg

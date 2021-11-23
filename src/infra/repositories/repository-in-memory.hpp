@@ -10,27 +10,17 @@
 
 namespace infra::repository {
 
-template<class Cfg, class CfgParserService>
 class RespositoryInMemory : public domain::IRespository<domain::Program> {
 public:
 	auto write(domain::Program program) -> void override {
-		_program = std::make_unique<domain::Program>(program);
+		_program = std::move(program);
 	}
 
 	[[nodiscard]] auto read() -> domain::Program* override {
-		return _program.get();
-	}
-
-	// NOLINTNEXTLINE(misc-unused-parameters)
-	[[nodiscard]] auto read_cfg_by_id(domain::core::Uuid uuid) -> domain::
-		Result<domain::Program*, Failures::INVALID_UUID, Failures::NO_RESOURCES> override {
-		return domain::core::result::
-			success<domain::Program*, Failures::INVALID_UUID, Failures::NO_RESOURCES>(
-				_program.get());
+		return &_program;
 	}
 
 private:
-	std::unique_ptr<domain::Program> _program =
-		std::make_unique<domain::Program>(domain::Program());
+	domain::Program _program = domain::Program();
 };
 }  // namespace infra::repository
