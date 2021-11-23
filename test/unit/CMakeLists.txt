@@ -1,18 +1,17 @@
 if(Catch2_FOUND)
   add_executable(raisin_unittest EXCLUDE_FROM_ALL)
 
-  target_sources(
-    raisin_unittest
-    PRIVATE
-      # "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/result.cpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/guard.cpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/domain/core/compositor.cpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/block/builder.cpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/domain/program.cpp"
-      # "${CMAKE_CURRENT_SOURCE_DIR}/infra/repositories/repository-in-memory.cpp"
-  )
+	target_sources( raisin_unittest
+		PRIVATE
+#		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/result.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/guard.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/compositor.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/block/builder.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/program.cpp"
+ 		"${CMAKE_CURRENT_SOURCE_DIR}/infra/repositories/repository-in-memory.cpp"
+		)
 
   target_compile_definitions(raisin_unittest PRIVATE UNITTEST
                                                      $<$<CONFIG:Debug>:DEBUG>)

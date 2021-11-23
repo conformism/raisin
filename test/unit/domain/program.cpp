@@ -1,4 +1,3 @@
-#include "domain/program.hpp"
 #include <catch2/catch_all.hpp>
 
 #include <any>
@@ -8,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "domain/cfg/cfg.hpp"
+#include "domain/program.hpp"
 
 using namespace domain::core::result;
 using namespace domain::core;
