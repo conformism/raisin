@@ -1,3 +1,4 @@
+#include "cfg-parser-mock.hpp"
 #include <catch2/catch_all.hpp>
 #include <memory>
 
@@ -7,43 +8,36 @@
 #include "domain/core/types.hpp"
 #include "domain/irepository.hpp"
 #include "infra/repositories/repository-in-memory.hpp"
-#include "infra/services/cfg/cfg-parser-clang.hpp"
-#include "infra/services/cfg/icfg-parser.hpp"
-
-#include "cfg-parser-mock.hpp"
 
 using namespace domain::core::result;
 using namespace domain::core;
 
-SCENARIO("Cfg repository save should works with valid Cfgs") {
-	GIVEN("Exising CfgParserService") {
-		using CfgParserService = infra::services::cfg::CfgParserMock;
-		auto cfg_parser_service = std::make_unique<CfgParserService>(CfgParserService());
-		cfg_parser_service->mock();
+SCENARIO("Cfg repository read should return program") {
+	GIVEN("Exising repository in memory into unique_ptr") {
+		using Repo = infra::repository::RespositoryInMemory;
+		std::unique_ptr<Repo> repo = std::make_unique<Repo>(Repo());
 
-		AND_GIVEN("Exising repository in memory") {
-			using Repo = infra::repository::RespositoryInMemory<domain::cfg::Cfg, CfgParserService>;
+		WHEN("Respository read program") {
+			THEN("The program should be returned") {
+				REQUIRE(repo->read() != nullptr);
+			}
+		}
+	}
+}
 
-			std::unique_ptr<domain::IRespository<domain::cfg::Cfg>> repo =
-				std::make_unique<Repo>(Repo(std::move(cfg_parser_service)));
-			WHEN("Respository save CFG") {
-				auto builder = domain::cfg::Cfg::Builder();
-				auto scope_builder = domain::cfg::Scope::Builder();
-				auto scope = scope_builder.build();
-				auto* scope_ptr = &scope;
-				auto const add_scope_result = builder.add_scope(scope_ptr);
-				if (add_scope_result.is_success()) {
-					domain::cfg::Cfg cfg = builder.build();
-					const auto cfgs = domain::IRespository<domain::cfg::Cfg>::Cfgs();
-					repo->save_cfgs(cfgs);
-					THEN("TODO") {
-						AND_WHEN("The repository read cfg.") {
-							THEN("TODO") {}
-						}
-					}
-				} else {
-					REQUIRE(false);
-				}
+SCENARIO("Cfg repository write should works") {
+	GIVEN("Exising repository in memory into unique_ptr") {
+		using Repo = infra::repository::RespositoryInMemory;
+		std::unique_ptr<Repo> repo = std::make_unique<Repo>(Repo());
+		auto program = domain::Program();
+		auto builder = domain::cfg::Cfg::Builder();
+		domain::cfg::Cfg cfg_1 = builder.build();
+		auto result = program.insert_cfg(cfg_1);
+
+		WHEN("Respository write program") {
+			repo->write(std::move(program));
+			THEN("The program should be inside repo") {
+				REQUIRE(repo->read()->get_cfg_by_uuid(cfg_1.get_uuid()).is_success());
 			}
 		}
 	}
