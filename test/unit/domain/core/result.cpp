@@ -49,7 +49,6 @@ SCENARIO("Core Result system should be usable as success by pointer") {
 
 SCENARIO("Core Result system should be usable as failure") {
 	GIVEN("Invalid operation") {
-		int const* invalid_result = nullptr;
 		WHEN("Result is created") {
 			auto const result =
 				Result<int, Failures::NO_RESOURCES>::create<Failures::NO_RESOURCES>();
@@ -84,7 +83,6 @@ SCENARIO("Core Result helper should be usable as success by value") {
 
 SCENARIO("Core Result helper should be usable as failure with one possibility") {
 	GIVEN("Invalid operation") {
-		int const* invalid_result = nullptr;
 		WHEN("Result is created") {
 			auto const result = failure<int, Failures::NO_RESOURCES>();
 			THEN("The result object failure should be queried") {
@@ -101,7 +99,6 @@ SCENARIO("Core Result helper should be usable as failure with one possibility") 
 
 SCENARIO("Core Result helper should be usable as failure with some possibility") {
 	GIVEN("Invalid operation") {
-		int const* invalid_result = nullptr;
 		WHEN("Result is created") {
 			auto const result = failure<
 				int,
