@@ -3,7 +3,6 @@
 #include "domain/core/aggregator.hpp"
 #include <map>
 #include <optional>
-#include <vector>
 
 #include "../../core/types.hpp"
 
@@ -20,6 +19,8 @@ public:
 
 	IScope() : Entity(){};
 	explicit IScope(domain::core::Uuid uuid) : Entity(std::move(uuid)){};
+	virtual ~IScope() = default;
+
 	[[nodiscard]] virtual auto is_root() const -> bool = 0;
 	[[nodiscard]] virtual auto has_childs() const -> bool = 0;
 	[[nodiscard]] virtual auto get_blocks() const -> Blocks = 0;
