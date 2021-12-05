@@ -9,8 +9,8 @@ namespace domain::cfg {
 // Cfg
 Cfg::Cfg(
 	// IElement* element,
-	Aggregator<Block> blocks,
-	Aggregator<Scope> scopes)
+	Compositor<Block> blocks,
+	Compositor<Scope> scopes)
 	:  // _element(element),
 	  _blocks(std::move(blocks)),
 	  _scopes(std::move(scopes)) {}
@@ -18,8 +18,8 @@ Cfg::Cfg(
 Cfg::Cfg(
 	Uuid uuid,
 	// IElement* element,
-	Aggregator<Block> blocks,
-	Aggregator<Scope> scopes)
+	Compositor<Block> blocks,
+	Compositor<Scope> scopes)
 	: ICfg(std::move(uuid)),
 	  // _element(element),
 	  _blocks(std::move(blocks)),

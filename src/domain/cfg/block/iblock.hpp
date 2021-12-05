@@ -14,6 +14,7 @@ public:
 	// enum Kind {};
 	explicit IBlock() : Entity(){};
 	explicit IBlock(Uuid uuid) : Entity(std::move(uuid)){};
+	virtual ~IBlock() = default;
 
 	[[nodiscard]] virtual auto is_entry() const -> bool = 0;
 	[[nodiscard]] virtual auto is_exit() const -> bool = 0;
