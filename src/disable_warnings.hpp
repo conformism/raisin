@@ -44,6 +44,7 @@ _Pragma("GCC diagnostic ignored \"-Wtrigraphs\"") \
 _Pragma("GCC diagnostic ignored \"-Wuninitialized\"") \
 _Pragma("GCC diagnostic ignored \"-Wunknown-pragmas\"") \
 _Pragma("GCC diagnostic ignored \"-Wunused-function\"") \
+_Pragma("GCC diagnostic ignored \"-Wunused-parameter\"") \
 _Pragma("GCC diagnostic ignored \"-Wunused-label\"") \
 _Pragma("GCC diagnostic ignored \"-Wunused-value\"") \
 _Pragma("GCC diagnostic ignored \"-Wunused-variable\"") \
@@ -59,7 +60,7 @@ _Pragma("GCC diagnostic ignored \"-Wredundant-move\"") \
 _Pragma("GCC diagnostic ignored \"-Wtype-limits\"") \
 _Pragma("GCC diagnostic ignored \"-Wuninitialized\"") \
 _Pragma("GCC diagnostic ignored \"-Wshift-negative-value\"") \
-_Pragma("GCC diagnostic ignored \"-Wunused-parameter\"") \
+_Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
 
 /// @def   REENABLE_WARNINGS
 /// @brief Use this to reset the previous -W settings

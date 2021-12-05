@@ -2,17 +2,21 @@ add_library(raisin SHARED)
 
 target_sources(
   raisin
-  PRIVATE "${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/builder.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/builder.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/cfg/builder.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/program.cpp")
+  PRIVATE
+    "${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/element/element.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/block.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/block/builder.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/scope.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/scope/builder.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/builder.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/program.cpp"
+    # "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/ast_processor.cpp"
+    # "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/cfg_factory.cpp"
+)
 
 target_compile_definitions(
   raisin PRIVATE # $<$<CONFIG:Debug>:DEBUG> ${LLVM_DEFINITIONS}

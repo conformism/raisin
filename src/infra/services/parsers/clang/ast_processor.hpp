@@ -16,41 +16,41 @@ namespace infra::services::parser::clang {
 // By implementing RecursiveASTVisitor, we can specify which AST nodes
 // we're interested in by overriding relevant methods.
 //******************************************************************************
-class AstVisitor : public clang::RecursiveASTVisitor<ast_visitor> {
+class AstVisitor : public ::clang::RecursiveASTVisitor<AstVisitor> {
 private:
-	clang::ASTContext& context;
+	::clang::ASTContext& context;
 
 public:
-	AstVisitor(clang::ASTContext& c);
+	explicit AstVisitor(::clang::ASTContext& c);
 
 	//	bool VisitForStmt(clang::ForStmt* f);
-	bool VisitFunctionDecl(clang::FunctionDecl* f);
+	bool VisitFunctionDecl(::clang::FunctionDecl* f);
 };
 
 // Implementation of the ASTConsumer interface for reading an AST produced
 // by the Clang parser.
 //******************************************************************************
-class AstConsumer : public clang::ASTConsumer {
+class AstConsumer : public ::clang::ASTConsumer {
 private:
 	AstVisitor visitor;
 
 public:
-	AstConsumer(clang::ASTContext& context);
+	explicit AstConsumer(::clang::ASTContext& context);
 
 	// Override the method that gets called for each parsed top-level
 	// declaration.
-	bool HandleTopLevelDecl(clang::DeclGroupRef dr) override;
+	bool HandleTopLevelDecl(::clang::DeclGroupRef dr) override;
 };
 
 // For each source file provided to the tool, a new FrontendAction is created.
 //******************************************************************************
-class AstProcessor : public clang::ASTFrontendAction {
+class AstProcessor : public ::clang::ASTFrontendAction {
 public:
 	AstProcessor() = default;
 
-	std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(
-		clang::CompilerInstance& ci,
-		clang::StringRef file) override;
+	std::unique_ptr<::clang::ASTConsumer> CreateASTConsumer(
+		::clang::CompilerInstance& ci,
+		::clang::StringRef file) override;
 };
 
 }  // namespace infra::services::parser::clang
