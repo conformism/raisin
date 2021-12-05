@@ -12,11 +12,12 @@ using namespace core::result;
 template<class Program>
 class IRespository {
 public:
-	// TODO(dauliac) Maybe create dedicated aggregator cfgs class to have specific query
-	//   search, order by, etc...
-	// TODO(dauliac) version cfgs using file system hash
-	virtual auto write(Program program) -> void = 0;
-	[[nodiscard]] virtual auto read() -> Program* = 0;
+    virtual ~IRespository() = default;
+    // TODO(dauliac) Maybe create dedicated aggregator cfgs class to have specific query
+    //   search, order by, etc...
+    // TODO(dauliac) version cfgs using file system hash
+    virtual auto write(Program program) -> void = 0;
+    [[nodiscard]] virtual auto read() -> Program* = 0;
 };
 
 }  // namespace domain
