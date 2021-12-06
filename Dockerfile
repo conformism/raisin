@@ -8,7 +8,9 @@ ARG LLVM_VERSION=12
 WORKDIR $ROOT_DIR
 
 ENV LANG=en_US.utf8 \
-    DEBIAN_FRONTEND=noninteractive
+    DEBIAN_FRONTEND=noninteractive \
+    LLVM_DIR="/usr/lib/llvm-12/lib/cmake/llvm" \
+    Clang_DIR="/usr/lib/llvm-12/lib/cmake/clang"
 
 RUN apt-get update \
     && apt-get install \
@@ -50,6 +52,8 @@ RUN apt-get update \
 		codechecker==6.18.0 \
 		coverxygen==1.7.0 \
         pwndbg==0.1.1 \
+    && ln -sf "/usr/bin/clang-${LLVM_VERSION}" "/usr/bin/clang" \
+    && ln -sf "/usr/bin/clang-${LLVM_VERSION}" "/usr/bin/clang++" \
     && ln -s /usr/bin/clang-format-${LLVM_VERSION} /usr/bin/clang-format \
 	&& ln -s /usr/bin/clang-tidy-${LLVM_VERSION} /usr/bin/clang-tidy \
 	&& ln -s /usr/bin/llvm-cov-${LLVM_VERSION} /usr/bin/llvm-cov \
