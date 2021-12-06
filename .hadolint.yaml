@@ -1,2 +1,5 @@
 ignored:
   - DL3008
+  - DL3042
+  - DL3003
+  - DL3006 # Allow to rebase base container with your container
