@@ -21,4 +21,3 @@ add_custom_target( icon
 		"${CMAKE_SOURCE_DIR}/icon/raisin.svg"
 	COMMENT "Copying icon.svg back to ${CMAKE_SOURCE_DIR}/icon/raisin.svg"
 	)
-	
