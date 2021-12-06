@@ -13,4 +13,3 @@ void traverse(Node * n){
 	traverse(n->r);
 	return;
 }
-
