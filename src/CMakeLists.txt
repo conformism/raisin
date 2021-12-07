@@ -34,7 +34,7 @@ target_compile_options(
 
 target_include_directories(
   raisin
-  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
           # ${LLVM_INCLUDE_DIRS}
           ${CLANG_INCLUDE_DIRS})
 
