@@ -19,7 +19,7 @@ namespace infra::services::parser::clang {
 template<class Cfg>
 class ClangParser : IClangParser<Cfg> {
 public:
-    ClangParser(std::initializer_list<std::string> args) : option_category("Tooling Sample")
+    ClangParser(std::initializer_list<std::string> args)
     {
         option_parser(argc, argv, option_category);
         tool(option_parser.getCompilations(), option_parser.getSourcePathList())
@@ -38,5 +38,11 @@ private:
 
     domain::IRespository<domain::IProgram<domain::cfg::Cfg>>* repository;
 };
+
+template<class Cfg>
+auto const ClangParser<Cfg>::option_category("Tooling Sample");
+
+
+template <class T> T K<T> ::x;
 
 } // namespace infra::services::parser::clang
