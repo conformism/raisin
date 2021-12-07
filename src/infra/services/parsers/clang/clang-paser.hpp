@@ -3,46 +3,60 @@
 #include "disable_warnings.hpp"
 #include <initializer_list>
 #include <string>
+#include <filesystem>
+
 DISABLE_WARNINGS
 #include <clang/Tooling/Tooling.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/CommandLine.h>
+#include <llvm/ADT/StringRef.h>
 REENABLE_WARNINGS
 
 #include "domain/cfg/cfg.hpp"
 #include "domain/iprogram.hpp"
 #include "domain/irepository.hpp"
 #include "iclang-parser.hpp"
+#include "ast_processor.hpp"
 
 namespace infra::services::parser::clang {
 
 template<class Cfg>
 class ClangParser : IClangParser<Cfg> {
 public:
-    ClangParser(std::initializer_list<std::string> args)
+    struct Config {
+        std::filesystem::path compilation_database_dir;
+    };
+
+    ClangParser(Config config)
+        : error_message()
+        ,compilation_database(
+              ::clang::tooling::CompilationDatabase::autoDetectFromDirectory(
+                  llvm::StringRef(
+                      config.compilation_database_dir.string)
+                  ,error_message
+              )
+          )
+        , tool(*compilation_database.get(), config.compilation_database_dir.string)
     {
-        option_parser(argc, argv, option_category);
-        tool(option_parser.getCompilations(), option_parser.getSourcePathList())
+
     }
 
     auto run() -> void {
-        tool.run(newFrontendActionFactory<AstProcessor>().get());
+        tool.run(::clang::tooling::newFrontendActionFactory<AstProcessor>().get());
     }
 
 private:
     static llvm::cl::OptionCategory const option_category;
+    std::string error_message;
 
     // TODO(dauliac x thomas) Add util to convert args to argc + argv
-    ::clang::tooling::CommonOptionsParser option_parser;
+    std::unique_ptr<::clang::tooling::CompilationDatabase> compilation_database;
     ::clang::tooling::ClangTool tool;
 
     domain::IRespository<domain::IProgram<domain::cfg::Cfg>>* repository;
 };
 
 template<class Cfg>
-auto const ClangParser<Cfg>::option_category("Tooling Sample");
-
-
-template <class T> T K<T> ::x;
+llvm::cl::OptionCategory const ClangParser<Cfg>::option_category("Tooling Sample");
 
 } // namespace infra::services::parser::clang
