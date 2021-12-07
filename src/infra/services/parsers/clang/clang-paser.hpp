@@ -5,6 +5,7 @@
 #include <string>
 DISABLE_WARNINGS
 #include <clang/Tooling/Tooling.h>
+#include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/CommandLine.h>
 REENABLE_WARNINGS
 
@@ -18,23 +19,24 @@ namespace infra::services::parser::clang {
 template<class Cfg>
 class ClangParser : IClangParser<Cfg> {
 public:
-	ClangParser(std::initializer_list<std::string> args) : option_category("Tooling Sample");
-	{
-		option_parser(argc, argv, option_category);
-		tool(option_parser.getCompilations(), option_parser.getSourcePathList())
-	}
-	auto run() -> void {
-		tool.run(newFrontendActionFactory<AstProcessor>().get());
-	};
+    ClangParser(std::initializer_list<std::string> args) : option_category("Tooling Sample")
+    {
+        option_parser(argc, argv, option_category);
+        tool(option_parser.getCompilations(), option_parser.getSourcePathList())
+    }
+
+    auto run() -> void {
+        tool.run(newFrontendActionFactory<AstProcessor>().get());
+    }
 
 private:
-	static llvm::cl::OptionCategory const option_category;
+    static llvm::cl::OptionCategory const option_category;
 
-	// TODO(dauliac x thomas) Add util to convert args to argc + argv
-	clang::tooling::CommonOptionsParser option_parser;
-	ClangTool tool;
+    // TODO(dauliac x thomas) Add util to convert args to argc + argv
+    ::clang::tooling::CommonOptionsParser option_parser;
+    ::clang::tooling::ClangTool tool;
 
-	domain::IRespository<domain::IProgram<domain::cfg::Cfg>>* repository;
+    domain::IRespository<domain::IProgram<domain::cfg::Cfg>>* repository;
 };
 
-}  // namespace infra::services::parser::clang
+} // namespace infra::services::parser::clang
