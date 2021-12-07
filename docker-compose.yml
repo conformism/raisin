@@ -4,10 +4,6 @@ services:
     build:
       context: .
     volumes:
-      - run_vol:/disks/ramfs/
-
-volumes:
-  run_vol:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
+      - ./:/workdir
+      # Comment me if you want build on host
+      - /workdir/build
