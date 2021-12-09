@@ -28,15 +28,11 @@ public:
     };
 
     ClangParser(Config config)
-        : error_message()
-        ,compilation_database(
-              ::clang::tooling::CompilationDatabase::autoDetectFromDirectory(
-                  llvm::StringRef(
-                      config.compilation_database_dir.string)
-                  ,error_message
-              )
-          )
-        , tool(*compilation_database.get(), config.compilation_database_dir.string)
+	: error_message()
+	, compilation_database(
+		::clang::tooling::CompilationDatabase::autoDetectFromDirectory(
+		llvm::StringRef(config.compilation_database_dir.string), error_message))
+	, tool(*compilation_database.get(), config.compilation_database_dir.string)
     {
 
     }

@@ -10,8 +10,8 @@ target_sources(
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/statement.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/program.cpp"
-    # "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/ast_processor.cpp"
-    # "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/cfg_factory.cpp"
+    "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/ast_processor.cpp"
+    "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/cfg_factory.cpp"
 )
 
 target_compile_definitions(
@@ -34,12 +34,15 @@ target_include_directories(
           # ${LLVM_INCLUDE_DIRS}
           ${CLANG_INCLUDE_DIRS})
 
-# target_link_libraries( raisin -ldl -ltinfo -lpthread clang clangAST
+target_link_libraries( raisin
+	LLVMSupport
+# -ldl -ltinfo -lpthread clang clangAST
 # clangAnalysis clangBasic clangDriver clangEdit clangIndex clangFrontend
 # clangFrontendTool clangLex clangParse clangSema clangEdit clangASTMatchers
 # clangRewrite clangRewriteFrontend clangStaticAnalyzerFrontend
 # clangStaticAnalyzerCheckers clangStaticAnalyzerCore clangSerialization
-# clangToolingCore clangTooling )
+# clangToolingCore clangTooling
+	)
 
 file(GLOB_RECURSE RAISIN_HEADERS "*.hpp")
 
