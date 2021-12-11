@@ -10,17 +10,32 @@ Forked from the [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-cla
 
 ## Dev
 
+### With `docker-compose`
+
+```bash
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+docker-compose run raisin
+```
+
+### With `docker`
+
 Build the container :
+
 ```sh
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
 docker build . -t raisin:0.1
 ```
 
 Enter the dev env :
+
 ```sh
 docker run -v $PWD:/disks/ramfs -it raisin:0.1 bash
 ```
 
 Basic build commands :
+
 ```sh
 cmake .. -DCMAKE_CXX_COMPILER=<clang++|g++> -DCMAKE_BUILD_TYPE=<Debug|Coverage|Release>
 make
