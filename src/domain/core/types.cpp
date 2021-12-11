@@ -1,4 +1,8 @@
+#include <random>
+#include <sstream>
+
 #include "types.hpp"
+#include "guard.hpp"
 
 namespace domain::core {
 
@@ -23,6 +27,14 @@ Entity::Entity(Uuid uuid) : _uuid(std::move(uuid)){};
 
 auto Entity::get_uuid() const -> Uuid {
 	return _uuid;
+}
+
+auto Entity::set_uuid(Uuid uuid) -> result::Result<Uuid, Failures::INVALID_UUID> {
+	auto result = guard::is_valid_uuid(uuid);
+	if(result.is_success()) {
+		_uuid = uuid;
+	}
+	return result;
 }
 
 }  // namespace domain::core
