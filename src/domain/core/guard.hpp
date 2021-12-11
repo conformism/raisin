@@ -32,4 +32,7 @@ template<typename Ptr>
 
 [[nodiscard]] auto is_valid_uuid(Uuid const& uuid) -> result::Result<Uuid, Failures::INVALID_UUID>;
 
+template<typename T>
+[[nodiscard]] auto is_non_zero_length(T const& checked) -> result::Result<T, Failures::CANT_HAVE_ZERO_LENGTH>;
+
 }  // namespace domain::core::guard
