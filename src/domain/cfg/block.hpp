@@ -15,18 +15,24 @@ using namespace domain::core;
 
 class Block : public core::Entity {
 public:
-	using Linkable = Aggregator<Block>;
+	using Linkables = Aggregator<Block>;
 
 	[[nodiscard]] auto is_entry() const -> bool;
 	[[nodiscard]] auto is_exit() const -> bool;
 	[[nodiscard]] auto get_text() const -> std::string;
-	[[nodiscard]] auto get_successors() const -> Linkable const*;
-	[[nodiscard]] auto get_precedents() const -> Linkable const*;
+	[[nodiscard]] auto set_text(std::string text) -> result::Result<std::string, Failures::CANT_HAVE_ZERO_LENGTH, Failures::ALREADY_SETTED>;
+	[[nodiscard]] auto get_successors() const -> Linkables const*;
+	[[nodiscard]] auto add_successors(Block const* block)
+		-> result::Result<Block*, Failures::INVALID_UUID, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+	[[nodiscard]] auto get_precedents() const -> Linkables const*;
+	[[nodiscard]] auto add_precedent(Block const* block)
+		-> result::Result<Block*, Failures::INVALID_UUID, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+;
 
 private:
 	std::string _text;
-	Linkable _precedents;
-	Linkable _successors;
+	Linkables _precedents;
+	Linkables _successors;
 	// Kind const _kind;
 };
 }  // namespace domain::cfg

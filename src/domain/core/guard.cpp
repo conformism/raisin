@@ -15,4 +15,12 @@ namespace domain::core::guard {
 
 	return success(uuid);
 }
+
+template<>
+auto is_non_zero_length<std::string>(std::string const& checked) -> result::Result<std::string, Failures::CANT_HAVE_ZERO_LENGTH> {
+	return checked.size()
+		? result::failure<std::string, Failures::CANT_HAVE_ZERO_LENGTH>()
+		: result::success<std::string, Failures::CANT_HAVE_ZERO_LENGTH>(checked);
+}
+
 }  // namespace domain::core::guard
