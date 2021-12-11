@@ -1,15 +1,17 @@
 #pragma once
 
-#include "failure-registrar.hpp"
-#include "types.hpp"
-
 #include <algorithm>
+#include <variant>
 #include <any>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <utility>
+
+
+#include "failure-registrar.hpp"
+#include "types.hpp"
 
 namespace domain::core::result {
 
