@@ -3,6 +3,12 @@ services:
   raisin:
     build:
       context: .
+    command: |
+      /bin/bash -c "
+        cmake .. -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug
+        make
+        /bin/bash
+      "
     volumes:
       - ./:/workdir
       # Comment me if you want build on host
