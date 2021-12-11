@@ -13,8 +13,8 @@ DISABLE_WARNINGS
 REENABLE_WARNINGS
 
 #include "domain/cfg/cfg.hpp"
-#include "domain/iprogram.hpp"
 #include "domain/irepository.hpp"
+#include "domain/program.hpp"
 #include "iclang-parser.hpp"
 #include "ast_processor.hpp"
 
@@ -53,7 +53,7 @@ private:
     std::unique_ptr<::clang::tooling::CompilationDatabase> compilation_database;
     ::clang::tooling::ClangTool tool;
 
-    domain::IRespository<domain::IProgram<domain::cfg::Cfg>>* repository;
+    domain::IRespository<domain::Program>* repository;
 };
 
 template<class Cfg>

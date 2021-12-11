@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "domain/cfg/cfg.hpp"
-#include "domain/cfg/icfg.hpp"
 #include "domain/core/aggregator.hpp"
 #include "domain/core/types.hpp"
 #include "domain/irepository.hpp"
@@ -29,8 +28,7 @@ SCENARIO("Cfg repository write should works") {
 		using Repo = infra::repository::RespositoryInMemory;
 		std::unique_ptr<Repo> repo = std::make_unique<Repo>(Repo());
 		auto program = domain::Program();
-		auto builder = domain::cfg::Cfg::Builder();
-		domain::cfg::Cfg cfg_1 = builder.build();
+		domain::cfg::Cfg cfg_1 = domain::cfg::Cfg();
 		auto result = program.insert_cfg(cfg_1);
 
 		WHEN("Respository write program") {
