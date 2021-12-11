@@ -16,8 +16,7 @@ SCENARIO("Program should works with UUID") {
 	GIVEN("Program ") {
 		domain::Program program = domain::Program();
 		AND_GIVEN("Exising cfg") {
-			auto builder = domain::cfg::Cfg::Builder();
-			auto const cfg = builder.build();
+			auto const cfg = domain::cfg::Cfg();
 			WHEN("The cfg is inserted into program") {
 				auto const uuid = cfg.get_uuid();
 				auto result = program.insert_cfg(cfg);
