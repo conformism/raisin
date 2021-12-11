@@ -1,46 +1,40 @@
 #pragma once
+
 #include <any>
 #include <map>
 #include <memory>
-#include <random>
-#include <sstream>
 #include <string>
-#include <variant>
+
+#include "failure-registrar.hpp"
+#include "result.hpp"
 
 namespace domain::core {
+
+namespace result {
+
+template<
+typename SuccessType,
+auto const FirstId,
+decltype(FirstId) const... Ids>
+class Result;
+
+}  // namespace result
+
 using Uuid = std::string;
+
 constexpr int UUID_LENGTH = 16;
 [[nodiscard]] auto create_uuid() -> Uuid;
 
 class Entity {
 public:
-	// Security to prevent entity copy in memory
-	// Entity(Entity&&) = default;
-	// Entity(Entity const&) = delete;
-	// auto operator=(Entity const&) -> Entity& = delete;
-	// auto operator=(Entity const*) -> Entity& = delete;
-	// auto operator=(Entity&&) -> Entity& = delete;
+	[[nodiscard]] auto get_uuid() const -> Uuid;
+	[[nodiscard]] auto set_uuid(Uuid uuid) -> result::Result<Uuid, Failures::INVALID_UUID>;
 
-	[[nodiscard]] virtual auto get_uuid() const -> Uuid;
-
-	// protected:
 	Entity() = default;
 	explicit Entity(Uuid uuid);
 
 private:
-	// TODO(dauliac) Add lib to generate random default uuid
-	Uuid const _uuid = create_uuid();
-};
-
-class Value {
-	// TODO(dauliac) Find way to dynamicly compare object types
-	// auto operator==(Value rhs) const -> bool;
-};
-
-template<class T>
-class Builder {
-public:
-	[[nodiscard]] virtual auto build() -> T = 0;
+	Uuid _uuid = create_uuid();
 };
 
 }  // namespace domain::core

@@ -1,53 +1,31 @@
 #pragma once
 
-#include "domain/core/compositor.hpp"
 #include <memory>
 #include <vector>
 
-#include "block/block.hpp"
-#include "icfg.hpp"
-#include "scope/scope.hpp"
+#include "domain/core/types.hpp"
+#include "domain/core/compositor.hpp"
+#include "block.hpp"
+#include "statement.hpp"
 
 namespace domain::cfg {
 
-class Cfg : public ICfg<Cfg, Block, Scope> {
+class Cfg : public core::Entity {
 public:
-	[[nodiscard]] auto get_block_by_id(Uuid uuid) const
-		-> result::Result<Block*, Failures::INVALID_UUID, Failures::NOT_INSIDE> override;
-	[[nodiscard]] auto get_scope_by_id(Uuid uuid) const
-		-> result::Result<Scope*, Failures::INVALID_UUID, Failures::NOT_INSIDE> override;
-	class Builder;
-	friend IBuilder<Builder>;
+	using Statements = Compositor<Statement>;
+	using Blocks = Compositor<Block>;
+
+    [[nodiscard]] auto get_block_by_id(Uuid uuid) const
+    -> result::Result<Block*, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
+    [[nodiscard]] auto get_scope_by_id(Uuid uuid) const
+    -> result::Result<Statement*, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
 
 private:
-	Cfg(  // IElement* element,
-		Compositor<Block> blocks,
-		Compositor<Scope> scopes);
-	Cfg(Uuid uuid,
-	    // IElement* element,
-	    Compositor<Block> blocks,
-	    Compositor<Scope> scopes);
-
-	const Uuid uuid;
-	// TODO(dauliac): not used yet
-	// IElement* const _element;
-	Compositor<Block> const _blocks;
-	Compositor<Scope> const _scopes;
-};
-
-class Cfg::Builder : public ICfg::IBuilder<Builder> {
-public:
-	auto set_uuid(Uuid uuid) -> result::Result<Builder*, Failures::INVALID_UUID> override;
-	auto add_block(Block block)
-		-> result::Result<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> override;
-	auto add_scope(Scope scope)
-		-> result::Result<Builder*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> override;
-	[[nodiscard]] auto build() -> Cfg override;
-
-private:
-	Uuid _uuid;
-	Compositor<Block> _blocks;
-	Compositor<Scope> _scopes;
+    Uuid uuid;
+    // TODO(dauliac): not used yet
+    // IElement* const _element;
+    Blocks _blocks;
+    Statements _statements;
 };
 
 }  // namespace domain::cfg

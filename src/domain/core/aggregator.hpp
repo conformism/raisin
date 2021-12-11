@@ -1,8 +1,8 @@
 #pragma once
 
-#include "./guard.hpp"
-#include "./result.hpp"
-#include "./types.hpp"
+#include "result.hpp"
+#include "guard.hpp"
+#include "types.hpp"
 
 #include <unordered_map>
 #include <utility>
