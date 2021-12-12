@@ -4,8 +4,8 @@
 namespace domain {
 
 auto Program::insert_cfg(cfg::Cfg cfg)
-	-> core::result::Result<cfg::Cfg*, Failures::INVALID_UUID, Failures::ALREADY_INSIDE> {
-	return _cfgs.insert(cfg.get_uuid(), cfg);
+	-> core::result::Result<cfg::Cfg*, Failures::ALREADY_INSIDE> {
+	return _cfgs.insert(cfg.get_uuid(), cfg).set_failures<Failures::ALREADY_INSIDE>().value();
 };
 
 auto Program::remove_cfg(core::Uuid uuid)
