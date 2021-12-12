@@ -16,8 +16,8 @@ auto Block::is_exit() const -> bool {
 	return _successors.empty();
 }
 
-auto Block::get_text() const -> std::string {
-	return _text;
+auto Block::get_text() const -> std::string const* {
+	return &_text;
 }
 
 auto Block::set_text(std::string text)
