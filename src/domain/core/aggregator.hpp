@@ -61,8 +61,9 @@ public:
 		return result_guard;
 	}
 
-	[[nodiscard]] auto insert(Uuid uuid, T* value) -> result::
-		Result<T*, Failures::INVALID_UUID, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE> {
+	[[nodiscard]] auto insert(Uuid uuid, T* value)
+	  -> result::Result<T*, Failures::INVALID_UUID, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>
+	{
 		constexpr auto success = result::
 			success<T*, Failures::INVALID_UUID, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 		constexpr auto failure_no_resource = result::failure<
