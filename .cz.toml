@@ -1,0 +1,107 @@
+[tool]
+[tool.commitizen]
+name = "cz_customize"
+version = "0.0.1"
+tag_format = "$version"
+
+[tool.commitizen.customize]
+message_template = "{{change_type}}{% if issue %}[#{{issue}}]{% issue %} {{message}}"
+example = "[!12][🐛] Fix that daamn bug"
+# TODO(dauliac) Read doc
+schema = "<type> <body>"
+schema_pattern = "(feature|bug fix):(\\s.*)"
+bump_pattern = "^(break|new|fix|hotfix)"
+bump_map = {"break" = "MAJOR", "new" = "MINOR", "fix" = "PATCH", "hotfix" = "PATCH"}
+change_type_order = ["BREAKING CHANGE", "feat", "fix", "refactor", "perf"]
+info_path = "cz_customize_info.txt"
+info = """
+This is customized info
+"""
+# ENDTODO(dauliac) Read doc
+
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "change_type"
+choices = [
+  {value = "🎨", name = "🎨 Improve structure / format of the code."},
+  {value = "⚡️", name = "⚡️ Improve performance."},
+  {value = "🔥", name = "🔥 Improve performance."},
+  {value = "🐛", name = "🐛 Fix a bug."},
+  {value = "🚑", name = "🚑 Critical hotfix."},
+  {value = "✨", name = "✨ Introduce new features."},
+  {value = "📝", name = "📝 Introduce new features."},
+  {value = "🚀", name = "🚀 Deploy stuff."},
+  {value = "💄", name = "💄 Add or update the UI and style files."},
+  {value = "🎉", name = "🎉 Initial commit."},
+  {value = "✅", name = "✅ Add, update, or pass tests."},
+  {value = "🔒", name = "🔒 Fix security issues."},
+  {value = "🔖", name = "🔖 Release / Version tags."},
+  {value = "🚨", name = "🚨 Fix compiler / linter warnings."},
+  {value = "🚧", name = "🚧 Work in progress."},
+  {value = "💚", name = "💚 Fix CI Build."},
+  {value = "⬇️", name = "⬇️ Downgrade dependencies."},
+  {value = "⬆️", name = "⬇️  Ugrade dependencies."},
+  {value = "📌", name = "📌 Pin dependencies to specific version."},
+  {value = "👷", name = "👷 Add or update CI build system."},
+  {value = "📈", name = "📈 Add or update analytics or track code."},
+  {value = "♻️", name = "♻️ Refactoring code."},
+  {value = "➕", name = "➕ Add a dependency."},
+  {value = "➖", name = "➖ Remove a dependency."},
+  {value = "🔧", name = "🔧 Add or update configuration files."},
+  {value = "🔨", name = "🔨 Add or update development scripts."},
+  {value = "🌐", name = "🌐 Internationalization and localization."},
+  {value = "✏️", name = "✏️ Fix typos ."},
+  {value = "💩", name = "💩 Write bad code that needs to be improved."},
+  {value = "⏪", name = "⏪ Revert changes."},
+  {value = "🔀", name = "🔀 Merge branches."},
+  {value = "📦", name = "📦 Add or update compiled files or packages."},
+  {value = "👽", name = "👽 Update code due to external API changes."},
+  {value = "🚚", name = "🚚 Move or rename resources (e.g.: files, paths, routes)."},
+  {value = "📄", name = "📄 Add or update license."},
+  {value = "💥", name = "💥 Introduce breaking changes."},
+  {value = "🍱", name = "🍱 Add or update assets."},
+  {value = "♿️", name = "♿️ Improve accessibility."},
+  {value = "💡", name = "💡 Add or update comments in source code."},
+  {value = "🍻", name = "🍻 Write code drunkenly."},
+  {value = "💬", name = "💬 Add or update text and literals."},
+  {value = "🗃", name = " 🗃Perform database related changes."},
+  {value = "🔊", name = "🔊 Add or update logs."},
+  {value = "🔇", name = "🔇 Remove logs."},
+  {value = "👥", name = "👥 Add or update contributor(s)."},
+  {value = "🚸", name = "🚸 Improve user experience / usability."},
+  {value = "🏗", name = "🏗  Make architectural changes."},
+  {value = "📱", name = "📱 Work on responsive design."},
+  {value = "🤡", name = "🤡 Mock things."},
+  {value = "🥚", name = "🥚 Add or update an easter egg."},
+  {value = "🙈", name = "🙈 Add or update a .gitignore file."},
+  {value = "📸", name = "📸 Add or update snapshots."},
+  {value = "⚗", name = "⚗ Perform experiments."},
+  {value = "🏷️", name = "🏷️ Add or update types."},
+  {value = "🌱", name = "🌱 Add or update seed files."},
+  {value = "🚩", name = "🚩 Add, update, or remove feature flags."},
+  {value = "🥅", name = "🥅 Catch errors."},
+  {value = "💫", name = "💫 Add or update animations and transitions."},
+  {value = "🗑️", name = "🗑️ Deprecate code that needs to be cleaned up."},
+  {value = "🛂", name = "🛂 Work on code related to authorization, roles and permissions."},
+  {value = "🩹", name = "🩹 Simple fix for a non-critical issue."},
+  {value = "🧐", name = "🧐 Data exploration/inspection."},
+  {value = "⚰️", name = "⚰️ Remove dead code."},
+  {value = "🧪", name = "🧪 Add a failing test."},
+  {value = "👔", name = "👔 Add or update business logic"},
+  {value = "🩺", name = "🩺 Add or update healthcheck."},
+  {value = "🧱", name = "🧱 Infrastructure related changes."},
+  {value = "🧑‍💻", name = "🧑‍💻 Improve developer experience"},
+]
+
+# choices = ["feature", "fix"]  # short version
+message = "Select the type of change you are committing"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "message"
+message = "Body."
+
+[[tool.commitizen.customize.questions]]
+type = "confirm"
+name = "show_message"
+message = "Do you want to add body message in commit?"
