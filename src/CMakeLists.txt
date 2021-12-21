@@ -7,10 +7,11 @@ target_sources(
     "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/element.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/block.cpp"
-    "${CMAKE_SOURCE_DIR}/src/domain/cfg/statement.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/cfg/compound_statement.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/program.cpp"
     "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/ast_processor.cpp"
+    "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/clang_parser.cpp"
     "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/cfg_factory.cpp"
 )
 
@@ -68,7 +69,7 @@ clang_tidy(
 	TARGET raisin
 	ARGS
 		-p="${CMAKE_BINARY_DIR}"
-	-checks=*
+		-checks=*
 	)
 
 clang_format(

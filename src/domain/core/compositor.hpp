@@ -117,6 +117,33 @@ public:
         return success(_composed.at(uuid).get());
     }
 
+    [[nodiscard]] auto insert(Uuid uuid, std::unique_ptr<T> value)
+    -> result::Result<T*, Failures::INVALID_UUID, Failures::ALREADY_INSIDE> {
+        constexpr auto success =
+            result::success<T*, Failures::INVALID_UUID, Failures::ALREADY_INSIDE>;
+        constexpr auto failure_invalid_uuid = result::
+                                              failure<T*, Failures::INVALID_UUID, Failures::INVALID_UUID, Failures::ALREADY_INSIDE>;
+        constexpr auto failure_already_inside = result::
+                                                failure<T*, Failures::ALREADY_INSIDE, Failures::INVALID_UUID, Failures::ALREADY_INSIDE>;
+
+        auto const guard_uuid = guard::is_valid_uuid(uuid);
+        if (guard_uuid.is_failure()) {
+            // TODO(dauliac) find way to have combine working
+            // return guard_uuid
+            //     .combine_failures<T, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>();
+            return failure_invalid_uuid();
+        }
+
+        // TODO(dauliac) add tests, units tests not fails if false is hardcoded here
+        if (is_inside(uuid)) {
+            return failure_already_inside();
+        }
+        // _composed.insert(uuid, value);
+        _composed.insert_or_assign(uuid, std::move(value));
+
+        return success(_composed.at(uuid).get());
+    }
+
 private:
     // keep this private, it's an adaptater
     // https://en.wikipedia.org/wiki/Adapter_pattern

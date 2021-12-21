@@ -7,23 +7,23 @@ namespace domain::cfg {
 
 using namespace domain::core;
 
-class Statement: public core::Entity {
+class CompoundStatement: public core::Entity {
 public:
-	using Parent = Statement const*;
+	using Parent = CompoundStatement const*;
 	using Blocks = Aggregator<Block const>;
-	using Childs = Aggregator<Statement const>;
+	using Childs = Aggregator<CompoundStatement const>;
 
 	[[nodiscard]] auto is_root() const -> bool;
 	[[nodiscard]] auto has_childs() const -> bool;
 	[[nodiscard]] auto get_childs() const -> Childs const*;
-	[[nodiscard]] auto add_child(Statement const* child)
-	  -> result::Result<Statement const*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+	[[nodiscard]] auto add_child(CompoundStatement const* child)
+	  -> result::Result<CompoundStatement const*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	[[nodiscard]] auto get_blocks() const -> Blocks const*;
 	[[nodiscard]] auto add_block(Block const* block)
 	  -> result::Result<Block const*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
 	[[nodiscard]] auto get_parent() const -> Parent const*;
-	[[nodiscard]] auto set_parent(Statement const* stmt)
-	  -> result::Result<Statement const*, Failures::NO_RESOURCES, Failures::ALREADY_SETTED>;
+	[[nodiscard]] auto set_parent(CompoundStatement const* stmt)
+	  -> result::Result<CompoundStatement const*, Failures::NO_RESOURCES, Failures::ALREADY_SETTED>;
 
 
 private:

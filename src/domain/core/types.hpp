@@ -10,16 +10,6 @@
 
 namespace domain::core {
 
-namespace result {
-
-template<
-typename SuccessType,
-auto const FirstId,
-decltype(FirstId) const... Ids>
-class Result;
-
-}  // namespace result
-
 using Uuid = std::string;
 
 constexpr int UUID_LENGTH = 16;

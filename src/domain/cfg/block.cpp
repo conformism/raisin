@@ -8,6 +8,11 @@ using namespace std;
 
 namespace domain::cfg {
 
+Block::Block(Kind kind)
+: _kind(kind)
+, _scope(nullptr)
+{}
+
 auto Block::is_entry() const -> bool {
 	return _precedents.empty();
 }
@@ -20,6 +25,7 @@ auto Block::get_text() const -> std::string const* {
 	return &_text;
 }
 
+/*
 auto Block::set_text(std::string text)
 -> result::Result<std::string, Failures::CANT_HAVE_ZERO_LENGTH, Failures::ALREADY_SETTED>
 {
@@ -43,6 +49,7 @@ auto Block::set_text(std::string text)
 		Failures::ALREADY_SETTED>(text);
 
 }
+*/
 
 auto Block::get_successors() const -> Aggregator<Block> const* {
 	return &_successors;

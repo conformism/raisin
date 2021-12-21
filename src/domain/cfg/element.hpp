@@ -6,6 +6,7 @@
 
 namespace domain::cfg {
 
+// TODO(thomaslepoix) Rename Statement?
 class Element : public core::Entity {
 public:
 	// Element(IElement::Value value, ICfg* cfg);

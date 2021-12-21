@@ -9,9 +9,7 @@
 #include <type_traits>
 #include <utility>
 
-
 #include "failure-registrar.hpp"
-#include "types.hpp"
 
 namespace domain::core::result {
 

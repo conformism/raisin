@@ -1,33 +1,47 @@
 #include "cfg.hpp"
 #include "domain/core/guard.hpp"
 
+using namespace std;
 namespace domain::cfg {
 
 auto Cfg::get_block(Uuid uuid) const
-  -> result::Result<Block*, Failures::INVALID_UUID, Failures::NOT_INSIDE>
+-> result::Result<Block*, Failures::INVALID_UUID, Failures::NOT_INSIDE>
 {
 	return _blocks.at(uuid);
 }
 
 auto Cfg::add_block(Block block)
-  -> result::Result<Block*, Failures::NOT_INSIDE>
+-> result::Result<Block*, Failures::ALREADY_INSIDE>
 {
 	auto const uuid = block.get_uuid();
-	return _blocks.insert(std::move(uuid), std::move(block))
-	  .set_failures<Failures::NOT_INSIDE>().value();
+	return _blocks
+		.insert(move(uuid), move(block))
+		.set_failures<Failures::ALREADY_INSIDE>()
+		.value();
 }
 
-auto Cfg::get_statement(Uuid uuid) const
-	-> result::Result<Statement*, Failures::INVALID_UUID, Failures::NOT_INSIDE> {
-	return _statements.at(uuid);
-}
-
-auto Cfg::add_statement(Statement statement)
-  -> result::Result<Statement*, Failures::NOT_INSIDE>
+auto Cfg::add_block(unique_ptr<Block> block)
+-> result::Result<Block*, Failures::ALREADY_INSIDE>
 {
-	auto const uuid = statement.get_uuid();
-	return _statements.insert(std::move(uuid), std::move(statement))
-	  .set_failures<Failures::NOT_INSIDE>().value();
+	auto const uuid = block->get_uuid();
+	return _blocks
+		.insert(move(uuid), move(block))
+		.set_failures<Failures::ALREADY_INSIDE>()
+		.value();
+}
+
+auto Cfg::get_compound_statement(Uuid uuid) const
+-> result::Result<CompoundStatement*, Failures::INVALID_UUID, Failures::NOT_INSIDE>
+{
+	return _compound_statements.at(uuid);
+}
+
+auto Cfg::add_compound_statement(CompoundStatement compound_statement)
+-> result::Result<CompoundStatement*, Failures::ALREADY_INSIDE>
+{
+	auto const uuid = compound_statement.get_uuid();
+	return _compound_statements.insert(move(uuid), move(compound_statement))
+	  .set_failures<Failures::ALREADY_INSIDE>().value();
 }
 
 }  // namespace domain::cfg

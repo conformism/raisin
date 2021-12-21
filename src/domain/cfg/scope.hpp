@@ -11,11 +11,11 @@ namespace domain::cfg {
 
 using namespace domain::core;
 
-class Statement: core::Entity {
+class CompoundStatement: core::Entity {
 public:
-	using Parent = Statement const*;
+	using Parent = CompoundStatement const*;
 	using Blocks = domain::core::Aggregator<Block>;
-	using Childs = domain::core::Aggregator<Statement>;
+	using Childs = domain::core::Aggregator<CompoundStatement>;
 
 	[[nodiscard]] auto is_root() const -> bool;
 	[[nodiscard]] auto has_childs() const -> bool;
