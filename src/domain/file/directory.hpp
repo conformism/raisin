@@ -8,13 +8,17 @@ namespace domain::file {
 
 class Directory {
 public:
-	using Childs = core::Compositor<std::variant<Directory, File>>;
+	using Recordable = std::variant<Directory, File>;
+	using Childs = std::unordered_map<std::filesystem::path, std::unique_ptr<Recordable>>;
+;
 
 	auto get_path() -> std::filesystem::path;
-	auto get_parent(Directory dir) -> Directory const*;
+	auto get_parent() -> Directory const*;
 	auto is_root() -> bool;
-	auto insert(Directory dir) -> Directory;
-	auto insert(File file) -> File;
+	template<class R=Directory>
+	auto insert(R inserted) -> void {
+		_childrens.insert_or_assign(inserted.get_path(), inserted);
+	}
 private:
 	std::filesystem::path const _path;
 	Directory* _parent;

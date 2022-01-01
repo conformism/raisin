@@ -12,7 +12,11 @@ target_sources(
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
           "${CMAKE_SOURCE_DIR}/src/domain/cfg/builder.cpp"
-          "${CMAKE_SOURCE_DIR}/src/domain/program.cpp")
+          "${CMAKE_SOURCE_DIR}/src/domain/program.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/file/file.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/file/directory.cpp"
+          "${CMAKE_SOURCE_DIR}/src/domain/file/code.cpp"
+)
 
 target_compile_definitions(
   raisin PRIVATE # $<$<CONFIG:Debug>:DEBUG> ${LLVM_DEFINITIONS}
