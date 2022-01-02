@@ -11,6 +11,7 @@ if(Catch2_FOUND)
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/block/builder.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/infra/repositories/repository-in-memory.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/program.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/domain/file/file.cpp"
 		)
 
 	target_compile_definitions( raisin_unittest
