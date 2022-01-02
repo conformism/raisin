@@ -1,4 +1,5 @@
 #include "domain/core/compositor.hpp"
+#include "domain/core/types.hpp"
 #include "file.hpp"
 
 #include <filesystem>
@@ -6,18 +7,19 @@
 
 namespace domain::file {
 
-class Directory {
+class Directory : public Entity {
 public:
 	using Recordable = std::variant<Directory, File>;
-	using Childs = std::unordered_map<std::filesystem::path, std::unique_ptr<Recordable>>;
-;
+	using Childs = core::Compositor<Recordable>;
 
 	auto get_path() -> std::filesystem::path;
 	auto get_parent() -> Directory const*;
 	auto is_root() -> bool;
 	template<class R=Directory>
-	auto insert(R inserted) -> void {
-		_childrens.insert_or_assign(inserted.get_path(), inserted);
+	auto insert(R inserted) ->
+	  result::Result<R, Failures::INVALID_UUID, Failures::ALREADY_INSIDE>
+	{
+		_childrens.insert(inserted.get_path(), inserted);
 	}
 private:
 	std::filesystem::path const _path;

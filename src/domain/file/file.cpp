@@ -1,12 +1,21 @@
 #include "file.hpp"
 
+#include <utility>
+
 namespace domain::file {
-auto File::get_lang() const -> Language {
-	return _lang;
+
+File::File(std::filesystem::path path, Language language)
+: _path(std::move(path)), _language(language), _includes()
+{}
+
+auto File::get_language() const -> Language {
+	return _language;
 }
+
 auto File::get_path() const -> std::filesystem::path {
 	return _path;
 }
+
 auto File::get_content(int start_line, int last_line)
   const -> result::Result<File::Lines> {
 	File::Lines subset{};
@@ -16,4 +25,5 @@ auto File::get_content(int start_line, int last_line)
 
 	return result::success<File::Lines>(std::move(subset));
 }
+
 } // namespace domain::file

@@ -1,7 +1,9 @@
 #pragma once
 
+#include "domain/core/aggregator.hpp"
 #include "domain/core/compositor.hpp"
 #include "domain/core/result.hpp"
+#include "domain/core/types.hpp"
 #include <filesystem>
 #include <map>
 
@@ -14,13 +16,15 @@ enum class Language {
 	CPP,
 };
 
-class File {
+class File : public Entity {
 public:
 	using LineNumber = int;
 	using Line = std::string;
 	using Lines = std::map<LineNumber, Line>;
+	using Includes = core::Aggregator<File>;
+	File(std::filesystem::path path, Language language);
 
-	[[nodiscard]] auto get_lang() const -> Language;
+	[[nodiscard]] auto get_language() const -> Language;
 	[[nodiscard]] auto get_path() const -> std::filesystem::path;
 	[[nodiscard]]
 	auto get_content(
@@ -28,8 +32,10 @@ public:
 	  int last_line
 	) const -> result::Result<File::Lines>;
 private:
-	Lines _lines;
-	Language _lang;
 	std::filesystem::path _path;
+	Language const _language;
+	Includes _includes;
+	Lines _lines;
 };
+
 } // namespace domain::file
