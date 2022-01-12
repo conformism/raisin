@@ -31,6 +31,13 @@ public:
 	  int start_line,
 	  int last_line
 	) const -> result::Result<File::Lines>;
+	auto include(
+	  File* file
+	) -> result::Result<File*, Failures::ALREADY_INSIDE>;
+	auto get_include(Uuid const& uuid)
+	  -> result::Result<File*, Failures::NOT_INSIDE>;
+
+
 private:
 	std::filesystem::path _path;
 	Language const _language;

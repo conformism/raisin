@@ -16,6 +16,16 @@ auto File::get_path() const -> std::filesystem::path {
 	return _path;
 }
 
+auto File::include(File* file) -> result::Result<File*, Failures::ALREADY_INSIDE> {
+	auto const result = _includes.insert(file->get_uuid(), file);
+	return result.set_failures<Failures::ALREADY_INSIDE>().value();
+}
+
+auto File::get_include(Uuid const& uuid) -> result::Result<File*, Failures::NOT_INSIDE> {
+	auto const result = _includes.at(uuid);
+	return result.set_failures<Failures::NOT_INSIDE>().value();
+}
+
 auto File::get_content(int start_line, int last_line)
   const -> result::Result<File::Lines> {
 	File::Lines subset{};
