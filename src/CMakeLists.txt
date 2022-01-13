@@ -8,7 +8,6 @@ target_sources(
     "${CMAKE_SOURCE_DIR}/src/domain/file/code.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/core/types.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/core/guard.cpp"
-    "${CMAKE_SOURCE_DIR}/src/domain/cfg/element.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/block.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/statement.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"

@@ -8,6 +8,10 @@ using namespace std;
 
 namespace domain::cfg {
 
+Block::Block(file::Code code, Kind kind)
+: _code(std::move(code)), _kind(kind)
+{};
+
 auto Block::is_entry() const -> bool {
 	return _precedents.empty();
 }
@@ -16,32 +20,13 @@ auto Block::is_exit() const -> bool {
 	return _successors.empty();
 }
 
-auto Block::get_text() const -> std::string const* {
-	return &_text;
+auto Block::get_code() const -> file::Code const& {
+	return _code;
 }
 
-auto Block::set_text(std::string text)
--> result::Result<std::string, Failures::CANT_HAVE_ZERO_LENGTH, Failures::ALREADY_SETTED>
+auto Block::set_code(file::Code code) -> void
 {
-	auto const size_result = guard::is_non_zero_length(text);
-	if(size_result.is_failure()) {
-		return size_result.set_failures<Failures::CANT_HAVE_ZERO_LENGTH, Failures::ALREADY_SETTED>().value();
-	}
-
-	if(text == _text) {
-		return result::failure<
-			std::string,
-			Failures::ALREADY_SETTED,
-			Failures::CANT_HAVE_ZERO_LENGTH,
-			Failures::ALREADY_SETTED>();
-	}
-
-	_text = text;
-	return result::success<
-		std::string,
-		Failures::CANT_HAVE_ZERO_LENGTH,
-		Failures::ALREADY_SETTED>(text);
-
+	_code = std::move(code);
 }
 
 auto Block::get_successors() const -> Aggregator<Block> const* {

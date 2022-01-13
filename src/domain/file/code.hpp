@@ -1,24 +1,27 @@
 #pragma once
 
+#include "domain/core/types.hpp"
 #include "domain/file/file.hpp"
+#include <functional>
 #include <optional>
 
 namespace domain::file {
 
-class Code {
+class Code : public core::Value<Code> {
 public:
 	Code(
-	  File const* file,
+	  Uuid file,
 	  int start_line,
 	  int end_line,
-	  std::optional<int> start_char,
-	  std::optional<int> end_char);
-private:
-	File const* _file;
-	int const _start_line;
-	int const _end_line;
-	std::optional<int> const _start_char;
-	std::optional<int> const _end_char;
+	  int start_char,
+	  int end_char);
+	auto operator==(Code const& right) const -> bool override;
+
+	Uuid file;
+	int start_line;
+	int end_line;
+	int start_char;
+	int end_char;
 };
 
 } // namespace domain::file

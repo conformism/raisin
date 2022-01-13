@@ -1,19 +1,29 @@
 #include "code.hpp"
 
+#include <utility>
+
 namespace domain::file {
 
 Code::Code(
-  File const* file,
+  Uuid file,
   int start_line,
   int end_line,
-  std::optional<int> start_char = std::nullopt,
-  std::optional<int> end_char = std::nullopt
+  int start_char,
+  int end_char
 ) :
-  _file(file),
-  _start_line(start_line),
-  _end_line(end_line),
-  _start_char(start_char),
-  _end_char(end_char)
+  file(std::move(file)),
+  start_line(start_line),
+  end_line(end_line),
+  start_char(start_char),
+  end_char(end_char)
 {};
+
+auto Code::operator==(Code const& right) const -> bool {
+	return file == right.file
+	  && start_line == right.start_line
+	  && end_line == right.end_line
+	  && start_char == right.start_char
+	  && end_char == right.end_char;
+};
 
 } // namespace domain::file
