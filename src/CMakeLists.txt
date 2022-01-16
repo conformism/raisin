@@ -12,6 +12,7 @@ target_sources(
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/statement.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/cfg/cfg.cpp"
     "${CMAKE_SOURCE_DIR}/src/domain/program.cpp"
+    "${CMAKE_SOURCE_DIR}/src/domain/language.cpp"
     # "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/ast_processor.cpp"
     # "${CMAKE_SOURCE_DIR}/src/infra/services/parsers/clang/cfg_factory.cpp"
 )

@@ -41,9 +41,7 @@ template<class T>
 class Value {
 public:
 	virtual auto operator==(T const& right) const -> bool = 0;
-	auto operator!=(T const& right) const -> bool {
-		return !(this == right);
-	};
+	virtual auto operator!=(T const& right) const -> bool = 0;
 };
 
 
