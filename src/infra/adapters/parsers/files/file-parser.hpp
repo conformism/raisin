@@ -1,0 +1,3 @@
+
+class FileParser : IClangParser<Cfg> {
+}

@@ -11,7 +11,7 @@ REENABLE_WARNINGS
 #include "ast_processor.hpp"
 #include "cfg_factory.hpp"
 
-namespace infra::services::parser::clang {
+namespace infra::adapters::parser::clang {
 using namespace ::clang;
 // using namespace cfg;
 
@@ -56,4 +56,4 @@ std::unique_ptr<ASTConsumer> AstProcessor::CreateASTConsumer(CompilerInstance& c
 	return std::make_unique<AstConsumer>(ci.getASTContext());
 }
 
-}  // namespace infra::services::parser::clang
+}  // namespace infra::adapters::parser::clang

@@ -9,7 +9,7 @@
 
 #include "domain/cfg/cfg.hpp"
 
-namespace infra::services::parser::clang {
+namespace infra::adapters::parser::clang {
 
 //******************************************************************************
 std::unique_ptr<domain::cfg::Cfg const> build_cfg(
@@ -45,4 +45,4 @@ private:
 		::clang::Stmt const* stmt);
 };
 
-}  // namespace infra::services::parser::clang
+}  // namespace infra::adapters::parser::clang

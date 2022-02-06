@@ -1,4 +1,4 @@
-namespace infra::services::cfg {
+namespace infra::adapters::cfg {
 
 template<class Cfgs>
 class ICfgPaser {
@@ -7,4 +7,4 @@ public:
 	auto is_changed() -> Cfgs;
 };
 
-}  // namespace infra::services::cfg
+}  // namespace infra::adapters::cfg

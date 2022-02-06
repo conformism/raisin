@@ -2,6 +2,7 @@
 
 #include "domain/core/types.hpp"
 #include "domain/cfg/cfg.hpp"
+#include <memory>
 
 namespace domain {
 
@@ -17,6 +18,7 @@ public:
 		-> core::result::Result<cfg::Cfg*, Failures::INVALID_UUID, Failures::NOT_INSIDE>;
 
 private:
+	std::unique_ptr<file::Language> const language;
 	Cfgs _cfgs;
 };
 }  // namespace domain

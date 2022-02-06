@@ -3,7 +3,7 @@
 using namespace std;
 using namespace clang;
 
-namespace infra::services::parser::clang {
+namespace infra::adapters::parser::clang {
 
 unique_ptr<domain::cfg::Cfg const> build_cfg(ASTContext const& context, Stmt const* stmt) {
 	static CfgFactory factory(context);
@@ -71,4 +71,4 @@ void CfgFactory::visit_compound_stmt(
 	llvm::errs() << "}\n";
 }
 
-}  // namespace infra::services::parser::clang
+}  // namespace infra::adapters::parser::clang

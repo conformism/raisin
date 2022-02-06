@@ -18,7 +18,7 @@ REENABLE_WARNINGS
 #include "iclang-parser.hpp"
 #include "ast_processor.hpp"
 
-namespace infra::services::parser::clang {
+namespace infra::adapters::parser::clang {
 
 template<class Cfg>
 class ClangParser : IClangParser<Cfg> {
@@ -59,4 +59,4 @@ private:
 template<class Cfg>
 llvm::cl::OptionCategory const ClangParser<Cfg>::option_category("Tooling Sample");
 
-} // namespace infra::services::parser::clang
+} // namespace infra::adapters::parser::clang

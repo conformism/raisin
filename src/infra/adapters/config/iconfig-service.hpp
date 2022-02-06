@@ -3,11 +3,11 @@
 #include "iconfig.hpp"
 #include "infra/services/config/iconfig.hpp"
 
-namespace infra::services::config {
+namespace infra::adapters::config {
 
-class ConfigParser : IService<Cfgs> {
+class ConfigParser : IAdapter<Cfgs> {
 public:
 	auto run() -> Iconfig;
 };
 
-}  // namespace infra::services::config
+}  // namespace infra::adapters::config

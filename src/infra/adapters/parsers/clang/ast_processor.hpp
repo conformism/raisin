@@ -12,7 +12,7 @@ DISABLE_WARNINGS
 #include <clang/Frontend/FrontendActions.h>
 REENABLE_WARNINGS
 
-namespace infra::services::parser::clang {
+namespace infra::adapters::parser::clang {
 // By implementing RecursiveASTVisitor, we can specify which AST nodes
 // we're interested in by overriding relevant methods.
 //******************************************************************************
@@ -53,4 +53,4 @@ public:
 		::clang::StringRef file) override;
 };
 
-}  // namespace infra::services::parser::clang
+}  // namespace infra::adapters::parser::clang
