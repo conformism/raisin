@@ -10,18 +10,14 @@ Forked from the [kirshanthans cfg-clang](https://github.com/kirshanthans/cfg-cla
 
 ## Dev
 
-Build the container :
-```sh
-docker build . -t raisin:0.1
-```
-
 Enter the dev env :
 ```sh
-docker run -v $PWD:/disks/ramfs -it raisin:0.1 bash
+nix develop
 ```
 
 Basic build commands :
 ```sh
+mkdir build && cd build
 cmake .. -DCMAKE_CXX_COMPILER=<clang++|g++> -DCMAKE_BUILD_TYPE=<Debug|Coverage|Release>
 make
 ```
