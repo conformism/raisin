@@ -8,33 +8,18 @@ project( Raisin
 	DESCRIPTION "Produce CFG from a C++ source code"
 	)
 
-list( APPEND CMAKE_MODULE_PATH
-	"${CMAKE_SOURCE_DIR}/cmake"
-	)
-
 if( NOT CMAKE_BUILD_TYPE )
 	set( CMAKE_BUILD_TYPE "Release" )
 endif()
 message( STATUS "Build type: ${CMAKE_BUILD_TYPE}" )
 
-find_package( Clang REQUIRED )
+find_package( Clang REQUIRED 13 )
 
 message( STATUS "LLVM version: ${LLVM_PACKAGE_VERSION}" )
 message( STATUS "Using ClangConfig.cmake in: ${Clang_DIR}" )
 message( STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}" )
 
-include( CPM )
-
-CPMAddPackage(
-	NAME cmake-utils
-	GITHUB_REPOSITORY conformism/cmake-utils
-	GIT_TAG main
-	DOWNLOAD_ONLY
-	)
-
-list( APPEND CMAKE_MODULE_PATH
-	"${FETCHCONTENT_BASE_DIR}/cmake-utils-src"
-	)
+find_package( CMakeUtils )
 
 set( CMAKE_UTILS * )
 set( COVERAGE_GLOBAL_ONLY ON )
@@ -55,6 +40,8 @@ codechecker(
 	ARGS
 		"${CMAKE_BINARY_DIR}/compile_commands.json"
 		-j 4
+		--keep-gcc-include-fixed
+		--keep-gcc-intrin
 	ADDITIONAL_OPTIONAL_REPORTS
 		"${CMAKE_BINARY_DIR}/src/CMakeFiles/raisin_cppcheck.dir/codechecker_reports"
 	)
