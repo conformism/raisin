@@ -26,10 +26,10 @@ public:
 	auto set_code(file::Code code) -> void;
 	[[nodiscard]] auto get_successors() const -> Linkables const*;
 	[[nodiscard]] auto add_successors(Block const* block)
-		-> result::Result<Block*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		-> result::Result<Block*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>;
 	[[nodiscard]] auto get_precedents() const -> Linkables const*;
 	[[nodiscard]] auto add_precedent(Block const* block)
-		-> result::Result<Block*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+		-> result::Result<Block*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>;
 
 private:
 	Kind _kind;

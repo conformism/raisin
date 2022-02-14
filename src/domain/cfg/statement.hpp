@@ -17,13 +17,13 @@ public:
 	[[nodiscard]] auto has_childs() const -> bool;
 	[[nodiscard]] auto get_childs() const -> Childs const*;
 	[[nodiscard]] auto add_child(Statement const* child)
-	  -> result::Result<Statement const*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+	  -> result::Result<Statement const*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>;
 	[[nodiscard]] auto get_blocks() const -> Blocks const*;
 	[[nodiscard]] auto add_block(Block const* block)
-	  -> result::Result<Block const*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>;
+	  -> result::Result<Block const*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>;
 	[[nodiscard]] auto get_parent() const -> Parent const*;
 	[[nodiscard]] auto set_parent(Statement const* stmt)
-	  -> result::Result<Statement const*, Failures::NO_RESOURCES, Failures::ALREADY_SETTED>;
+	  -> result::Result<Statement const*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_SETTED>;
 
 
 private:

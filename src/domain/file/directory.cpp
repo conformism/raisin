@@ -2,6 +2,10 @@
 
 namespace domain::file {
 
+Directory::Directory(std::filesystem::path path)
+: _path(std::move(path))
+{}
+
 auto Directory::get_path() -> std::filesystem::path {
 	return _path;
 }

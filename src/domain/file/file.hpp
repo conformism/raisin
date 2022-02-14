@@ -4,6 +4,7 @@
 #include "domain/core/compositor.hpp"
 #include "domain/core/result.hpp"
 #include "domain/core/types.hpp"
+#include <cstddef>
 #include <filesystem>
 #include <map>
 
@@ -18,7 +19,8 @@ enum class Language {
 
 class File : public Entity {
 public:
-	using LineNumber = int;
+	using LineNumber = std::size_t;
+	using CharNumber = std::size_t;
 	using Line = std::string;
 	using Lines = std::map<LineNumber, Line>;
 	using Includes = core::Aggregator<File>;
@@ -26,16 +28,24 @@ public:
 
 	[[nodiscard]] auto get_language() const -> Language;
 	[[nodiscard]] auto get_path() const -> std::filesystem::path;
+
 	[[nodiscard]]
 	auto get_content(
-	  int start_line,
-	  int last_line
+	  CharNumber start_line,
+	  CharNumber last_line
 	) const -> result::Result<File::Lines>;
+
+	[[nodiscard]]
+	auto set_line(
+	  LineNumber line_number,
+	  std::string line
+	) -> const result::Result<const File*, result::Failures::ALREADY_INSIDE>;
+
 	auto include(
 	  File* file
-	) -> result::Result<File*, Failures::ALREADY_INSIDE>;
+	) -> result::Result<File*, result::Failures::ALREADY_INSIDE>;
 	auto get_include(Uuid const& uuid)
-	  -> result::Result<File*, Failures::NOT_INSIDE>;
+	  -> result::Result<File*, result::Failures::NOT_INSIDE>;
 
 
 private:

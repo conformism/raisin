@@ -21,10 +21,10 @@ auto Statement::get_childs() const -> Statement::Childs const* {
 }
 
 auto Statement::add_child(Statement const* child)
-  -> result::Result<Statement const*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>
+  -> result::Result<Statement const*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>
 {
 	return _childs.insert(child->get_uuid(), child)
-	  .set_failures<Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>().value();
+	  .set_failures<result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>().value();
 }
 
 auto Statement::get_blocks() const -> Statement::Blocks const* {
@@ -32,10 +32,10 @@ auto Statement::get_blocks() const -> Statement::Blocks const* {
 }
 
 auto Statement::add_block(Block const* block)
-  -> result::Result<Block const*, Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>
+  -> result::Result<Block const*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>
 {
 	return _blocks.insert(block->get_uuid(), block)
-	  .set_failures<Failures::NO_RESOURCES, Failures::ALREADY_INSIDE>().value();
+	  .set_failures<result::Failures::NO_RESOURCES, result::Failures::ALREADY_INSIDE>().value();
 }
 
 auto Statement::get_parent() const -> Statement::Parent const* {
@@ -43,18 +43,18 @@ auto Statement::get_parent() const -> Statement::Parent const* {
 }
 
 auto Statement::set_parent(Statement const* parent)
-  -> result::Result<Statement const*, Failures::NO_RESOURCES, Failures::ALREADY_SETTED>
+  -> result::Result<Statement const*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_SETTED>
 {
 	auto guard_result = guard::is_null_pointer<Statement const>(parent);
 	if(guard_result.is_failure()) {
-		return guard_result.set_failures<Failures::NO_RESOURCES, Failures::ALREADY_SETTED>().value();
+		return guard_result.set_failures<result::Failures::NO_RESOURCES, result::Failures::ALREADY_SETTED>().value();
 
 	}
 	if(_parent->get_uuid() == parent->get_uuid()) {
-		return result::failure<Statement const*, Failures::ALREADY_SETTED, Failures::NO_RESOURCES, Failures::ALREADY_SETTED>();
+		return result::failure<Statement const*, result::Failures::ALREADY_SETTED, result::Failures::NO_RESOURCES, result::Failures::ALREADY_SETTED>();
 	}
 	_parent = parent;
-	return result::success<Statement const*, Failures::NO_RESOURCES, Failures::ALREADY_SETTED>(parent);
+	return result::success<Statement const*, result::Failures::NO_RESOURCES, result::Failures::ALREADY_SETTED>(parent);
 }
 
 
