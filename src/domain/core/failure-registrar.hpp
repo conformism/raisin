@@ -1,5 +1,7 @@
 #pragma once
 
+
+namespace domain::core::result {
 enum class Failures {
 	UNKNOWN = 0,
 	NOTHING,
@@ -10,3 +12,4 @@ enum class Failures {
 	CANT_HAVE_ZERO_LENGTH,
 	INVALID_UUID,
 };
+} // namespace domain::core::result

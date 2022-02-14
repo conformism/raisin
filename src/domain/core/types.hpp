@@ -13,9 +13,10 @@ namespace domain::core {
 namespace result {
 
 template<
-typename SuccessType,
-auto const FirstId,
-decltype(FirstId) const... Ids>
+  typename SuccessType,
+  auto const FirstId,
+  decltype(FirstId) const... Ids
+>
 class Result;
 
 }  // namespace result
@@ -28,7 +29,7 @@ constexpr int UUID_LENGTH = 16;
 class Entity {
 public:
 	[[nodiscard]] auto get_uuid() const -> Uuid;
-	[[nodiscard]] auto set_uuid(Uuid uuid) -> result::Result<Uuid, Failures::INVALID_UUID>;
+	[[nodiscard]] auto set_uuid(Uuid uuid) -> result::Result<Uuid, result::Failures::INVALID_UUID>;
 
 	Entity() = default;
 	explicit Entity(Uuid uuid);
