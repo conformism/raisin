@@ -4,6 +4,7 @@
 #include "domain/core/guard.hpp"
 
 using namespace domain::core;
+using namespace domain::core::result;
 
 SCENARIO("Guard against null pointer should works with valid pointer.") {
 	GIVEN("Valid pointer.") {

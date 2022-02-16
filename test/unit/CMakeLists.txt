@@ -6,12 +6,12 @@ if(Catch2_FOUND)
 #		"${CMAKE_CURRENT_SOURCE_DIR}/domain/cfg/test_cfg_builder.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/guard.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/aggregator.cpp"
-	    "${CMAKE_CURRENT_SOURCE_DIR}/domain/language.cpp"
         #"${CMAKE_CURRENT_SOURCE_DIR}/domain/program.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/core/compositor.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/infra/repositories/repository-in-memory.cpp"
+        # "${CMAKE_CURRENT_SOURCE_DIR}/infra/repositories/repository-in-memory.cpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/domain/file/file.cpp"
-#        "${CMAKE_CURRENT_SOURCE_DIR}/infra/services/parsers/clang/clang-parser.cpp"
+        # "${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/parsers/clang/clang-parser.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/filesystem/file-reader.cpp"
 	)
 
 	target_compile_definitions( raisin_unittest

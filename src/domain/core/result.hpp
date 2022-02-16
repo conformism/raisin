@@ -21,12 +21,7 @@ template<
 >
 class Failure {
 public:
-	explicit constexpr Failure(FailureType id)
-	:_id(id), _value(std::nullopt)
-	{};
-	explicit constexpr Failure(FailureType id, std::any value)
-	: _id(id), _value(value)
-	{};
+	explicit constexpr Failure(FailureType id) :_id(id) {};
 
 	[[nodiscard]] constexpr auto get_id() const -> FailureType {
 		return _id;
@@ -34,7 +29,6 @@ public:
 
 private:
 	FailureType const _id;
-	std::any const _value;
 };
 
 // Container to store value of object to transport
@@ -58,12 +52,12 @@ public:
 	using FailureType = decltype(FirstId);
 
 	template<FailureType const Id>
-	[[nodiscard]] static constexpr auto create(std::any error_value) -> Result<SuccessType, FirstId, Ids...> {
+	[[nodiscard]] static constexpr auto create() -> Result<SuccessType, FirstId, Ids...> {
 		constexpr bool is_possible_values = Id == FirstId || ((Id == Ids) || ...);
 		static_assert(
 			is_possible_values,
 			"The given argument parameter Id is not into Ids list {Id, Ids...}");
-		return Result<SuccessType, FirstId, Ids...>(Id, error_value);
+		return Result<SuccessType, FirstId, Ids...>(Id);
 	};
 
 	[[nodiscard]] static constexpr auto create(SuccessType value)
@@ -121,7 +115,7 @@ public:
 	[[nodiscard]] constexpr auto set_success(SettedSuccess setted_success) const
 		-> Result<SettedSuccess, FirstId, Ids...> {
 		if (is_failure()) {
-			return Result<SettedSuccess, FirstId, Ids...>(get_failure().value(), std::nullopt);
+			return Result<SettedSuccess, FirstId, Ids...>(get_failure().value());
 		}
 		return Result<SettedSuccess, FirstId, Ids...>(setted_success);
 	};
@@ -135,16 +129,16 @@ public:
 		bool const areNewFailuresValid = ((get_failure().value() == SettedFailures) || ...);
 		// bool const areNewFailuresValid = true;
 		if (areNewFailuresValid) {
-			return Result<SuccessType, SettedFailures...>(get_failure().value(), std::nullopt);
+			return Result<SuccessType, SettedFailures...>(get_failure().value());
 		}
 		return std::nullopt;
 	};
 
 	// Error constuctors must be public in fault of combine method recursivity
-	explicit constexpr Result(FailureType const value, std::any failure_value)
+	explicit constexpr Result(FailureType const value)
 		: _is_success(false),
 		  _value(
-			Failure<FailureType>(value, failure_value)
+			Failure<FailureType>(value)
 		  )
 		{};
 	constexpr explicit Result(SuccessType const value)
@@ -169,19 +163,7 @@ template<
 >
 [[nodiscard]] constexpr auto failure()
 	-> Result<SuccessType, FirstPossibleValue, PossibleValues...> {
-	return Result<SuccessType, FirstPossibleValue, PossibleValues...>::template create<Value>(std::nullopt);
+	return Result<SuccessType, FirstPossibleValue, PossibleValues...>::template create<Value>();
 };
-
-template<
-	typename SuccessType,
-	auto const Value = Failures::UNKNOWN,
-	decltype(Value) const FirstPossibleValue = Value,
-	decltype(Value) const... PossibleValues
->
-[[nodiscard]] constexpr auto value_failure(std::any value)
-	-> Result<SuccessType, FirstPossibleValue, PossibleValues...> {
-	return Result<SuccessType, FirstPossibleValue, PossibleValues...>::template create<Value>(value);
-};
-
 
 }  // namespace domain::core::result
